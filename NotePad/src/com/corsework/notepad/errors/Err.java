@@ -1,5 +1,7 @@
 package com.corsework.notepad.errors;
 
+import android.util.Log;
+
 public class Err {
 	
 	/**
@@ -9,6 +11,7 @@ public class Err {
 	
 	public Err(String text) {
 		this.text = text;
+		Log.d("error!!!", text);
 	}
 	
 	public String getText() {

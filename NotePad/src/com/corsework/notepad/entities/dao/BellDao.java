@@ -33,18 +33,17 @@ public class BellDao {
 	 * 				or null if record was not created.
 	 */
 	public Bell create(Bell bell) {
-		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();		 
         ContentValues values = this.bellToValues(bell); 
         long id = db.insert(dbHelper.TABLE_NAME, null, values);
         db.close();
         
         if (id == -1) {
-        	LastErrors.getInstance().add(new Err("New record was not created."));
+        	Log.d("error!!!", "New Bell was not created.");
         	return null;
         } else {
         	Bell bl = this.getById(id);
-        	Log.d("Bell created: ", bl.toString());
+        	Log.d("good. Bell created: ", bl.toString());
             return bl;
         }
 	}
@@ -52,29 +51,28 @@ public class BellDao {
 	/**
 	 * Updates or creates new record in db.
 	 * @param bell Bell to update.
-	 * @return Updates bell.
+	 * @return Updated bell or null, if something was wrong.
 	 */
 	public Bell update(Bell bell) {
 		LastErrors.getInstance().clean();
-		Bell bl;
 		if (bell.getId() == null) {
-			bl = this.create(bell);
+			return this.create(bell);
 		} else {
-			SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-			 
-			ContentValues values = this.bellToValues(bell);
-	 
+			SQLiteDatabase db = this.dbHelper.getWritableDatabase();			 
+			ContentValues values = this.bellToValues(bell);	 
 	        int res = db.update(dbHelper.TABLE_NAME, values, dbHelper.COLUMN_ID + " = ?",
 	                new String[] { String.valueOf(bell.getId()) });
+	        
 	        db.close();
 	        if (res != 1) {
-	        	LastErrors.getInstance().add(new Err("Wrong number of rows were modified."));
-	        }
-	        bl = bell;
+	        	Log.d("error!!! Bell.update:", "Wrong number of rows were modified.");
+	        	return null;
+	        } else {
+	        	Bell bl = this.getById(bell.getId());
+	        	Log.d("good. Bell updated:", bl.toString());
+	        	return bl;
+	        }	        
 		}
-		
-		Log.d("Bell updated: ", bl.toString());
-		return bl;
 	}
 	
 	/**
@@ -83,29 +81,84 @@ public class BellDao {
 	 * @return Bell with the id. Or null, if no bell was found.
 	 */
 	public Bell getById(long id) {
-		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		
 		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor == null) {
-			LastErrors.getInstance().add(new Err("No Bell with such id was found"));
+			Log.d("error!!! Bell.getById:", "No Bell with such id was found.");
 			return null;
+		} else if (cursor.getCount() != 1) {
+			Log.d("error!!! Bell.getById:", "More then one bell was found by id.");
+			return null;
+		} else {
+			cursor.moveToFirst();        
+			Bell bell = this.cursorToBell(cursor);        
+			Log.d("good. Bell getById:", bell.toString());        
+			return bell;
 		}
-        cursor.moveToFirst();
-        
-        Bell bell = this.cursorToBell(cursor);
-        
-        Log.d("Bell getById", bell.toString());        
-        return bell;
 	}
 	
+	/**
+	 * Gets bells by its ids. Null bells are ignored.
+	 * @param ids Array of bells ids.
+	 * @return ArrayList of not null Bells.
+	 */
 	public ArrayList<Bell> getByIds(ArrayList<Long> ids) {
 		ArrayList<Bell> bells = new ArrayList<Bell>();
 		for (int i = 0; i < ids.size(); ++i) {
-			bells.add(this.getById(ids.get(i)));
+			Bell bell = this.getById(ids.get(i));
+			if (bell != null)
+				bells.add(bell);
 		}
 		return bells;
+	}
+	
+	/**
+	 * Deletes bell from the database by its id.
+	 * @param id Id of the bell to delete.
+	 * @return Number of deleted rows.
+	 */
+	public int deleteById(Long id) {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
+        int res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
+                new String[] { String.valueOf(id) });
+        db.close();
+        
+        if (res != 1) {
+        	Log.d("error!!! Bell.deleteById:", "Must delete only one row at once");
+        } else {
+        	Log.d("good. Bell deleted:", "id = " + id);
+        }
+        return res;
+	}
+	
+	/**
+	 * Deletes bell from the database.
+	 * Or do nothing, if bell's id == null.
+	 * @param bell Bell to delete (needs only its id).
+	 * @return Number of deleted rows.
+	 */
+	public int delete(Bell bell) {
+		if (bell.getId() != null) {
+			return this.deleteById(bell.getId());
+		} else {
+			return 0;
+		}
+	}
+	
+	/**
+	 * Deletes bells with ids from the database.
+	 * Do nothing, if there is no such id in table.
+	 * @param ids Array of ids.
+	 * @return Number of deleted rows.
+	 */
+	public int deleteByIds(ArrayList<Long> ids) {
+		int sum = 0;
+		for (int i = 0; i < ids.size(); ++i) {
+			sum += this.deleteById(ids.get(i));
+		}
+		return sum;
 	}
 	
 	/**
@@ -113,7 +166,6 @@ public class BellDao {
 	 * @return ArrayList of Bells.
 	 */
 	public ArrayList<Bell> getAll() {
-		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Bell> bells = new ArrayList<Bell>();
 		
@@ -129,23 +181,11 @@ public class BellDao {
         return bells;
 	}
 	
-	public void deleteById(Long id) {
-		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
-                new String[] { String.valueOf(id) });
-        db.close();
-	}
-	
-	public void delete(Bell bell) {
-		this.deleteById(bell.getId());
-	}
-	
-	public void deleteByIds(ArrayList<Long> ids) {
-		for (int i = 0; i < ids.size(); ++i) {
-			this.deleteById(ids.get(i));
-		}
-	}
-	
+	/**
+	 * Transforms cursor into Bell.
+	 * @param cursor Cursor to transform.
+	 * @return Bell with fields from cursor.
+	 */
 	private Bell cursorToBell(Cursor cursor) {
 		Long id = cursor.getLong(0);
 		
@@ -159,6 +199,11 @@ public class BellDao {
         return bell;
 	}
 	
+	/**
+	 * Transforms Bell into ContentValues for writing in the database.
+	 * @param bell Bell to transform.
+	 * @return ContentValues with fields from bell.
+	 */
 	private ContentValues bellToValues(Bell bell) {
 		ContentValues values = new ContentValues();
     	values.put(dbHelper.COLUMN_CREATED, bell.getSys().getCr().getTime());
