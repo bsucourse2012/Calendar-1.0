@@ -13,17 +13,11 @@
 					  
 			<TextView  
 			    android:layout_width="fill_parent" 
-			    android:layout_height="wrap_content" 
+			    android:layout_height="fill_parent" 
 			    android:text="@string/no_notes"
 			    android:id="@id/android:empty"
 			    android:gravity="center_vertical|center_horizontal"
-			    android:layout_above="@+id/add_button"
-			    android:layout_alignParentTop="true" />
-			<Button 
-			    android:layout_width="fill_parent" 
-				android:layout_height="wrap_content" 
-				android:text="@string/add_note_button" 
-				android:id="@+id/add_button"
-				android:layout_alignParentBottom="true"/>
+			     />
+			
 					
 </RelativeLayout>

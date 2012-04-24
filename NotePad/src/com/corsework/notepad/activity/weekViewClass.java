@@ -3,8 +3,10 @@ package com.corsework.notepad.activity;
 import java.util.Calendar;
 
 import com.corsework.notepad.adapter.WeekAdapter;
+import com.corsework.notepad.application.NotePadApplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +27,7 @@ public class weekViewClass extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weekview_);
-        cal = Calendar.getInstance();
+        cal = ((NotePadApplication)getApplication()).calcr;//Calendar.getInstance();
         week = cal.get(Calendar.WEEK_OF_YEAR);
         adapter = new WeekAdapter(this,cal,week);
         
@@ -41,7 +43,8 @@ public class weekViewClass extends Activity {
 			@Override
 			public void onClick(View v) {
 				if(cal.get(Calendar.WEEK_OF_YEAR)== cal.getActualMinimum(Calendar.WEEK_OF_YEAR)) {
-					cal.set((cal.get(Calendar.YEAR)-1),cal.getActualMaximum(Calendar.MONTH),1);
+					cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-1);
+					cal.set(Calendar.WEEK_OF_YEAR, cal.getActualMaximum(Calendar.WEEK_OF_YEAR));
 					
 				} else {
 					cal.set(Calendar.WEEK_OF_YEAR,cal.get(Calendar.WEEK_OF_YEAR)-1);
@@ -67,10 +70,10 @@ public class weekViewClass extends Activity {
 	    
 		grid.setOnItemClickListener(new OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		    	if (position>8 && position%8!=0)
+		    	if (position>8 && position%8!=0){
 		        	Toast.makeText(weekViewClass.this,android.text.format.DateFormat.format("yyyy-MM", cal)+"  + "+position, Toast.LENGTH_SHORT).show();
-		        
-		        
+		    	
+		    	}
 		    }
 		});
 	}

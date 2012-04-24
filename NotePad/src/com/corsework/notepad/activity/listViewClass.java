@@ -1,5 +1,9 @@
 package com.corsework.notepad.activity;
 
+import java.util.ArrayList;
+
+import com.corsework.notepad.entities.program.Record;
+
 import android.app.Activity;
 import android.os.Bundle;
 

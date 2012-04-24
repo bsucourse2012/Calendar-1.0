@@ -36,11 +36,11 @@ public class dayViewClass extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				if(cal.get(Calendar.WEEK_OF_YEAR)== cal.getActualMinimum(Calendar.WEEK_OF_YEAR)) {
-					cal.set((cal.get(Calendar.YEAR)-1),cal.getActualMaximum(Calendar.MONTH),1);
+				if(cal.get(Calendar.DAY_OF_YEAR)== cal.getActualMinimum(Calendar.DAY_OF_YEAR)) {
+					cal.set((cal.get(Calendar.YEAR)-1),cal.getActualMaximum(Calendar.MONTH),cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 					
 				} else {
-					cal.set(Calendar.WEEK_OF_YEAR,cal.get(Calendar.WEEK_OF_YEAR)-1);
+					cal.set(Calendar.DAY_OF_YEAR,cal.get(Calendar.DAY_OF_YEAR)-1);
 				}
 				refreshCalendar();
 			}
@@ -51,10 +51,10 @@ public class dayViewClass extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				if(cal.get(Calendar.WEEK_OF_YEAR)== cal.getActualMaximum(Calendar.WEEK_OF_YEAR)) {
+				if(cal.get(Calendar.DAY_OF_YEAR)== cal.getActualMaximum(Calendar.DAY_OF_YEAR)) {
 					cal.set((cal.get(Calendar.YEAR)+1),cal.getActualMinimum(Calendar.MONTH),1);
 				} else {
-					cal.set(Calendar.WEEK_OF_YEAR,cal.get(Calendar.WEEK_OF_YEAR)+1);
+					cal.set(Calendar.DAY_OF_YEAR,cal.get(Calendar.DAY_OF_YEAR)+1);
 				}
 				refreshCalendar();
 				
@@ -64,7 +64,7 @@ public class dayViewClass extends Activity {
 		list.setOnItemClickListener(new OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		    	if (position>8 && position%8!=0)
-		        	Toast.makeText(dayViewClass.this,android.text.format.DateFormat.format("yyyy-MM", cal)+"  + "+position, Toast.LENGTH_SHORT).show();
+		        	Toast.makeText(dayViewClass.this,android.text.format.DateFormat.format("dd-yyyy-MM", cal)+"  + "+position, Toast.LENGTH_SHORT).show();
 		        
 		        
 		    }
@@ -77,6 +77,6 @@ public class dayViewClass extends Activity {
 		adapter.refreshDays();
 		adapter.notifyDataSetChanged();				
 		
-		title.setText(cal.get(Calendar.WEEK_OF_YEAR)+"week,"+android.text.format.DateFormat.format("MMMM yyyy", cal));
+		title.setText(android.text.format.DateFormat.format("dd MMMM yyyy", cal));
 	}
 }

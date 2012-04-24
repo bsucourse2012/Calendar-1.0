@@ -29,7 +29,7 @@ public class DayAdapter extends BaseAdapter{
     
 
     public int getCount() {
-        return 1;
+        return days.length;
     }
 
     public Object getItem(int position) {

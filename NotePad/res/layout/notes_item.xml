@@ -8,11 +8,10 @@
 	          android:id="@+id/imageView1"
 	          android:layout_width="wrap_content"
 	          android:layout_height="wrap_content"
-	          android:src="@drawable/redhat" 
+	          android:src="@drawable/app_notes" 
 	  	  	  android:layout_alignParentLeft="true"
 	  	  	  android:layout_marginTop="@dimen/marT"
-	          android:layout_marginRight="@dimen/marT" 
-	          android:contentDescription="TODO"/>
+	          android:layout_marginRight="@dimen/marT"/>
 	  <LinearLayout
 	      android:id="@+id/linearLayout1"
 	      android:layout_width="fill_parent"
@@ -23,6 +22,7 @@
 		  	android:id="@+id/title_text"
 		   	android:layout_width="fill_parent"
 		  	android:layout_height="wrap_content" 
+		  	android:textSize="@dimen/title_list_size"
 		    android:text="title"/>
 		  <TextView 
 		   	android:id="@+id/tegs_text"
@@ -42,7 +42,15 @@
 	  	android:layout_height="wrap_content" 
  		android:layout_alignParentRight="true"
  		android:layout_alignParentTop="true"
- 		
+ 		android:textSize="@dimen/date_text_size"
+	    android:text="today"/>
+	  <TextView 
+	   	android:id="@+id/date_text2"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content" 
+ 		android:layout_alignParentRight="true"
+ 		android:layout_below="@+id/date_text"
+ 		android:textSize="@dimen/date_text_size"
 	    android:text="today"/>
 
 </com.corsework.notepad.view.NoteListItem>

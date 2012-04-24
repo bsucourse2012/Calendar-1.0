@@ -1,34 +1,37 @@
 package com.corsework.notepad.activity;
 
 
+import java.util.ArrayList;
+
+import com.corsework.notepad.entities.program.Record;
+
 import android.app.TabActivity;
-import android.content.ComponentName;
-import android.content.ContentUris;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 public class ViewNotePadActivity extends TabActivity {
 	
 	private static final int MENU_ITEM_DELETE = Menu.FIRST;
-	private static final int MENU_ITEM_INSERT = Menu.FIRST + 1;
-	private static final int MENU_ITEM_SHARE = Menu.FIRST + 2;
-	private static final int MENU_SEARCH = Menu.FIRST + 3;
-	private static final int MENU_ITEM_EDIT_TAGS = Menu.FIRST + 4;
-	private static final int MENU_SETTINGS = Menu.FIRST + 5;
+	private static final int MENU_ITEM_INSERT_NOTE = Menu.FIRST + 1;
+	private static final int MENU_ITEM_INSERT_REMI = Menu.FIRST + 2;
+	private static final int MENU_ITEM_SHARE = Menu.FIRST + 3;
+	private static final int MENU_SEARCH = Menu.FIRST + 4;
+	private static final int MENU_ITEM_EDIT_TAGS = Menu.FIRST + 5;
+	private static final int MENU_SETTINGS = Menu.FIRST + 6;
 	private static final int MENU_DISTRIBUTION_START = Menu.FIRST + 100; // MUST BE LAST
+	
+	public TabHost tabH;
 
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        TabHost tabH=(TabHost)findViewById(android.R.id.tabhost);
+        tabH=(TabHost)findViewById(android.R.id.tabhost);
         tabH.setup();
         TabSpec listViewTab= tabH.newTabSpec("listView");
         listViewTab.setIndicator("",getResources().getDrawable(android.R.drawable.ic_menu_agenda));
@@ -67,9 +70,10 @@ public class ViewNotePadActivity extends TabActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		menu.add(0, MENU_ITEM_INSERT, 0, R.string.add_note_button).setShortcut('1', 'i')
+		menu.add(0, MENU_ITEM_INSERT_NOTE, 0, R.string.add_note_button).setShortcut('1', 'i')
 			.setIcon(android.R.drawable.ic_menu_add);
-		//Show the delete icon when there is an actionbar
+		menu.add(0, MENU_ITEM_INSERT_REMI, 0, R.string.add_note_button).setShortcut('1', 'i')
+		.setIcon(android.R.drawable.ic_menu_call);
 		
 		menu.add(0, MENU_SEARCH, 0, R.string.menu_search).setShortcut('2',
 				's').setIcon(android.R.drawable.ic_menu_search);
@@ -87,4 +91,5 @@ public class ViewNotePadActivity extends TabActivity {
 
 		return true;
 	}
+
 }

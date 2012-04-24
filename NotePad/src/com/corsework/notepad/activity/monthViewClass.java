@@ -3,8 +3,10 @@ package com.corsework.notepad.activity;
 import java.util.Calendar;
 
 import com.corsework.notepad.adapter.CalendarAdapter;
+import com.corsework.notepad.application.NotePadApplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +27,7 @@ public class monthViewClass extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.monthview_);
         
-        cal = Calendar.getInstance();
+        cal =((NotePadApplication)getApplication()).calcr;// Calendar.getInstance();
         adapter = new CalendarAdapter(this,cal);
         
         GridView grid = (GridView)findViewById(R.id.gridview);
@@ -72,6 +74,7 @@ public class monthViewClass extends Activity {
 		        		day = "0"+day;
 		        	}
 		        	Toast.makeText(monthViewClass.this,android.text.format.DateFormat.format("yyyy-MM", cal)+"-"+day, Toast.LENGTH_SHORT).show();
+		       
 		        }
 		        
 		    }
