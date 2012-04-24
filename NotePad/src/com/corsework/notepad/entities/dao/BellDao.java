@@ -61,9 +61,9 @@ public class BellDao {
 			SQLiteDatabase db = this.dbHelper.getWritableDatabase();			 
 			ContentValues values = this.bellToValues(bell);	 
 	        int res = db.update(dbHelper.TABLE_NAME, values, dbHelper.COLUMN_ID + " = ?",
-	                new String[] { String.valueOf(bell.getId()) });
-	        
+	                new String[] { String.valueOf(bell.getId()) });	        
 	        db.close();
+	        
 	        if (res != 1) {
 	        	Log.d("error!!! Bell.update:", "Wrong number of rows were modified.");
 	        	return null;
@@ -81,10 +81,10 @@ public class BellDao {
 	 * @return Bell with the id. Or null, if no bell was found.
 	 */
 	public Bell getById(long id) {
-		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
-		
+		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
 		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
+		
 		if (cursor == null) {
 			Log.d("error!!! Bell.getById:", "No Bell with such id was found.");
 			return null;
@@ -143,6 +143,7 @@ public class BellDao {
 		if (bell.getId() != null) {
 			return this.deleteById(bell.getId());
 		} else {
+			Log.e("error!!! Note.delete:", "Trying to delete bell without id");
 			return 0;
 		}
 	}

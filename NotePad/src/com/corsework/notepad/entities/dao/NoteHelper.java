@@ -7,6 +7,9 @@ import android.util.Log;
 
 public class NoteHelper extends SQLiteOpenHelper {
 	
+	/**
+	 * Names of columns in table.
+	 */
 	public static final String TABLE_NAME = "notes";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_CREATED = "_created";
@@ -15,10 +18,15 @@ public class NoteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_TYPE = "type";
 	public static final String COLUMN_CONTENT = "content";
 	
+	/**
+	 * Database info.
+	 */
 	private static final String DATABASE_NAME = "calendar.db";
 	private static final int DATABASE_VERSION = 1;
 	
-	// Database creation sql statement
+	/**
+	 * Database creation sql statement.
+	 */
 	private static final String TABLE_CREATE = 
 			"create table " + TABLE_NAME + "( " +
 			COLUMN_ID + " integer primary key autoincrement, " +

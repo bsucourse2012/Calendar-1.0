@@ -6,16 +6,24 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BellHelper extends SQLiteOpenHelper {
 	
+	/**
+	 * Names of columns in table.
+	 */
 	public static final String TABLE_NAME = "notes";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_CREATED = "_created";
 	public static final String COLUMN_MODIFIED = "_modified";
 	public static final String COLUMN_DATE = "date";
 	
+	/**
+	 * Database info.
+	 */
 	private static final String DATABASE_NAME = "calendar.db";
 	private static final int DATABASE_VERSION = 1;
 	
-	// Database creation sql statement
+	/**
+	 * Database creation sql statement.
+	 */
 	private static final String TABLE_CREATE = 
 			"create table " + TABLE_NAME + "( " +
 			COLUMN_ID + " integer primary key autoincrement, " +
@@ -36,14 +44,6 @@ public class BellHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 		onCreate(db);
-	}
-	
-	/**
-	 * Drops the table
-	 * @param db
-	 */
-	public void drop() {		
-		this.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 	}
 
 }

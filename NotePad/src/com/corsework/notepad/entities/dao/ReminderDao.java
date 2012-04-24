@@ -32,18 +32,25 @@ public class ReminderDao {
 		this.bellDao = new BellDao(context);
 	}
 	
+	/**
+	 * Creates new reminder in db-table and gets its id.
+	 * @param reminder Reminder to save into table.
+	 * @return Reminder with its id from the table,
+	 * 		or null, if record was not created.
+	 */
 	public Reminder create(Reminder reminder) {
-		LastErrors.getInstance().clean();
-		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-		 
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();		 
         ContentValues values = this.reminderToValues(reminder);
         long id = db.insert(dbHelper.TABLE_NAME, null, values);
         db.close();
         
-        this.createBells(reminder);
+        if (this.createBells(reminder) == false) {
+        	Log.e("error!!! Reminder.create:", "Error while creating bells.");
+        	return null;
+        }
         
         if (id == -1) {
-        	LastErrors.getInstance().add(new Err("New record was not created."));
+        	Log.e("error!!! Reminder.create:", "New record was not created.");
         	return null;
         } else {
         	Reminder rem = this.getById(id);
@@ -52,84 +59,140 @@ public class ReminderDao {
         }
 	}
 	
-	private void createBells(Reminder reminder) {
+	/**
+	 * Creates bells of the reminder and connections between them.
+	 * @param reminder
+	 * @return True, if all operations were successful.
+	 */
+	private boolean createBells(Reminder reminder) {
+		boolean res = true;
 		for (int i = 0; i < reminder.getBells().size(); ++i) {
 			Bell bell = this.bellDao.create(reminder.getBells().get(i));
-			this.reminderToBellDao.create(reminder, bell);
+			if (bell == null) {
+				res = false;
+			} else if (this.reminderToBellDao.create(reminder, bell) == -1) {
+				res = false;
+			}
 		}
+		return res;
 	}
 	
+	/**
+	 * Updates or creates new record in db.
+	 * @param reminder Reminder to update.
+	 * @return Updated Reminder or null, if something was wrong.
+	 */
 	public Reminder update(Reminder reminder) {
 		LastErrors.getInstance().clean();
-		Reminder rem;
-		
 		if (reminder.getId() == null) {
-			rem = this.create(reminder);
+			return this.create(reminder);
 		} else {
 			this.deleteBells(reminder);
 			
-			SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-			 
+			SQLiteDatabase db = this.dbHelper.getWritableDatabase();			 
 			ContentValues values = this.reminderToValues(reminder);	 
 	        int res = db.update(dbHelper.TABLE_NAME, values, dbHelper.COLUMN_ID + " = ?",
 	                new String[] { String.valueOf(reminder.getId()) });
 	        db.close();
 	        
-	        this.createBells(reminder);
+	        if (this.createBells(reminder) == false) {
+	        	Log.e("error!!! Reminder.update:", "Error while creating bells.");
+	        	return null;
+	        }
 	        
 	        if (res != 1) {
-	        	LastErrors.getInstance().add(new Err("Wrong number of rows were modified."));
-	        	rem = null;
+	        	Log.e("error!!! Reminder.update:", "Wrong number of rows were modified.");
+	        	return null;
 	        } else {
-	        	rem = this.getById(reminder.getId());
-	        	Log.d("Reminder updated: ", rem.toString());
+	        	Reminder rem = this.getById(reminder.getId());
+	        	Log.d("good. Reminder updated: ", rem.toString());
+	        	return rem;
 	        }
-		}		
-		
-		return rem;
+		}
 	}
 	
+	/**
+	 * Gets the note from the table by its id.
+	 * @param id The id of the note to get.
+	 * @return Note with the id. Or null, if no note was found.
+	 */
 	public Reminder getById(Long id) {
-		LastErrors.getInstance().clean();
-		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
-		
+		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
 		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
+		
 		if (cursor == null) {
-			LastErrors.getInstance().add(new Err("No Bell with such id was found"));
+			Log.e("error!!! Reminder.getById:", "No Bell with such id was found.");
 			return null;
+		} else if (cursor.getCount() != 1) {
+			Log.e("error!!! Reminder.getById:", "More then one reminder was found by id.");
+			return null;
+		} else {
+	        cursor.moveToFirst();        
+	        Reminder reminder = this.cursorToReminder(cursor);        
+	        Log.d("Reminder getById", reminder.toString());        
+	        return reminder;
 		}
-        cursor.moveToFirst();
-        
-        Reminder reminder = this.cursorToReminder(cursor);
-        
-        Log.d("Reminder getById", reminder.toString());        
-        return reminder;
 	}
 	
-	public void deleteById(Long id) {
+	/**
+	 * Deletes reminder from the database by its id.
+	 * @param id Id of the reminder to delete.
+	 * @return Number of deleted rows.
+	 */
+	public long deleteById(Long id) {
 		this.deleteBells(id);
 		
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
+        long res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
                 new String[] { String.valueOf(id) });
         db.close();
+        
+        if (res != 1) {
+        	Log.e("error!!! Reminder.deleteById:", "Must delete only one row at once");
+        } else {
+        	Log.d("good. Reminder deleted:", "id = " + id);
+        }
+        return res;
 	}
 	
-	public void delete(Reminder reminder) {
-		this.deleteById(reminder.getId());
+	/**
+	 * Deletes reminder from the database.
+	 * Or do nothing, if reminder's id == null.
+	 * @param reminder Reminder to delete (needs only its id).
+	 * @return Number of deleted rows.
+	 */
+	public long delete(Reminder reminder) {
+		if (reminder.getId() != null) {
+			return this.deleteById(reminder.getId());
+		} else {
+			Log.e("error!!! Reminder.delete:", "Trying to delete reminder without id");
+			return 0;
+		}
 	}
 	
+	/**
+	 * Deletes bells and connections between bells and reminder.
+	 * @param reminderId Id of the reminder.
+	 */
 	private void deleteBells(Long reminderId) {
 		ArrayList<Long> bellsIds = this.reminderToBellDao.getBellsIds(reminderId);
 		this.bellDao.deleteByIds(bellsIds);
 		this.reminderToBellDao.delete(reminderId);
 	}
 	
+	/**
+	 * Deletes bells and connections between bells and reminder.
+	 * @param reminder
+	 */
 	private void deleteBells(Reminder reminder) {
 		this.deleteBells(reminder.getId());
 	}
 	
+	/**
+	 * Gets all reminders from database.
+	 * @return ArrayList of Reminders.
+	 */
 	public ArrayList<Reminder> getAll() {
 		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
@@ -147,8 +210,12 @@ public class ReminderDao {
         return reminders;
 	}
 	
+	/**
+	 * Gets all reminders with type among types.
+	 * @param types Necessary types of reminders.
+	 * @return Array of reminders.
+	 */
 	public ArrayList<Reminder> getByType(ArrayList<String> types) {
-		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 		
@@ -166,8 +233,13 @@ public class ReminderDao {
 		return reminders;
 	}
 	
+	/**
+	 * Gets all reminders, created in period of time.
+	 * @param from Period start date.
+	 * @param to Period end date.
+	 * @return Array of appropriate reminders.
+	 */
 	public ArrayList<Reminder> getByCrDate(Date from, Date to) {
-		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 		
@@ -186,6 +258,12 @@ public class ReminderDao {
 		return reminders;
 	}
 
+	/**
+	 * Gets all reminders, modified in period of time.
+	 * @param from Period start date.
+	 * @param to Period end date.
+	 * @return Array of appropriate reminders.
+	 */
 	public ArrayList<Reminder> getByMdDate(Date from, Date to) {
 		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
@@ -206,6 +284,11 @@ public class ReminderDao {
 		return reminders;
 	}
 	
+	/**
+	 * Transforms Reminder into ContentValues for writing in the database.
+	 * @param reminder Reminder to transform.
+	 * @return ContentValues with fields from reminder.
+	 */
 	private ContentValues reminderToValues(Reminder reminder) {
 		ContentValues values = new ContentValues();
     	values.put(dbHelper.COLUMN_CREATED, reminder.getSys().getCr().getTime());
@@ -219,6 +302,11 @@ public class ReminderDao {
         return values;
 	}
 	
+	/**
+	 * Transforms cursor into Reminder.
+	 * @param cursor Cursor to transform.
+	 * @return Reminder with fields from cursor.
+	 */
 	private Reminder cursorToReminder(Cursor cursor) {
 		Long id = cursor.getLong(0);
 		

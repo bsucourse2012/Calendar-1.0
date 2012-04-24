@@ -31,23 +31,21 @@ public class NoteDao {
 	/**
 	 * Creates new record in db-table and gets its id.
 	 * @param note Note to save into table.
-	 * @return Note with its id from the table.
+	 * @return Note with its id from the table,
+	 * 		or null, if record was not created.
 	 */
 	public Note create(Note note) {
-		LastErrors.getInstance().clean();
-		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-		 
-        ContentValues values = this.noteToValues(note);
- 
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();		 
+        ContentValues values = this.noteToValues(note); 
         long id = db.insert(dbHelper.TABLE_NAME, null, values);
         db.close();
         
         if (id == -1) {
-        	LastErrors.getInstance().add(new Err("New record was not created."));
+        	Log.e("error!!! Note.create:", "New record was not created.");
         	return null;
         } else {
         	Note nt = this.getById(id);
-        	Log.d("Note created: ", nt.toString());
+        	Log.d("good. Note created: ", nt.toString());
             return nt;
         }
 	}
@@ -59,61 +57,89 @@ public class NoteDao {
 	 */
 	public Note update(Note note) {
 		LastErrors.getInstance().clean();
-		Note nt;
-		
 		if (note.getId() == null) {
-			nt = this.create(note);
+			return this.create(note);
 		} else {
-			SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-			 
-			ContentValues values = this.noteToValues(note);
-	 
+			SQLiteDatabase db = this.dbHelper.getWritableDatabase();			 
+			ContentValues values = this.noteToValues(note);	 
 	        int res = db.update(dbHelper.TABLE_NAME, values, dbHelper.COLUMN_ID + " = ?",
 	                new String[] { String.valueOf(note.getId()) });
 	        db.close();
+	        
 	        if (res != 1) {
-	        	LastErrors.getInstance().add(new Err("Wrong number of rows were modified."));
-	        	nt = null;
+	        	Log.e("error!!! Note.update:", "Wrong number of rows were modified.");
+	        	return null;
 	        } else {
-	        	nt = this.getById(note.getId());
-	        	Log.d("Note updated: ", nt.toString());
+	        	Note nt = this.getById(note.getId());
+	        	Log.d("good. Note updated: ", nt.toString());
+	        	return nt;
 	        }
-		}		
-		
-		return nt;
+		}
 	}
 	
+	/**
+	 * Gets the note from the table by its id.
+	 * @param id The id of the note to get.
+	 * @return Note with the id. Or null, if no note was found.
+	 */
 	public Note getById(long id) {
-		LastErrors.getInstance().clean();
-		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
-		
+		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
 		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
+		
 		if (cursor == null) {
-			LastErrors.getInstance().add(new Err("No Bell with such id was found"));
+			Log.e("error!!! Note.getById:", "No Bell with such id was found");
 			return null;
+		} else if (cursor.getCount() != 1) {
+			Log.e("error!!! Note.getById:", "More then one note was found by id.");
+			return null;
+		} else {
+			cursor.moveToFirst();        
+			Note note = this.cursorToNote(cursor);        
+			Log.d("good. Bell getById:", note.toString());        
+			return note;
 		}
-        cursor.moveToFirst();
-        
-        Note note = this.cursorToNote(cursor);
-        
-        Log.d("Bell getById", note.toString());        
-        return note;
 	}
 	
-	public void deleteById(Long id) {
+	/**
+	 * Deletes note from the database by its id.
+	 * @param id Id of the note to delete.
+	 * @return Number of deleted rows.
+	 */
+	public int deleteById(Long id) {
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
+        int res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
                 new String[] { String.valueOf(id) });
         db.close();
+        
+        if (res != 1) {
+        	Log.e("error!!! Note.deleteById:", "Must delete only one row at once");
+        } else {
+        	Log.d("good. Note deleted:", "id = " + id);
+        }
+        return res;
 	}
 	
-	public void delete(Note note) {
-		this.deleteById(note.getId());
+	/**
+	 * Deletes note from the database.
+	 * Or do nothing, if note's id == null.
+	 * @param note Note to delete (needs only its id).
+	 * @return Number of deleted rows.
+	 */
+	public int delete(Note note) {
+		if (note.getId() != null) {
+			return this.deleteById(note.getId());
+		} else {
+			Log.e("error!!! Note.delete:", "Trying to delete note without id");
+			return 0;
+		}
 	}
 
+	/**
+	 * Gets all notes from database.
+	 * @return ArrayList of Bells.
+	 */
 	public ArrayList<Note> getAll() {
-		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Note> notes = new ArrayList<Note>();
 		
@@ -129,8 +155,12 @@ public class NoteDao {
         return notes;
 	}
 	
+	/**
+	 * Gets all notes with type among types.
+	 * @param types Necessary types of notes.
+	 * @return Array of notes.
+	 */
 	public ArrayList<Note> getByType(ArrayList<String> types) {
-		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Note> notes = new ArrayList<Note>();
 		
@@ -148,6 +178,12 @@ public class NoteDao {
 		return notes;
 	}
 	
+	/**
+	 * Gets all notes, created in period of time.
+	 * @param from Period start date.
+	 * @param to Period end date.
+	 * @return Array of appropriate notes.
+	 */
 	public ArrayList<Note> getByCrDate(Date from, Date to) {
 		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
@@ -168,6 +204,12 @@ public class NoteDao {
 		return notes;
 	}
 	
+	/**
+	 * Gets all notes, modified in period of time.
+	 * @param from Period start date.
+	 * @param to Period end date.
+	 * @return Array of appropriate notes.
+	 */
 	public ArrayList<Note> getByMdDate(Date from, Date to) {
 		LastErrors.getInstance().clean();
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
@@ -187,7 +229,12 @@ public class NoteDao {
 		
 		return notes;
 	}
-	
+		
+	/**
+	 * Transforms Note into ContentValues for writing in the database.
+	 * @param note Note to transform.
+	 * @return ContentValues with fields from note.
+	 */
 	private ContentValues noteToValues(Note note) {
 		ContentValues values = new ContentValues();
     	values.put(dbHelper.COLUMN_CREATED, note.getSys().getCr().getTime());
@@ -198,6 +245,11 @@ public class NoteDao {
         return values;
 	}
 	
+	/**
+	 * Transforms cursor into Note.
+	 * @param cursor Cursor to transform.
+	 * @return Note with fields from cursor.
+	 */
 	private Note cursorToNote(Cursor cursor) {
 		Long id = cursor.getLong(0);
 		

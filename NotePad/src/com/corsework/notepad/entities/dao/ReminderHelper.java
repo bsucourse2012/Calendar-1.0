@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ReminderHelper extends SQLiteOpenHelper {
 
+	/**
+	 * Names of columns in table.
+	 */
 	public static final String TABLE_NAME = "notes";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_CREATED = "_created";
@@ -16,11 +19,16 @@ public class ReminderHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_END_DATE = "endDate";
 	public static final String COLUMN_PRIORITY = "priority";
 	public static final String COLUMN_REPETITION = "repetition";
-	
+		
+	/**
+	 * Database info.
+	 */
 	private static final String DATABASE_NAME = "calendar.db";
 	private static final int DATABASE_VERSION = 1;
 	
-	// Database creation sql statement
+	/**
+	 * Database creation sql statement.
+	 */
 	private static final String TABLE_CREATE = 
 			"create table " + TABLE_NAME + "( " +
 			COLUMN_ID + " integer primary key autoincrement, " +
