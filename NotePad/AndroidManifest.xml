@@ -23,6 +23,8 @@
         <activity android:name=".weekViewClass"></activity>
         <activity android:name=".monthViewClass"></activity>
         <activity android:name=".listViewClass"></activity>
+        <activity android:name=".AddNoteActivity"></activity>
+        <activity android:name=".SeeNoteActivity"></activity>
     </application>
 
 </manifest>

@@ -30,7 +30,8 @@ public class NoteListItem extends RelativeLayout {
 		this.note = note;
 		if (note instanceof Note){
 			titleText.setText(((Note) note).getTitle());
-			bodyText.setText(((Note) note).getCont());
+			String st=((Note) note).getCont();
+			bodyText.setText(st.subSequence(0, min(20,st.length()))+"...");
 			tegsText.setText(((Note) note).getType());
 			imView.setImageResource(R.drawable.app_notes);
 		} else
@@ -45,7 +46,11 @@ public class NoteListItem extends RelativeLayout {
 		dateText2.setText(android.text.format.DateFormat.format("dd-MM-yyyy", note.getSys().getMd()));
 	}
 
-	public Record getNote() {
+	private int min(int i, int j) {
+		return (i<j)?i:j;
+	}
+
+	public Record getRecord() {
 		return note;
 	}
 

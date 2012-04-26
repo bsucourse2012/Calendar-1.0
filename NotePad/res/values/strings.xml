@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, ViewNotePadActivity!</string>
     <string name="app_name">NotePad</string>
+    
     <string name="add_note_button">Add Note</string>
     <string name="no_notes">No Notes</string>
+    
     <string name="next_month">>></string>
     <string name="previos_month">&lt;&lt;</string>
-    <string name="menu_search">Search</string>
     
-	<string name="settings">Settings</string>
+    <string name="menu_search">Search</string>
+    <string name="settings">Settings</string>
+    
 	<string name="stweek">week</string>
+	
+	<string name="body">Body</string>
+	<string name="title">Title</string>
+	
+    <string name="edit_note">Edit Note</string>
+	
+    <string name="created_rec">"Created:  "</string>
+    <string name="modifed_rec">"Modified: "</string>
 </resources>

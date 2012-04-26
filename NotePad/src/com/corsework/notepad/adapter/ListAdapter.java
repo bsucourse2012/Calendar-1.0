@@ -1,33 +1,54 @@
 package com.corsework.notepad.adapter;
 
+import java.util.ArrayList;
+
+import com.corsework.notepad.activity.R;
+import com.corsework.notepad.entities.program.Note;
+import com.corsework.notepad.entities.program.Record;
+import com.corsework.notepad.view.NoteListItem;
+
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class ListAdapter extends BaseAdapter {
+	
+	private ArrayList<Note> records;
+	private Context context;
+	
+	public ListAdapter(ArrayList<Note> rec, Context context) {
+		super();
+		this.records = rec;
+		this.context = context;
+	}
 
-	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return records.size();
+	}
+	
+	public Record getItem(int pos) {
+		return (null== records)? null:records.get(pos);
 	}
 
-	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return null;
+	public long getItemId(int pos) {
+		return pos;
 	}
 
-	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return 0;
+	public View getView(int pos, View convertView, ViewGroup parent) {
+		NoteListItem nli;
+		if (null == convertView){
+			nli = (NoteListItem)View.inflate(context, R.layout.notes_item, null);
+		}else {
+			nli =(NoteListItem)convertView;
+		}
+		nli.setRecord(records.get(pos));
+		return nli;
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		return null;
+	public void forceReload(ArrayList<Note> arrayList) {
+		records=arrayList;
+		notifyDataSetChanged();
 	}
 
 }

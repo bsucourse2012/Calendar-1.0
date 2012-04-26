@@ -1,8 +1,5 @@
 package com.corsework.notepad.entities.program;
 
-import com.corsework.notepad.errors.Err;
-import com.corsework.notepad.errors.LastErrors;
-
 public class Note extends Record {
 
 	/**

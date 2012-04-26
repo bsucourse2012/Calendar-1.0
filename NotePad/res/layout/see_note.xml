@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+	<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/title"
+			android:textSize="@dimen/title_list_size"/>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+	     <TextView 
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content" 
+	 		android:textSize="@dimen/date_text_size"
+		    android:text="@string/created_rec"/>
+		 <TextView 
+		   	android:id="@+id/date_text"
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content" 
+	 		android:textSize="@dimen/date_text_size"
+		    android:text="today"/>
+	 </LinearLayout>
+	 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+		 <TextView 
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content" 
+	 		android:textSize="@dimen/date_text_size"
+		    android:text="@string/modifed_rec"/>
+		  <TextView 
+		   	android:id="@+id/date_text2"
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content" 
+	 		android:textSize="@dimen/date_text_size"
+		    android:text="today"/>	
+	 </LinearLayout>
+	<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/tegs"/>
+	
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:inputType="textMultiLine"
+			android:id="@+id/body"/>
+</LinearLayout>

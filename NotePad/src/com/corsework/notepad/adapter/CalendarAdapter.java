@@ -1,5 +1,6 @@
 package com.corsework.notepad.adapter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import com.corsework.notepad.activity.R;
 
@@ -20,13 +21,20 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
 
     private Calendar month;
     private Calendar selectedDate;
+
+	private ArrayList<String> items;
     
     public CalendarAdapter(Context c, Calendar monthCalendar) {
+
     	month = monthCalendar;
-    	selectedDate = (Calendar)monthCalendar.clone();
+    	selectedDate = (Calendar)Calendar.getInstance().clone();
     	mContext = c;
         month.set(Calendar.DAY_OF_MONTH, 1);
         refreshDays();
+    }
+
+    public void setItems(ArrayList<String> items) {
+    	this.items = items;
     }
     
 
@@ -70,8 +78,6 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
 	        else {
 	        	// mark current day as focused
 
-	        	
-	        	dayView.setTextColor(R.color.text_color);
 	        	if(month.get(Calendar.YEAR)== selectedDate.get(Calendar.YEAR) && month.get(Calendar.MONTH)== selectedDate.get(Calendar.MONTH) && 
 	        			days[position].equals(""+selectedDate.get(Calendar.DAY_OF_MONTH))) {
 	        		v.setBackgroundResource(R.drawable.item_background_focused);
@@ -96,12 +102,12 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
        
         // show icon if date is not empty and it exists in the items array
        ImageView iw = (ImageView)v.findViewById(R.id.date_icon);
-    //    if(date.length()>0 && items!=null && items.contains(date)) {        	
-      //  	iw.setVisibility(View.VISIBLE);
-       // }
-       // else {
+       if(date.length()>0 && items!=null && items.contains(date)) {        	
+        	iw.setVisibility(View.VISIBLE);
+       }
+       else {
         	iw.setVisibility(View.INVISIBLE);
-      //  }
+       }
         return v;
     }
     
@@ -137,6 +143,8 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
 	    	j=FIRST_DAY_OF_WEEK*6+1; // sunday => 1, monday => 7
 	    }
         
+        int m = month.get(Calendar.MONTH);
+        int y = month.get(Calendar.YEAR);
         // populate days
         int dayNumber = 1;
         for(int i=j-1;i<days.length-7;i++) {

@@ -3,6 +3,7 @@ package com.corsework.notepad.activity;
 import java.util.Calendar;
 
 import com.corsework.notepad.adapter.DayAdapter;
+import com.corsework.notepad.application.NotePadApplication;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,7 +23,8 @@ public class dayViewClass extends Activity {
 	TextView prevweek,nextweek;
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dayview_);cal = Calendar.getInstance();
+        setContentView(R.layout.dayview_);
+        cal =((NotePadApplication)getApplication()).calcr;//  Calendar.getInstance();
         adapter = new DayAdapter(this,cal);
         
         ListView list = (ListView)findViewById(R.id.list);
