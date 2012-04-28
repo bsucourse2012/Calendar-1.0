@@ -60,7 +60,8 @@ public class listViewClass extends ListActivity {
 			.setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, MENU_ITEM_INSERT_REMI, 0, R.string.add_note_button).setShortcut('2', 'u')
 		.setIcon(android.R.drawable.ic_menu_call);
-		
+		menu.add(0, MENU_ITEM_DELETE, 0, R.string.menu_delete).setShortcut('5', 'd')
+		.setIcon(android.R.drawable.ic_menu_delete);
 		menu.add(0, MENU_SEARCH, 0, R.string.menu_search).setShortcut('3','s')
 		.setIcon(android.R.drawable.ic_menu_search);
 
@@ -75,6 +76,10 @@ public class listViewClass extends ListActivity {
 	            case MENU_ITEM_INSERT_NOTE:
 	                createNote();
 	                return true;
+	            case MENU_ITEM_DELETE:
+	            	Intent i = new Intent(this, DeleteNoteActivity.class);
+	     	        startActivity(i);
+	            	return true;
 	        }
 
 	        return super.onMenuItemSelected(featureId, item);
@@ -89,6 +94,7 @@ public class listViewClass extends ListActivity {
 	  @Override
 	    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 	        super.onActivityResult(requestCode, resultCode, intent);
+	        if(resultCode==RESULT_OK) {
 	        Bundle extras = intent.getExtras();
 	        switch(requestCode) {
 	            case ACTIVITY_CREATE_NOTE:
@@ -109,6 +115,7 @@ public class listViewClass extends ListActivity {
 	            case ACTIVITY_SEE:
 	               
 	                break;
+	        }
 	        }
 	    }
 */

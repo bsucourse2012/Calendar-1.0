@@ -4,16 +4,25 @@ import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.program.Note;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class AddNoteActivity extends Activity {
+	
+
+	private static final int MENU_ITEM_DELETE = Menu.FIRST;
+	private static final int MENU_ITEM_ADD_TAGS = Menu.FIRST + 2;
+	
 	private EditText mTitleText;
     private EditText mBodyText;
     private Long mRowId;
+	private AlertDialog unsavedChangesDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +41,10 @@ public class AddNoteActivity extends Activity {
         if (extras != null) {
         	 mRowId = extras.getLong(NotePadApplication.KEY_ROWID);
         	 Note n=((NotePadApplication)getApplication()).getNoteD().getById(mRowId);
-        	 mTitleText.setText(n.getTitle());
-	         mBodyText.setText(n.getCont());
-        	//obtain information, if we change a note
+        	 if (n!=null){
+        		 mTitleText.setText(n.getTitle());
+	         	mBodyText.setText(n.getCont());
+        	 }
 
         }
 
@@ -50,10 +60,34 @@ public class AddNoteActivity extends Activity {
                 	n=new Note();
                 n.setCont(bbody);
                 n.setTitle(ttitle);
+                n.getSys().setMd();
                 n=((NotePadApplication)getApplication()).getNoteD().update(n);
                 finish();
             }
 
         });
     }
+    
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		
+		menu.add(0, MENU_ITEM_DELETE, 0, R.string.menu_delete).setShortcut('4','d')
+		.setIcon(android.R.drawable.ic_menu_delete);
+
+		menu.add(0, MENU_ITEM_ADD_TAGS, 0, R.string.add_tegs).setIcon(
+				android.R.drawable.ic_menu_share).setShortcut('6', 'a');
+
+		return true;
+	}
+	 @Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	        switch(item.getItemId()) {
+	            
+	        }
+
+	        return super.onMenuItemSelected(featureId, item);
+	    }
+
+	
 }

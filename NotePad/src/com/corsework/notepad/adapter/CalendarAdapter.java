@@ -62,7 +62,7 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
         dayView = (TextView)v.findViewById(R.id.date);
         
         //a day title
-        if (position>=0 && position<=6){
+        if (position<=6){
         	dayView.setClickable(false);
         	dayView.setFocusable(false);
         	dayView.setTextColor(Color.WHITE);
@@ -77,7 +77,7 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
 	        }
 	        else {
 	        	// mark current day as focused
-
+	        	
 	        	if(month.get(Calendar.YEAR)== selectedDate.get(Calendar.YEAR) && month.get(Calendar.MONTH)== selectedDate.get(Calendar.MONTH) && 
 	        			days[position].equals(""+selectedDate.get(Calendar.DAY_OF_MONTH))) {
 	        		v.setBackgroundResource(R.drawable.item_background_focused);

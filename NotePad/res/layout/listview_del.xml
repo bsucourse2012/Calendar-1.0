@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/list_view"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent" 
+      android:orientation="vertical" >
+      <CheckedTextView 
+	   	android:id="@android:id/text1"
+	   	android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content"
+	 	android:gravity="center_vertical"
+	 	android:text="@string/all_note"
+	 	android:textColor="@color/menu_color"
+	 	android:textStyle="bold"
+	 	android:checkMark="?android:attr/listChoiceIndicatorMultiple" />
+      <RelativeLayout 
+          android:layout_width="fill_parent"
+      	  android:layout_height="wrap_content" 
+      	  android:orientation="vertical" >
+	      <ListView  
+			    android:layout_width="fill_parent" 
+			    android:layout_height="wrap_content"
+			    android:id="@id/android:list"
+			    android:layout_above="@+id/add_button"
+			    android:layout_alignParentTop="true"/>
+						  
+				<TextView  
+				    android:layout_width="fill_parent" 
+				    android:layout_height="fill_parent" 
+				    android:text="@string/no_notes"
+				    android:id="@id/android:empty"
+				    android:gravity="center_vertical|center_horizontal"
+				     />
+			
+	</RelativeLayout>	
+	<LinearLayout android:orientation="horizontal"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content">
+
+					<Button 
+					    android:id="@+id/delete_button" 
+					  	android:text="@string/menu_delete"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+					 <Button 
+				    	android:layout_width="wrap_content" 
+				    	android:text="@android:string/cancel" 
+				    	android:layout_height="wrap_content" 
+				    	android:id="@+id/cancel_button"/>
+	</LinearLayout>
+</LinearLayout>

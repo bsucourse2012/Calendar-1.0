@@ -3,19 +3,26 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
-  
+  <ImageView
+	        android:id="@+id/imageView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/app_notes"
+	        android:layout_marginTop="@dimen/marT"
+	        android:layout_marginRight="@dimen/marT"/>
   <LinearLayout  
        android:orientation="vertical"
 	   android:layout_width="fill_parent"
-  	   android:layout_height="wrap_content">
+  	   android:layout_height="wrap_content"
+  	   android:layout_toRightOf="@+id/imageView1">
 	   <CheckedTextView 
-	   	android:id="@android:id/text1"
+	   	android:id="@+id/title_text"
 	   	android:layout_width="fill_parent"
 	  	android:layout_height="wrap_content"
 	 	android:gravity="center_vertical"
 	 	android:checkMark="?android:attr/listChoiceIndicatorMultiple" />
 	  <TextView 
-	      android:id="@+id/date_text"
+	      android:id="@+id/tegs_text"
 	      android:layout_width="fill_parent"
 	      android:layout_height="wrap_content"/>
   </LinearLayout>

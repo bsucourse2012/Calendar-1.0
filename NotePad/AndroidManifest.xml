@@ -25,6 +25,7 @@
         <activity android:name=".listViewClass"></activity>
         <activity android:name=".AddNoteActivity"></activity>
         <activity android:name=".SeeNoteActivity"></activity>
+        <activity android:name=".DeleteNoteActivity"></activity>
     </application>
 
 </manifest>

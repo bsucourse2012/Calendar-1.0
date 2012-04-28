@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 public class NoteListItem extends RelativeLayout {
 	
-	private Record note;
+	protected Record note;
 	private TextView dateText;
 	private TextView dateText2;
 	private TextView titleText;
-	private TextView bodyText;
-	private TextView tegsText;
-	private ImageView imView;
+	protected TextView bodyText;
+	protected TextView tegsText;
+	protected ImageView imView;
 	
 	public NoteListItem(Context context, AttributeSet attrs) {
 		super(context, attrs);
