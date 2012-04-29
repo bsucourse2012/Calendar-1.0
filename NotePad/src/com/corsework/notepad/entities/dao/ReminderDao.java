@@ -247,7 +247,7 @@ public class ReminderDao {
 				dbHelper.COLUMN_CREATED + ">=?" + " and "
 				+ dbHelper.COLUMN_CREATED + "<=?",
 				new String[] { String.valueOf(from.getTime()),
-				String.valueOf(to.getTime()) }, null, null, null, dbHelper.COLUMN_CREATED + " DESC");		
+				String.valueOf(to.getTime()) }, null, null, dbHelper.COLUMN_CREATED + " DESC", null);		
 		if (cursor.moveToFirst()) {
             do {
                 Reminder reminder = this.cursorToReminder(cursor);
@@ -273,7 +273,7 @@ public class ReminderDao {
 				dbHelper.COLUMN_MODIFIED + ">=?" + " and "
 				+ dbHelper.COLUMN_MODIFIED + "<=?",
 				new String[] { String.valueOf(from.getTime()),
-				String.valueOf(to.getTime()) }, null, null, null, dbHelper.COLUMN_MODIFIED + " DESC");		
+				String.valueOf(to.getTime()) }, null, null, dbHelper.COLUMN_MODIFIED + " DESC", null);		
 		if (cursor.moveToFirst()) {
             do {
                 Reminder reminder = this.cursorToReminder(cursor);

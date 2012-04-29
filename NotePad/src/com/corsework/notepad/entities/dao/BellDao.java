@@ -83,7 +83,7 @@ public class BellDao {
 	public Bell getById(long id) {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
 		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+                new String[] { String.valueOf(id) }, null, null, null);
 		
 		if (cursor == null) {
 			Log.d("error!!! Bell.getById:", "No Bell with such id was found.");
