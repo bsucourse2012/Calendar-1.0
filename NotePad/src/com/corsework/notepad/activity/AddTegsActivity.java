@@ -28,7 +28,7 @@ public class AddTegsActivity extends ListActivity {
 	DB tegD;
 	private TegAdapter adapter;
 	
-	@Override
+	
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_tegs2);
@@ -40,7 +40,7 @@ public class AddTegsActivity extends ListActivity {
 		Button okButton = (Button)findViewById(R.id.okBut);
 		Button cnButton = (Button)findViewById(R.id.cansBut);
 		okButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				if (adapter.getTogglePosition()!=-1){
 					Bundle bundle = new Bundle();
@@ -53,19 +53,19 @@ public class AddTegsActivity extends ListActivity {
 			}
 		});
 		cnButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				finish();
 			}
 		});
 		addButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				showDialog(DIALOG_ADD_TEGS);
 			}
 		});
     }
-    @Override
+    
 	protected void onResume() {
 		super.onResume();
 		fillData();
@@ -75,7 +75,7 @@ public class AddTegsActivity extends ListActivity {
 		adapter.togglePosition(position);
 		
 	}
-	@Override
+	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
@@ -84,7 +84,7 @@ public class AddTegsActivity extends ListActivity {
 		
 		return true;
 	}
-	 @Override
+	 
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 	        switch(item.getItemId()) {
 	             case MENU_ITEM_DELETE:

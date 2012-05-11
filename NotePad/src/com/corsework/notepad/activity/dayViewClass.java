@@ -36,7 +36,7 @@ public class dayViewClass extends Activity {
 	    TextView previous  = (TextView) findViewById(R.id.previous);
 	    previous.setOnClickListener(new OnClickListener() {
 			
-			@Override
+			
 			public void onClick(View v) {
 				if(cal.get(Calendar.DAY_OF_YEAR)== cal.getActualMinimum(Calendar.DAY_OF_YEAR)) {
 					cal.set((cal.get(Calendar.YEAR)-1),cal.getActualMaximum(Calendar.MONTH),cal.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -51,7 +51,7 @@ public class dayViewClass extends Activity {
 	    TextView next  = (TextView) findViewById(R.id.next);
 	    next.setOnClickListener(new OnClickListener() {
 			
-			@Override
+			
 			public void onClick(View v) {
 				if(cal.get(Calendar.DAY_OF_YEAR)== cal.getActualMaximum(Calendar.DAY_OF_YEAR)) {
 					cal.set((cal.get(Calendar.YEAR)+1),cal.getActualMinimum(Calendar.MONTH),1);

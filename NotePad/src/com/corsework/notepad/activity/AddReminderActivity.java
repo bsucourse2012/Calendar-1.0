@@ -62,7 +62,7 @@ public class AddReminderActivity extends Activity {
 	private boolean changesPending;
 	Cursor cursor;
 	
-    @Override
+    
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_reminder);
@@ -111,7 +111,7 @@ public class AddReminderActivity extends Activity {
 
         });
         cancelButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				cancel();
 			}
@@ -127,7 +127,7 @@ public class AddReminderActivity extends Activity {
 		
 		tegButton.setOnClickListener(new OnClickListener() {
 			
-			@Override
+			
 			public void onClick(View v) {
 				Intent intent = new Intent(AddReminderActivity.this,AddTegsActivity.class);
 				startActivityForResult(intent, ADD_TEG_ACT);
@@ -135,25 +135,25 @@ public class AddReminderActivity extends Activity {
 			}
 		});
 		stDButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				  showDialog(DIALOG_DATEB);
 			}
 		});
 		stTButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				  showDialog(DIALOG_TIMEB);
 			}
 		});
 		enDButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				  showDialog(DIALOG_DATEE);
 			}
 		});
 		enTButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				  showDialog(DIALOG_TIMEE);
 			}
@@ -226,7 +226,7 @@ public class AddReminderActivity extends Activity {
 		    intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition demo");
 		    startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
 		}
-		@Override
+		
 		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		    if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
 		        // Fill the list view with the strings the recognizer thought it could have heard

@@ -18,7 +18,7 @@ public class AddNewTegsActivity extends Activity {
 	SeekBar redSeekBar, greenSeekBar, blueSeekBar;
 	TextView mScreen;
 	EditText mNameTeg;
-    @Override
+    
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_tegs);
@@ -37,7 +37,7 @@ public class AddNewTegsActivity extends Activity {
 		Button okButton = (Button)findViewById(R.id.okBut);
 		Button cnButton = (Button)findViewById(R.id.cansBut);
 		okButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				 Bundle bundle = new Bundle();
 
@@ -51,7 +51,7 @@ public class AddNewTegsActivity extends Activity {
 			}
 		});
 		cnButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				finish();
 			}
@@ -60,19 +60,19 @@ public class AddNewTegsActivity extends Activity {
     
 	 SeekBar.OnSeekBarChangeListener seekBarChangeListener = 
 			    new SeekBar.OnSeekBarChangeListener() {
-			@Override
+			
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				// TODO Auto-generated method stub
 				updateBackground();
 			}
 
-			@Override
+			
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
 			}
 
-			@Override
+			
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
 			}

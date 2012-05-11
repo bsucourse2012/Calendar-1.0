@@ -43,7 +43,7 @@ public class AddNoteActivity extends Activity {
 	private boolean changesPending;
 
 	Cursor cursor;
-    @Override
+    
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_note);
@@ -74,7 +74,7 @@ public class AddNoteActivity extends Activity {
         }
         tegButton.setOnClickListener(new OnClickListener() {
 			
-			@Override
+			
 			public void onClick(View v) {
 				Intent intent = new Intent(AddNoteActivity.this,AddTegsActivity.class);
 				startActivityForResult(intent, ADD_TEG_ACT);
@@ -89,7 +89,7 @@ public class AddNoteActivity extends Activity {
 
         });
         cancelButton.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				cancel();
 			}
@@ -176,7 +176,7 @@ public class AddNoteActivity extends Activity {
 		    intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition demo");
 		    startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
 		}
-	@Override
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		    if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
 		        // Fill the list view with the strings the recognizer thought it could have heard

@@ -42,7 +42,7 @@ public class DeleteNoteActivity extends ListActivity {
         delbutton.setEnabled(false);
         
         chechedText.setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				chechedText.setChecked(!chechedText.isChecked());
 				ifCheck();
@@ -51,7 +51,7 @@ public class DeleteNoteActivity extends ListActivity {
         
         delbutton.setOnClickListener(new OnClickListener() {
 			
-			@Override
+			
 			public void onClick(View v) {
 				deleteArD();
 				arDel.clear();
@@ -64,7 +64,7 @@ public class DeleteNoteActivity extends ListActivity {
         
         canbutton.setOnClickListener(new OnClickListener() {
 			
-			@Override
+			
 			public void onClick(View v) {
 				finish();
 			}
@@ -72,7 +72,7 @@ public class DeleteNoteActivity extends ListActivity {
 	}
 
 
-	@Override
+	
 	protected void onResume() {
 		super.onResume();
 		fillData();

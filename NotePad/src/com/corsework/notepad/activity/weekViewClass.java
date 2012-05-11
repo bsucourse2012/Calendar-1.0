@@ -39,8 +39,7 @@ public class weekViewClass extends Activity {
 	    
 	    TextView previous  = (TextView) findViewById(R.id.previous);
 	    previous.setOnClickListener(new OnClickListener() {
-			
-			@Override
+						
 			public void onClick(View v) {
 				if(cal.get(Calendar.WEEK_OF_YEAR)== cal.getActualMinimum(Calendar.WEEK_OF_YEAR)) {
 					cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-1);
@@ -55,8 +54,7 @@ public class weekViewClass extends Activity {
 	    
 	    TextView next  = (TextView) findViewById(R.id.next);
 	    next.setOnClickListener(new OnClickListener() {
-			
-			@Override
+						
 			public void onClick(View v) {
 				if(cal.get(Calendar.WEEK_OF_YEAR)== cal.getActualMaximum(Calendar.WEEK_OF_YEAR)) {
 					cal.set((cal.get(Calendar.YEAR)+1),cal.getActualMinimum(Calendar.MONTH),1);
