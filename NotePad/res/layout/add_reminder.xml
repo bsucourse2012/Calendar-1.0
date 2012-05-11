@@ -7,20 +7,6 @@
     <LinearLayout android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
-
-		<TextView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:text="@string/title" />
-		<EditText android:id="@+id/title" 
-		  android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_weight="1" 
-			android:inputType="text"
-			android:maxLength="30"/>
-	</LinearLayout>
-	<LinearLayout android:orientation="horizontal"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
 		<Button 
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -31,6 +17,7 @@
 			android:layout_height="wrap_content" 
 			android:id="@+id/tegs"/>
 	</LinearLayout>
+    
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
 		android:text="@string/body" 
@@ -39,8 +26,44 @@
 	    android:id="@+id/body" 
 	    android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"
 		android:scrollbars="vertical" android:inputType="textMultiLine"/>
+	<TextView 
+	    android:text="@string/start_data"
+	    android:layout_width="fill_parent"
+		android:layout_height="wrap_content"/>
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<Button 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/button_data_beg"
+			android:text="@string/start_data"/>
+		<Button 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/button_time_beg"
+			android:text="@string/start_time"/>
+	</LinearLayout>
+	<TextView 
+	    android:text="@string/end_data"
+	    android:layout_width="fill_parent"
+		android:layout_height="wrap_content"/>
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<Button 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/button_data_end"
+			android:text="@string/end_data"/>
+		<Button 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/button_time_end"
+			android:text="@string/end_time"/>
+	</LinearLayout>
+	
 	<LinearLayout 
 	    android:orientation="horizontal"
 		android:layout_width="fill_parent"

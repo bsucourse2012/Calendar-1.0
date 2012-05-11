@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout 
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+  		android:orientation="vertical" 
+  		android:layout_alignParentTop="true">
+		<EditText android:id="@+id/title" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:inputType="text"
+			android:maxLength="30"/>
+		
+		<TextView
+			    android:id="@+id/textViewc"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content" />
+		<TextView
+			    android:id="@+id/textView1"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="@string/red" />
+	    <SeekBar
+			    android:id="@+id/seekBarRed"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:max="255"
+        		android:progress="0" />
+		<TextView
+			    android:id="@+id/textView2"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="@string/green" />
+	    <SeekBar
+			    android:id="@+id/seekBarGreen"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content" 
+			    android:max="255"
+       			android:progress="0"/>
+		<TextView
+			    android:id="@+id/textView3"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="@string/blue" />
+	
+		<SeekBar
+			    android:id="@+id/seekBarBlue"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:max="255"
+        		android:progress="0" />
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+  		android:orientation="horizontal" 
+  		android:layout_alignParentBottom="true">
+	    <Button 
+			android:id="@+id/okBut"
+    		android:layout_weight="1"
+	   		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="@android:string/ok"/>
+	    
+	    <Button
+	        android:id="@+id/cansBut" 
+    		android:layout_weight="1"
+	   		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="@android:string/cancel"/>
+	</LinearLayout>
+</RelativeLayout>

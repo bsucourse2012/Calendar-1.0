@@ -1,7 +1,6 @@
 package com.corsework.notepad.adapter;
 
 import java.util.ArrayList;
-
 import com.corsework.notepad.activity.R;
 import com.corsework.notepad.entities.program.Note;
 import com.corsework.notepad.entities.program.Record;
@@ -51,4 +50,5 @@ public class ListAdapter extends BaseAdapter {
 		records=arrayList;
 		notifyDataSetChanged();
 	}
+
 }

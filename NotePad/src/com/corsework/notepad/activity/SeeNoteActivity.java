@@ -15,7 +15,6 @@ import android.widget.TextView;
 public class SeeNoteActivity extends Activity {
 	private static final int MENU_ITEM_DELETE = Menu.FIRST;
 	private static final int MENU_ITEM_EDIT_NOTE = Menu.FIRST + 1;
-	private static final int MENU_ITEM_ADD_TAGS = Menu.FIRST + 2;
 	
 	
 	private TextView mTitleText;
@@ -75,9 +74,6 @@ public class SeeNoteActivity extends Activity {
 		
 		menu.add(0, MENU_ITEM_DELETE, 0, R.string.menu_delete).setShortcut('4','d')
 		.setIcon(android.R.drawable.ic_menu_delete);
-
-		menu.add(0, MENU_ITEM_ADD_TAGS, 0, R.string.add_tegs).setIcon(
-				android.R.drawable.ic_menu_share).setShortcut('6', 'a');
 
 		return true;
 	}

@@ -1,13 +1,10 @@
 package com.corsework.notepad.application;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.corsework.notepad.entities.dao.DB;
 import com.corsework.notepad.entities.dao.NoteDao;
 import com.corsework.notepad.entities.dao.ReminderDao;
-import com.corsework.notepad.entities.program.Note;
-import com.corsework.notepad.entities.program.Record;
-import com.corsework.notepad.entities.program.Reminder;
 
 import android.app.Application;
 
@@ -20,12 +17,16 @@ public class NotePadApplication extends Application {
 	private NoteDao noteD;
 	private ReminderDao reminderD;
 	public Calendar calcr;
+
+	private DB dbc;
 	
 	public void onCreate() {
 		super.onCreate();
 		calcr = Calendar.getInstance();
 		noteD = new NoteDao(this);
 		reminderD = new ReminderDao(this);
+
+        setDbc(new DB(this));
 		
 		//считать из базы заметки
 	}
@@ -44,5 +45,13 @@ public class NotePadApplication extends Application {
 
 	public void setReminderD(ReminderDao reminderD) {
 		this.reminderD = reminderD;
+	}
+
+	public DB getDbc() {
+		return dbc;
+	}
+
+	public void setDbc(DB dbc) {
+		this.dbc = dbc;
 	}
 }

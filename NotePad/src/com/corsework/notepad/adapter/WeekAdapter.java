@@ -19,6 +19,7 @@ public class WeekAdapter extends BaseAdapter{
     private Calendar month;
     private Calendar selectedDate;
 
+    
 
 	public MonthDisplayHelper mHelper;
     

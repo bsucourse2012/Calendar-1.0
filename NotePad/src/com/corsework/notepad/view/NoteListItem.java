@@ -20,7 +20,7 @@ public class NoteListItem extends RelativeLayout {
 	protected TextView bodyText;
 	protected TextView tegsText;
 	protected ImageView imView;
-	
+
 	public NoteListItem(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
@@ -64,5 +64,6 @@ public class NoteListItem extends RelativeLayout {
 		tegsText = (TextView)findViewById(R.id.tegs_text);
 		imView = (ImageView)findViewById(R.id.imageView1);
 	}
+
 }
 

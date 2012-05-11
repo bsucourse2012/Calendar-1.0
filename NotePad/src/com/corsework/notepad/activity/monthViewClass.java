@@ -47,8 +47,9 @@ public class monthViewClass extends Activity {
         GridView grid = (GridView)findViewById(R.id.gridview);
         grid.setAdapter(adapter);
 
-	//    handler = new Handler();
-	//    handler.post(calendarUpdater);
+        items = new ArrayList<String>();
+	    handler = new Handler();
+	    handler.post(calendarUpdater);
 	    
         TextView title  = (TextView) findViewById(R.id.title);
 	    title.setText(android.text.format.DateFormat.format("MMMM yyyy", cal));
@@ -101,9 +102,9 @@ public class monthViewClass extends Activity {
 	{
 		TextView title  = (TextView) findViewById(R.id.title);
 		
+		handler.post(calendarUpdater); 
 		adapter.refreshDays();
-		adapter.notifyDataSetChanged();		
-	//	handler.post(calendarUpdater); 
+		adapter.notifyDataSetChanged();	
 		
 		title.setText(android.text.format.DateFormat.format("MMMM yyyy", cal));
 	}
@@ -113,15 +114,33 @@ public class monthViewClass extends Activity {
 		public void run() {
 			Date dat =  cal.getTime();
 			Date dat2 = cal.getTime();
-			dat2.setDate(dat2.getDate()+1);
-		//	dat.setDate(1);
-			ArrayList<Note> not = noteD.getByCrDate(dat, dat2);
-			for(int i=0;i<31;i++) {
+//			Calendar cal2 = (Calendar) cal.clone();
+//			cal.set(Calendar.HOUR_OF_DAY, 0);
+//			cal.set(Calendar.MINUTE, 0);
+//			cal.set(Calendar.SECOND, 0);
+//
+//			cal2.set(Calendar.HOUR_OF_DAY, 23);
+//			cal2.set(Calendar.MINUTE, 59);
+//			cal2.set(Calendar.SECOND, 59);
+			dat.setHours(0);
+			dat.setMinutes(0);
+			dat.setSeconds(0);
+			dat2.setHours(23);
+			dat2.setMinutes(59);
+			dat2.setSeconds(59);
+			
+			items.clear();
+			ArrayList<Note> not;
+			for(int i=cal.getActualMinimum(Calendar.DAY_OF_MONTH);
+					i<cal.getActualMaximum(Calendar.DAY_OF_MONTH)-1;i++) {
+				dat.setDate(i);
+				dat2.setDate(i);
+				
+				not = noteD.getByCrDate(dat, dat2);//(cal.getTime(),cal2.getTime());
 				if (!not.isEmpty())
 				{
-					items.add(""+dat.getDate());
+					items.add(""+i);
 				}
-				dat.setDate(dat.getDate()+1);
 			}
 
 			adapter.setItems(items);

@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import com.corsework.notepad.adapter.ListAdapterDel;
 import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.dao.NoteDao;
+import com.corsework.notepad.entities.program.Note;
 import com.corsework.notepad.view.NoteListItemDel;
 
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -53,8 +53,12 @@ public class DeleteNoteActivity extends ListActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
+				deleteArD();
+				arDel.clear();
+				adapter.setCheckAll(false);
+				adapter.setBolic(false);
+				delbutton.setEnabled(false);
+				fillData();
 			}
 		});
         
@@ -99,8 +103,20 @@ public class DeleteNoteActivity extends ListActivity {
 	private void ifCheck() {
 		adapter.setBolic(true);
 		adapter.setCheckAll(chechedText.isChecked());
-
+		arDel.clear();
+		if (chechedText.isChecked())
+			getAllIds();
 		delbutton.setEnabled(chechedText.isChecked());
 		fillData();
+	}
+
+	private void getAllIds() {
+		ArrayList<Note> noteL = noteD.getAll();
+		for (Note n: noteL)
+			arDel.add(n.getId());
+	}
+	private void deleteArD() {
+		for (Long l: arDel)
+			noteD.deleteById(l);
 	}
 }

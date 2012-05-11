@@ -92,9 +92,9 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
         // create date string for comparison
         String date = days[position];
     	
-        if(date.length()==1) {
-    		date = "0"+date;
-    	}
+//        if(date.length()==1) {
+//    		date = "0"+date;
+//    	}
     	String monthStr = ""+(month.get(Calendar.MONTH)+1);
     	if(monthStr.length()==1) {
     		monthStr = "0"+monthStr;

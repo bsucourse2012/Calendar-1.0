@@ -26,6 +26,8 @@
         <activity android:name=".AddNoteActivity"></activity>
         <activity android:name=".SeeNoteActivity"></activity>
         <activity android:name=".DeleteNoteActivity"></activity>
+        <activity android:name=".AddReminderActivity"></activity>
+        <activity android:name=".AddTegsActivity"></activity>
     </application>
 
 </manifest>

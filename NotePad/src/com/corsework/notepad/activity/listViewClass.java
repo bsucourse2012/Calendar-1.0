@@ -58,7 +58,7 @@ public class listViewClass extends ListActivity {
 		
 		menu.add(0, MENU_ITEM_INSERT_NOTE, 0, R.string.add_note_button).setShortcut('1', 'i')
 			.setIcon(android.R.drawable.ic_menu_add);
-		menu.add(0, MENU_ITEM_INSERT_REMI, 0, R.string.add_note_button).setShortcut('2', 'u')
+		menu.add(0, MENU_ITEM_INSERT_REMI, 0, R.string.add_reminder).setShortcut('2', 'u')
 		.setIcon(android.R.drawable.ic_menu_call);
 		menu.add(0, MENU_ITEM_DELETE, 0, R.string.menu_delete).setShortcut('5', 'd')
 		.setIcon(android.R.drawable.ic_menu_delete);
@@ -80,13 +80,21 @@ public class listViewClass extends ListActivity {
 	            	Intent i = new Intent(this, DeleteNoteActivity.class);
 	     	        startActivity(i);
 	            	return true;
+	            case MENU_ITEM_INSERT_REMI:
+	                createReminder();
+	                return true;
 	        }
 
 	        return super.onMenuItemSelected(featureId, item);
 	    }
 
 
-	  private void createNote() {
+	private void createReminder() {
+		Intent i = new Intent(this, AddReminderActivity.class);
+        startActivity(i);
+	}
+
+	private void createNote() {
 	        Intent i = new Intent(this, AddNoteActivity.class);
 	        startActivity(i);
 	  }
