@@ -66,11 +66,11 @@
 	    android:layout_height="fill_parent"
 	    
 	    android:numColumns="8"
-	    android:verticalSpacing="@dimen/greedPadding"
+	    android:verticalSpacing="0dp"
 	    android:horizontalSpacing="@dimen/greedPadding"
 	    android:stretchMode="columnWidth"
 	    android:minHeight="55px"
-	
+	    
 	    android:gravity="center"/>
     
 </LinearLayout>

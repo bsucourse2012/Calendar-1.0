@@ -35,24 +35,26 @@ public class WeekTextView extends TextView {
 	private void init() {
 		// Получите ссылку на таблицу ресурсов.
 		Resources myResources = getResources();
-		// Создайте кисти для рисования, которые мы будем использовать в методе	onDraw.
-		marginPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		marginPaint.setColor(myResources.getColor(R.color.equp));
-		linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		linePaint.setColor(myResources.getColor(R.color.equp));
+//		// Создайте кисти для рисования, которые мы будем использовать в методе	onDraw.
+//		marginPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//		marginPaint.setColor(myResources.getColor(R.color.equp));
+//		linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//		linePaint.setColor(myResources.getColor(R.color.equp));
 		// Получите цвет фона для листа и ширину кромки.
-		paperColor = myResources.getColor(R.color.equp);
-	}
-	@Override
-	public void onDraw(Canvas canvas) {
-	// ... Нарисуйте что-либо на Холсте под текстом ... ]
-		// Фоновый цвет для листа
+		paperColor = myResources.getColor(R.color.text_color);
 		if (f)
-		canvas.drawColor(paperColor);
-		canvas.save();
-	super.onDraw(canvas);
-	// ... Нарисуйте что-либо на Холсте над текстом ... ]
+			setBackgroundColor(paperColor);
 	}
+//	@Override
+//	public void onDraw(Canvas canvas) {
+//	// ... Нарисуйте что-либо на Холсте под текстом ... ]
+//		// Фоновый цвет для листа
+//		if (f)
+//			canvas.drawColor(paperColor);
+//		canvas.save();
+//	super.onDraw(canvas);
+//	// ... Нарисуйте что-либо на Холсте над текстом ... ]
+//	}
 
 	public boolean isF() {
 		return f;
@@ -60,6 +62,9 @@ public class WeekTextView extends TextView {
 
 	public void setF(boolean f) {
 		this.f = f;
+		if (f)
+			setBackgroundColor(paperColor);
+		else setBackgroundColor(Color.BLACK);
 	}
 
 }

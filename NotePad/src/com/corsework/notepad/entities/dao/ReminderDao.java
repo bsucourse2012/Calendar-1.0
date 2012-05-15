@@ -23,13 +23,13 @@ public class ReminderDao {
 	 */
 	private ReminderHelper dbHelper;
 	
-	private ReminderToBellDao reminderToBellDao;
-	private BellDao bellDao;
+//	private ReminderToBellDao reminderToBellDao;
+//	private BellDao bellDao;
 	
 	public ReminderDao(Context context) {
 		this.dbHelper = new ReminderHelper(context);
-		this.reminderToBellDao = new ReminderToBellDao(context);
-		this.bellDao = new BellDao(context);
+//		this.reminderToBellDao = new ReminderToBellDao(context);
+//		this.bellDao = new BellDao(context);
 	}
 	
 	/**
@@ -44,19 +44,19 @@ public class ReminderDao {
         long id = db.insert(dbHelper.TABLE_NAME, null, values);
         db.close();
         
-        if (this.createBells(reminder) == false) {
-        	Log.e("error!!! Reminder.create:", "Error while creating bells.");
-        	return null;
-        }
-        
-        if (id == -1) {
-        	Log.e("error!!! Reminder.create:", "New record was not created.");
-        	return null;
-        } else {
+//        if (this.createBells(reminder) == false) {
+//        	Log.e("error!!! Reminder.create:", "Error while creating bells.");
+//        	return null;
+//        }
+//        
+//        if (id == -1) {
+//        	Log.e("error!!! Reminder.create:", "New record was not created.");
+//        	return null;
+//        } else {
         	Reminder rem = this.getById(id);
         	Log.d("Reminder created: ", rem.toString());
             return rem;
-        }
+     //   }
 	}
 	
 	/**
@@ -64,18 +64,18 @@ public class ReminderDao {
 	 * @param reminder
 	 * @return True, if all operations were successful.
 	 */
-	private boolean createBells(Reminder reminder) {
-		boolean res = true;
-		for (int i = 0; i < reminder.getBells().size(); ++i) {
-			Bell bell = this.bellDao.create(reminder.getBells().get(i));
-			if (bell == null) {
-				res = false;
-			} else if (this.reminderToBellDao.create(reminder, bell) == -1) {
-				res = false;
-			}
-		}
-		return res;
-	}
+//	private boolean createBells(Reminder reminder) {
+//		boolean res = true;
+//		for (int i = 0; i < reminder.getBells().size(); ++i) {
+//			Bell bell = this.bellDao.create(reminder.getBells().get(i));
+//			if (bell == null) {
+//				res = false;
+//			} else if (this.reminderToBellDao.create(reminder, bell) == -1) {
+//				res = false;
+//			}
+//		}
+//		return res;
+//	}
 	
 	/**
 	 * Updates or creates new record in db.
@@ -87,7 +87,7 @@ public class ReminderDao {
 		if (reminder.getId() == null) {
 			return this.create(reminder);
 		} else {
-			this.deleteBells(reminder);
+	//		this.deleteBells(reminder);
 			
 			SQLiteDatabase db = this.dbHelper.getWritableDatabase();			 
 			ContentValues values = this.reminderToValues(reminder);	 
@@ -95,10 +95,10 @@ public class ReminderDao {
 	                new String[] { String.valueOf(reminder.getId()) });
 	        db.close();
 	        
-	        if (this.createBells(reminder) == false) {
-	        	Log.e("error!!! Reminder.update:", "Error while creating bells.");
-	        	return null;
-	        }
+//	        if (this.createBells(reminder) == false) {
+//	        	Log.e("error!!! Reminder.update:", "Error while creating bells.");
+//	        	return null;
+//	        }
 	        
 	        if (res != 1) {
 	        	Log.e("error!!! Reminder.update:", "Wrong number of rows were modified.");
@@ -141,7 +141,7 @@ public class ReminderDao {
 	 * @return Number of deleted rows.
 	 */
 	public long deleteById(Long id) {
-		this.deleteBells(id);
+	//	this.deleteBells(id);
 		
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
         long res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
@@ -175,19 +175,19 @@ public class ReminderDao {
 	 * Deletes bells and connections between bells and reminder.
 	 * @param reminderId Id of the reminder.
 	 */
-	private void deleteBells(Long reminderId) {
-		ArrayList<Long> bellsIds = this.reminderToBellDao.getBellsIds(reminderId);
-		this.bellDao.deleteByIds(bellsIds);
-		this.reminderToBellDao.delete(reminderId);
-	}
+//	private void deleteBells(Long reminderId) {
+//		ArrayList<Long> bellsIds = this.reminderToBellDao.getBellsIds(reminderId);
+//		this.bellDao.deleteByIds(bellsIds);
+//		this.reminderToBellDao.delete(reminderId);
+//	}
 	
 	/**
 	 * Deletes bells and connections between bells and reminder.
 	 * @param reminder
 	 */
-	private void deleteBells(Reminder reminder) {
-		this.deleteBells(reminder.getId());
-	}
+//	private void deleteBells(Reminder reminder) {
+//		this.deleteBells(reminder.getId());
+//	}
 	
 	/**
 	 * Gets all reminders from database.
@@ -257,7 +257,44 @@ public class ReminderDao {
 		
 		return reminders;
 	}
+	
+	public ArrayList<Reminder> getByStDate(Date from, Date to) {
+		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
+		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
+		
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null,
+				dbHelper.COLUMN_START_DATE + ">=?" + " and "
+				+ dbHelper.COLUMN_START_DATE + "<=?",
+				new String[] { String.valueOf(from.getTime()),
+				String.valueOf(to.getTime()) }, null, null, dbHelper.COLUMN_START_DATE + " DESC", null);		
+		if (cursor.moveToFirst()) {
+            do {
+                Reminder reminder = this.cursorToReminder(cursor);
+            	reminders.add(reminder);
+            } while (cursor.moveToNext());
+        }
+		
+		return reminders;
+	}
 
+	public ArrayList<Reminder> getByStEndDate(Date from, Date to) {
+		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
+		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
+		
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null,
+				dbHelper.COLUMN_START_DATE + "<=?" + " and "
+				+ dbHelper.COLUMN_END_DATE + ">=?",
+				new String[] { String.valueOf(to.getTime()),
+				String.valueOf(from.getTime()) }, null, null, dbHelper.COLUMN_CREATED + " DESC", null);		
+		if (cursor.moveToFirst()) {
+            do {
+                Reminder reminder = this.cursorToReminder(cursor);
+            	reminders.add(reminder);
+            } while (cursor.moveToNext());
+        }
+		
+		return reminders;
+	}
 	/**
 	 * Gets all reminders, modified in period of time.
 	 * @param from Period start date.
@@ -321,11 +358,11 @@ public class ReminderDao {
 		long prior = cursor.getLong(7);
 		String repetition = cursor.getString(8);
 		
-		ArrayList<Long> bellsIds = this.reminderToBellDao.getBellsIds(id);
-		ArrayList<Bell> bells = this.bellDao.getByIds(bellsIds);
+//		ArrayList<Long> bellsIds = this.reminderToBellDao.getBellsIds(id);
+//		ArrayList<Bell> bells = this.bellDao.getByIds(bellsIds);
 		
 		Reminder reminder = new Reminder(id, sys, type, descr, strDate,
-				endDate, bells, prior, repetition);
+				endDate, prior, repetition);
 		return reminder;
 	}
 

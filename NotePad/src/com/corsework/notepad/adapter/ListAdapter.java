@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import com.corsework.notepad.activity.R;
 import com.corsework.notepad.entities.program.Note;
 import com.corsework.notepad.entities.program.Record;
+import com.corsework.notepad.entities.program.Reminder;
 import com.corsework.notepad.view.NoteListItem;
 
+import android.R.bool;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,26 +15,34 @@ import android.widget.BaseAdapter;
 
 public class ListAdapter extends BaseAdapter {
 	
+	private ArrayList<Reminder> recordR;
 	private ArrayList<Note> records;
 	private Context context;
-	
-	public ListAdapter(ArrayList<Note> rec, Context context) {
+	Boolean lNote;
+	public ListAdapter(ArrayList<Note> rec,ArrayList<Reminder> rem, Context context) {
 		super();
+		lNote = true;
 		this.records = rec;
+		this.recordR = rem;
 		this.context = context;
 		
 	}
 
 	public int getCount() {
-		return records.size();
+		if (lNote)
+			return records.size();
+		return recordR.size();
 	}
 	
 	public Record getItem(int pos) {
-		return (null== records)? null:records.get(pos);
+		if (lNote)
+			return (null== records)? null:records.get(pos);
+		return (null== recordR)? null:recordR.get(pos);
 	}
 
 	public long getItemId(int pos) {
 		return pos;
+		
 	}
 
 	public View getView(int pos, View convertView, ViewGroup parent) {
@@ -42,12 +52,16 @@ public class ListAdapter extends BaseAdapter {
 		}else {
 			nli =(NoteListItem)convertView;
 		}
+		if (lNote)
 		nli.setRecord(records.get(pos));
+		else nli.setRecord(recordR.get(pos));
 		return nli;
 	}
 
-	public void forceReload(ArrayList<Note> arrayList) {
+	public void forceReload(ArrayList<Note> arrayList,ArrayList<Reminder> ar,boolean b) {
 		records=arrayList;
+		recordR = ar;
+		lNote = b;
 		notifyDataSetChanged();
 	}
 

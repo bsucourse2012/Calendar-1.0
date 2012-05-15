@@ -7,6 +7,7 @@
 	<TextView android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:id="@+id/title"
+			android:gravity="center"
 			android:textSize="@dimen/title_list_size"/>
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
@@ -38,6 +39,38 @@
 		  	android:layout_width="wrap_content"
 		  	android:layout_height="wrap_content" 
 	 		android:textSize="@dimen/date_text_size"
+		    android:text="today"/>	
+	 </LinearLayout>
+	  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+		 <TextView 
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content" 
+	 		android:textSize="@dimen/title_text_size"
+		    android:text="@string/time_length"/>
+		  <TextView 
+		   	android:id="@+id/date_text3"
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content" 
+	 		android:textSize="@dimen/title_text_size"
+		    android:text="today"/>	
+	 </LinearLayout>
+	  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+		 <TextView 
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content" 
+	 		android:textSize="@dimen/title_text_size"
+		    android:text="@string/alarm_"/>
+		  <TextView 
+		   	android:id="@+id/date_text4"
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content" 
+	 		android:textSize="@dimen/title_text_size"
 		    android:text="today"/>	
 	 </LinearLayout>
 	  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

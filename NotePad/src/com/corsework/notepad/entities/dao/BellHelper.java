@@ -9,7 +9,7 @@ public class BellHelper extends SQLiteOpenHelper {
 	/**
 	 * Names of columns in table.
 	 */
-	public static final String TABLE_NAME = "notes";
+	public static final String TABLE_NAME = "bells";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_CREATED = "_created";
 	public static final String COLUMN_MODIFIED = "_modified";
@@ -18,7 +18,7 @@ public class BellHelper extends SQLiteOpenHelper {
 	/**
 	 * Database info.
 	 */
-	private static final String DATABASE_NAME = "calendar.db";
+	private static final String DATABASE_NAME = "calbel.db";
 	private static final int DATABASE_VERSION = 1;
 	
 	/**

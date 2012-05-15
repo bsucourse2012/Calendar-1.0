@@ -1,6 +1,8 @@
 package com.corsework.notepad.activity;
 
 
+import com.corsework.notepad.application.NotePadApplication;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,6 +51,7 @@ public class ViewNotePadActivity extends TabActivity {
         tabH.addTab(dayViewTab);
         
         tabH.setCurrentTabByTag("listView");
+        ((NotePadApplication)getApplication()).setTabH(tabH);
         
     }
 

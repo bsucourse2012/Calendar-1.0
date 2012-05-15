@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="listBells">
+   <item>None</item>
+   <item>On time</item>
+   <item>5 mins before</item>
+   <item>15 mins before</item>
+   <item>1 hour before</item>
+   <item>1 day before</item>
+   <item>Customize</item>
+</string-array>
+ </resources>

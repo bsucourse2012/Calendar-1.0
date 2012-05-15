@@ -9,7 +9,7 @@ public class ReminderHelper extends SQLiteOpenHelper {
 	/**
 	 * Names of columns in table.
 	 */
-	public static final String TABLE_NAME = "notes";
+	public static final String TABLE_NAME = "reminders";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_CREATED = "_created";
 	public static final String COLUMN_MODIFIED = "_modified";
@@ -23,7 +23,7 @@ public class ReminderHelper extends SQLiteOpenHelper {
 	/**
 	 * Database info.
 	 */
-	private static final String DATABASE_NAME = "calendar.db";
+	private static final String DATABASE_NAME = "calrem.db";
 	private static final int DATABASE_VERSION = 1;
 	
 	/**
@@ -38,7 +38,7 @@ public class ReminderHelper extends SQLiteOpenHelper {
 			COLUMN_DESCRIPTION + " text, " +
 			COLUMN_START_DATE + " integer, " +
 			COLUMN_END_DATE + " integer, " +
-			COLUMN_PRIORITY + " integer, " +
+			COLUMN_PRIORITY + " long, " +
 			COLUMN_REPETITION + " text);";
 	
 	public ReminderHelper(Context context) {

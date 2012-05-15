@@ -1,6 +1,7 @@
 package com.corsework.notepad.activity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -9,16 +10,21 @@ import com.corsework.notepad.entities.dao.DB;
 import com.corsework.notepad.entities.program.Reminder;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,6 +35,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -40,17 +47,20 @@ public class AddReminderActivity extends Activity {
 	private static final int ADD_TEG_ACT = 2345;
 	
 	final int DIALOG_TEGS = 1;
-	final int DIALOG_ADD_TEGS = 2;
+	final int DIALOG_SGNL = 2;
 	final int DIALOG_TIMEB = 3;
 	final int DIALOG_TIMEE = 4;
 	final int DIALOG_DATEB = 5;
 	final int DIALOG_DATEE = 6;
-	Date srtD,endD;
-	
+	final int DIALOG_ALARM = 7;
+	Date srtD,endD;//,alarmD;
+	Calendar alarmD;
+	int alarmItem;
     private EditText mBodyText;
     private Long mRowId;
 
 	protected TextView mTegText;
+	protected TextView mAlmText;
 	private AlertDialog unsavedChangesDialog;
 
 	private Button voiceButton;
@@ -60,25 +70,27 @@ public class AddReminderActivity extends Activity {
 	private Button enTButton;
 	
 	private boolean changesPending;
-	Cursor cursor;
-	
+//	Cursor cursor;
+
+	private AlarmManager am;
     
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_reminder);
-//
-//        //для тегов
-//        refreshCursor();
         srtD = new Date();
         endD = new Date((new Date()).getTime() + 10000);
+        alarmD = Calendar.getInstance();
+        alarmItem =0;
         setTitle(R.string.edit_note);
         changesPending = false;
         mBodyText = (EditText) findViewById(R.id.body);
         mTegText  = (TextView) findViewById(R.id.tegs);
+        mAlmText  = (TextView) findViewById(R.id.signal);
 
         Button confirmButton = (Button) findViewById(R.id.confirm);
         Button cancelButton = (Button)findViewById(R.id.cancel_button);
         Button tegButton = (Button)findViewById(R.id.button_tegs);
+        Button signalButton = (Button)findViewById(R.id.add_signal);
         voiceButton = (Button) findViewById(R.id.voice_notes);
         stDButton = (Button) findViewById(R.id.button_data_beg);
         stTButton = (Button) findViewById(R.id.button_time_beg);
@@ -87,22 +99,33 @@ public class AddReminderActivity extends Activity {
         
         mRowId = null;
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-        	 mRowId = extras.getLong(NotePadApplication.KEY_ROWID);
-        	 Reminder n=((NotePadApplication)getApplication()).getReminderD().getById(mRowId);
-        	 if (n!=null){
-	         	mBodyText.setText(n.getDescr());
-	         	mTegText.setText(n.getType());
-	         	srtD = n.getStrDate();
-	         	endD = n.getEndDate();
+        if (extras != null) 
+        	 if (extras.containsKey(NotePadApplication.KEY_ROWID)){
+	        	 mRowId = extras.getLong(NotePadApplication.KEY_ROWID);
+	        	 Reminder n=((NotePadApplication)getApplication()).getReminderD().getById(mRowId);
+	        	 if (n!=null){
+		         	mBodyText.setText(n.getDescr());
+		         	mTegText.setText(n.getType());
+		         	srtD = n.getStrDate();
+		         	endD = n.getEndDate();
+		         	if (n.getPrior()!=-1)
+		         	{
+		         		alarmD.setTimeInMillis(n.getPrior()); //= new Date(n.getPrior());
+		         		mAlmText.setText(android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",alarmD));
+		         		alarmItem = 100;
+		         	}
+	        	 }
+	         }
+        	 else {
+        		 long time = extras.getLong(NotePadApplication.KEY_CAL);
+        		 srtD.setTime(time);
+        		 endD.setTime(time);
         	 }
 
-        }
-
-        stTButton.setText(srtD.getHours()+":"+srtD.getMinutes());
-        enTButton.setText(endD.getHours()+":"+endD.getMinutes());
-        stDButton.setText(srtD.getDate()+"/"+srtD.getMonth()+"/"+srtD.getYear());
-        enDButton.setText(endD.getDate()+"/"+endD.getMonth()+"/"+endD.getYear());
+        stTButton.setText(android.text.format.DateFormat.format("hh:mm",srtD));//.getHours()+":"+srtD.getMinutes());
+        enTButton.setText(android.text.format.DateFormat.format("hh:mm",endD));//.getHours()+":"+endD.getMinutes());
+        stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));//.getDate()+"/"+srtD.getMonth()+"/"+(srtD.getYear()+1900));
+        enDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",endD));//.getDate()+"/"+endD.getMonth()+"/"+(endD.getYear()+1900));
         confirmButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -134,6 +157,13 @@ public class AddReminderActivity extends Activity {
 				//showDialog(DIALOG_TEGS);
 			}
 		});
+		signalButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                showDialog(DIALOG_SGNL);
+            }
+
+        });
 		stDButton.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
@@ -186,10 +216,21 @@ public class AddReminderActivity extends Activity {
         n.setDescr(bbody);
         n.setType(tteg);
         n.getSys().setMd();
-        n.setEndDate(endD);
+        if (endD.compareTo(srtD)<0)
+            n.setEndDate(srtD);
+        else 
+            n.setEndDate(endD);
         n.setStrDate(srtD);
+        if (alarmItem!=0){
+        	setAlarmD(alarmItem);
+        	n.setPrior(alarmD.getTimeInMillis());
+
+        }else n.setPrior(-1);
         n=((NotePadApplication)getApplication()).getReminderD().update(n);
         Log.d("log", n.toString());
+        if (alarmItem!=-1){
+        	startNotify(alarmD,n.getId(),n.getType(),n.getDescr());
+        }
         finish();
 	}
 	 protected void cancel() {
@@ -257,7 +298,7 @@ public class AddReminderActivity extends Activity {
 					    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 					    	srtD.setHours(hourOfDay);
 					    	srtD.setMinutes(minute);
-					    	stTButton.setText(srtD.getHours()+":"+srtD.getMinutes());
+					    	stTButton.setText(android.text.format.DateFormat.format("hh:mm",srtD));//.getHours()+":"+srtD.getMinutes());
 						    }
 						  } ,srtD.getHours(),srtD.getMinutes(), true);
 			        return tpd;
@@ -267,7 +308,7 @@ public class AddReminderActivity extends Activity {
 					    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 					    	endD.setHours(hourOfDay);
 					    	endD.setMinutes(minute);
-					    	enTButton.setText(endD.getHours()+":"+endD.getMinutes());
+					    	enTButton.setText(android.text.format.DateFormat.format("hh:mm",endD));//.getHours()+":"+endD.getMinutes());
 						    }
 						  } ,endD.getHours(),endD.getMinutes(), true);
 			        return tpd2;
@@ -280,7 +321,7 @@ public class AddReminderActivity extends Activity {
 			    		    	srtD.setYear(year);
 			    		    	srtD.setMonth(monthOfYear);
 			    		    	srtD.setDate(dayOfMonth);
-			    		    	stDButton.setText(srtD.getDate()+"/"+srtD.getMonth()+"/"+srtD.getYear());
+			    		    	stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));//.getDate()+"/"+srtD.getMonth()+"/"+(srtD.getYear()+1900));
 			    		    }
 			    		    } , srtD.getYear()+1900, srtD.getMonth(),srtD.getDate());
 			    	 return dpd;
@@ -293,49 +334,45 @@ public class AddReminderActivity extends Activity {
 			    		    	endD.setYear(year);
 			    		    	endD.setMonth(monthOfYear);
 			    		    	endD.setDate(dayOfMonth);
-			    		    	enDButton.setText(endD.getDate()+"/"+endD.getMonth()+"/"+endD.getYear());
+			    		    	enDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",endD));//.getDate()+"/"+endD.getMonth()+"/"+(endD.getYear()+1900));
 			    		    }
 			    		    } , endD.getYear()+1900, endD.getMonth(),endD.getDate());
 			    	 return dpd2;
 			    	 
-//			    case DIALOG_TEGS:
-//				    AlertDialog.Builder adb = new AlertDialog.Builder(this);
-//				    adb.setTitle(R.string.add_new_tegs);
-//				    adb.setCursor(cursor, myClickListener,DB.TegSQLiteOpenHelper.TEG_TEXT);
-//				    
-//				    adb.setPositiveButton(android.R.string.ok, myClickListener);
-//				    adb.setNegativeButton(android.R.string.cancel,myClickListener);
-//				    adb.setNeutralButton(R.string.add_new_tegs, myClickListener);
-//				    return adb.create();
-				    
-//				  //диалог для добавления нового типа
-//			    case DIALOG_ADD_TEGS:
-//			    	LayoutInflater infl = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		            final View addTegsDialogLayout = infl.inflate(R.layout.add_tegs, (ViewGroup) findViewById(R.id.root));
-//
-//		            AlertDialog.Builder tegDialogBuilder = new AlertDialog.Builder(this);
-//		            tegDialogBuilder.setView(addTegsDialogLayout);
-//		            final EditText tegsText = (EditText) addTegsDialogLayout.findViewById(R.id.title);
-//		            
-//		            tegDialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//		                public void onClick(DialogInterface dialog, int which) {
-//		                    String tegText = tegsText.getText().toString();
-//		                    if (tegText != null && tegText.length() > 0) {
-//		                        //add tegs to array
-//		                    	mTegText.setText(tegText);
-//		                    	((NotePadApplication)getApplication()).getDbc().addTeg(new Teg(tegText));
-//		                    	refreshCursor();
-//		                    }
-//		                }
-//		            });
-//		           
-//		            tegDialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-//		                public void onClick(DialogInterface dialog, int which) {
-//		                    finish();
-//		                }
-//		            });
-//		            return tegDialogBuilder.create();
-//			    
+			    case DIALOG_SGNL:
+			    	ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this,
+							R.array.listBells, android.R.layout.select_dialog_singlechoice);
+			    	AlertDialog.Builder adb = new AlertDialog.Builder(this);
+			    	adb.setTitle(R.string.add_signal);
+			    	adb.setSingleChoiceItems(adapter, -1, myClickListener);
+			    	adb.setPositiveButton(android.R.string.ok, myClickListener);
+			    	adb.setNegativeButton(android.R.string.cancel, myClickListener);
+			    	return adb.create();
+
+			    case DIALOG_ALARM:
+			    	LayoutInflater infl = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		            final View addAlarmDialogLayout = infl.inflate(R.layout.add_custom_alarm, (ViewGroup) findViewById(R.id.root));
+
+		            AlertDialog.Builder alarmDialogBuilder = new AlertDialog.Builder(this);
+		            alarmDialogBuilder.setView(addAlarmDialogLayout);
+		            final TimePicker timepic = (TimePicker) addAlarmDialogLayout.findViewById(R.id.timePicker1);
+		            final DatePicker datepic = (DatePicker) addAlarmDialogLayout.findViewById(R.id.datePicker1);
+		            
+		            alarmDialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int which) {
+		                	alarmD.set(datepic.getYear(), datepic.getMonth(), datepic.getDayOfMonth(), timepic.getCurrentHour(), timepic.getCurrentMinute());//= new Date(datepic.getYear(), datepic.getMonth(), datepic.getDayOfMonth(), timepic.getCurrentHour(), timepic.getCurrentMinute());
+
+		                	mAlmText.setText(android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",alarmD));
+			            	    
+		                }
+		            });
+		           
+		            alarmDialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int which) {
+		                    finish();
+		                }
+		            });
+		            return alarmDialogBuilder.create();
 			    }
 			  return super.onCreateDialog(id);
 			  }
@@ -354,40 +391,78 @@ public class AddReminderActivity extends Activity {
 			    case DIALOG_TIMEE:
 					((TimePickerDialog)dialog).updateTime(endD.getHours(),endD.getMinutes());
 					return;
-//			    case DIALOG_TEGS:
-//			    	ListAdapter lAdapter =((AlertDialog) dialog).getListView().getAdapter();
-//			    	if (lAdapter instanceof CursorAdapter) {
-//			            // преобразование и обновление курсора        
-//			            CursorAdapter cAdapter = (CursorAdapter) lAdapter;
-//			            cAdapter.changeCursor(cursor);
-//			      }
-//			      break;
-//			    case DIALOG_ADD_TEGS:
-//			    	return;
+
+			    case DIALOG_ALARM:
+			    	
 			    default:
 			      break;
 			    }
 			  };
 //			  // обработчик нажатия на пункт списка диалога или кнопку
-//		 android.content.DialogInterface.OnClickListener myClickListener = new  android.content.DialogInterface.OnClickListener() {
-//			    public void onClick(DialogInterface dialog,int which) {
-//			      ListView lv = ((AlertDialog) dialog).getListView();
-//			      if (which == Dialog.BUTTON_NEUTRAL){
-//			    	  Intent intent = new Intent(AddReminderActivity.this,AddNewTegsActivity.class);
-//					  startActivityForResult(intent, ADD_TEG_ACT);
-//			    	  //showDialog(DIALOG_ADD_TEGS);
-//			      }else
-//			      if (which == Dialog.BUTTON_POSITIVE) {
-//			    	  mTegText.setText(((NotePadApplication)getApplication()).getDbc().curTeg.get(lv.getCheckedItemPosition()));
-//			      }
-//			      
-//			    }
-//
-//
-//		};
-//		void refreshCursor() {
-//			    stopManagingCursor(cursor);
-//			    cursor = ((NotePadApplication)getApplication()).getDbc().getAllData();
-//			    startManagingCursor(cursor);
-//		}
+		 android.content.DialogInterface.OnClickListener myClickListener = new  android.content.DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog,int which) {
+			      ListView lv = ((AlertDialog) dialog).getListView();
+			      if (which == Dialog.BUTTON_NEGATIVE){
+			      }else
+			      if (which == Dialog.BUTTON_POSITIVE) {
+
+				    alarmItem = lv.getCheckedItemPosition();
+			    	setAlarmD(lv.getCheckedItemPosition());
+			    	  Log.d("log", "pos = " + lv.getCheckedItemPosition());
+			      }
+			      
+			    }
+
+
+		};
+
+		private void startNotify(Calendar cal,long pos,String teg,String text){
+			am  = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+			Intent intent = new Intent(this, TimeNotification.class);
+			intent.putExtra(NotePadApplication.KEY_ROWID, pos);
+			intent.putExtra(NotePadApplication.KEY_TITLE, teg);
+			intent.putExtra(NotePadApplication.KEY_BODY, text);
+			
+			PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 
+					PendingIntent.FLAG_CANCEL_CURRENT);
+			
+		//	am.cancel(pi);
+			Log.d("log",android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",cal).toString());
+			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
+		}
+		
+		void setAlarmD(int pos){
+			  switch (pos) {
+				case 0:
+					alarmD = null;
+					mAlmText.setText(R.string.none);
+					break;
+				case 1: 
+					alarmD.setTimeInMillis(srtD.getTime()); //= new Date(srtD.getTime());
+					mAlmText.setText(R.string.on_time);
+					break;
+				case 2: 
+					alarmD.setTimeInMillis(srtD.getTime()-5*60*1000); //= new Date(srtD.getTime()-5*60*1000);
+					mAlmText.setText(R.string.f_min);
+					break;
+				case 3: 
+					alarmD.setTimeInMillis(srtD.getTime()-15*60*1000); //= new Date(srtD.getTime()-15*60*1000);
+					mAlmText.setText(R.string.fif_min);
+					break;
+				case 4: 
+					alarmD.setTimeInMillis(srtD.getTime()-60*60*1000); //= new Date(srtD.getTime()-60*60*1000);
+					mAlmText.setText(R.string.hour_b);
+					break;
+				case 5: 
+					alarmD.setTimeInMillis(srtD.getTime()-24*60*60*1000); //= new Date(srtD.getTime()-24*60*60*1000);
+					mAlmText.setText(R.string.hour_b);
+					break;
+				case 6: 
+					showDialog(DIALOG_ALARM);
+					alarmItem = 100;
+					break;
+				default:
+					break;
+				}
+		}
 }

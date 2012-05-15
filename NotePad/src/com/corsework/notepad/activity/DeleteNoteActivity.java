@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import com.corsework.notepad.adapter.ListAdapterDel;
 import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.dao.NoteDao;
+import com.corsework.notepad.entities.dao.ReminderDao;
 import com.corsework.notepad.entities.program.Note;
+import com.corsework.notepad.entities.program.Reminder;
 import com.corsework.notepad.view.NoteListItemDel;
 
 import android.app.ListActivity;
@@ -19,21 +21,25 @@ import android.widget.ListView;
 public class DeleteNoteActivity extends ListActivity {
 	private NotePadApplication app;
 	private NoteDao noteD;
+	private ReminderDao remD;
 	private ListAdapterDel adapter;
 	private CheckedTextView chechedText;
 	private Button delbutton;
 	private Button canbutton;
+	boolean lookNote;
 	ArrayList<Long> arDel;
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview_del);
-        
         arDel = new ArrayList<Long>();
         app=(NotePadApplication)getApplication();
+        lookNote = app.isLookNote();
         noteD= app.getNoteD();
-        adapter = new ListAdapterDel(noteD.getAll(),this);
+        remD = app.getReminderD();
+        adapter = new ListAdapterDel(noteD.getAll(),remD.getAll(),this);
+        adapter.setlNote(lookNote);
         setListAdapter(adapter);
         chechedText = (CheckedTextView)findViewById(android.R.id.text1);
         delbutton = (Button)findViewById(R.id.delete_button);
@@ -56,7 +62,7 @@ public class DeleteNoteActivity extends ListActivity {
 				deleteArD();
 				arDel.clear();
 				adapter.setCheckAll(false);
-				adapter.setBolic(false);
+				adapter.setBolic(true);
 				delbutton.setEnabled(false);
 				fillData();
 			}
@@ -97,7 +103,9 @@ public class DeleteNoteActivity extends ListActivity {
 	}
 		
 	private void fillData() {
-		adapter.forceReload(noteD.getAll());
+		if (lookNote)
+			adapter.forceReload(noteD.getAll(),new ArrayList<Reminder>(),lookNote);
+		else adapter.forceReload(new ArrayList<Note>(),remD.getAll(),lookNote);
 	}
 	
 	private void ifCheck() {
@@ -111,12 +119,24 @@ public class DeleteNoteActivity extends ListActivity {
 	}
 
 	private void getAllIds() {
+		if (lookNote){
 		ArrayList<Note> noteL = noteD.getAll();
 		for (Note n: noteL)
 			arDel.add(n.getId());
+		}
+		else{
+			ArrayList<Reminder> noteL = remD.getAll();
+			for (Reminder n: noteL)
+				arDel.add(n.getId());
+		}
 	}
 	private void deleteArD() {
-		for (Long l: arDel)
-			noteD.deleteById(l);
+		if (lookNote)
+			for (Long l: arDel)
+				noteD.deleteById(l);
+		else
+			for (Long l: arDel)
+				remD.deleteById(l);
+			
 	}
 }

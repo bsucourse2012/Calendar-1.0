@@ -51,11 +51,25 @@ public class DB {
               
       return tegs;
 	}
-  
+  public ArrayList<String> getAllCh() {
+		ArrayList<String> tegs = new ArrayList<String>();
+		
+		Cursor cursor = database.query(TegSQLiteOpenHelper.TEGS_TABLE, null, null,
+            null, null, null, null, null);		
+		if (cursor.moveToFirst()) {
+        do {
+	         int n = cursor.getInt(2);
+	         if (n==1)
+	        	 tegs.add(cursor.getString(1));
+        } while (cursor.moveToNext());
+    }
+            
+    return tegs;
+	}
   // получить все данные из таблицы DB_TABLE
   public Cursor getAllData() {
 	  return database.query(TegSQLiteOpenHelper.TEGS_TABLE,
-				new String[]{TegSQLiteOpenHelper.TEG_ID,TegSQLiteOpenHelper.TEG_TEXT},
+				new String[]{TegSQLiteOpenHelper.TEG_ID,TegSQLiteOpenHelper.TEG_TEXT,TegSQLiteOpenHelper.TEG_CHK},
 				null,null,null,null,null);
 		
   }
@@ -64,14 +78,21 @@ public class DB {
   public void changeRec(long id, String txt,int col,int iid) {
 		ContentValues values = new ContentValues();
 		values.put(TegSQLiteOpenHelper.TEG_TEXT, txt);
+		values.put(TegSQLiteOpenHelper.TEG_CHK, 0);
 		String where = String.format("%s = %d",TegSQLiteOpenHelper.TEG_ID,id);
 		database.update(TegSQLiteOpenHelper.TEGS_TABLE, values, where, null);
 		curTeg.set(iid, txt);
+  }
+  public void changeRec(int pos, boolean isChecked) {
+      ContentValues cv = new ContentValues();
+      cv.put(TegSQLiteOpenHelper.TEG_CHK, (isChecked) ? 1 : 0);
+      database.update(TegSQLiteOpenHelper.TEGS_TABLE, cv,TegSQLiteOpenHelper.TEG_ID + " = " + (pos + 1), null);
   }
   public void addTeg(String n){
 		assert(null!=n);
 		ContentValues values = new ContentValues();
 		values.put(TegSQLiteOpenHelper.TEG_TEXT, n);
+		values.put(TegSQLiteOpenHelper.TEG_CHK, 1);
 		long id =database.insert(TegSQLiteOpenHelper.TEGS_TABLE, null, values);
 		if (id!=-1)
 			curTeg.add(n);
@@ -95,6 +116,7 @@ public class DB {
 		public static final String TEGS_TABLE = "tegs";
 		public static final String TEG_ID = "_id";
 		public static final String TEG_TEXT = "_text";
+		public static final String TEG_CHK = "_check";
 		
 		public TegSQLiteOpenHelper(Context context) {
 			super(context, DB_NAME, null, VERSION);
@@ -111,12 +133,19 @@ public class DB {
 		private void createTable(SQLiteDatabase db) {
 			db.execSQL("create table " +TEGS_TABLE +" (" +
 					TEG_ID + " integer primary key autoincrement not null," +
-					TEG_TEXT + " text" +
+					TEG_TEXT + " text," +TEG_CHK + " integer" +
 					");");
 
 		}
 
 	}
+public void unChAll() {
+	// TODO Auto-generated method stub
+	 ContentValues cv = new ContentValues();
+     cv.put(TegSQLiteOpenHelper.TEG_CHK, 0);
+     database.update(TegSQLiteOpenHelper.TEGS_TABLE, cv,null, null);
+     
+}
 }
 
 

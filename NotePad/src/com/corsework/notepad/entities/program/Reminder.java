@@ -80,7 +80,25 @@ public class Reminder extends Record {
 		this.prior = prior;
 		this.repetition = repetition;
 	}
-	
+	public Reminder(String type, String descr, Date strDate, Date endDate, long prior, String repetition) {
+		super();
+		this.type = type;
+		this.descr = descr;
+		this.strDate = strDate;
+		this.endDate = endDate;
+		this.prior = prior;
+		this.repetition = repetition;
+	}
+	public Reminder(Long id, Sys sys, String type, String descr, Date strDate,
+			Date endDate, long prior, String repetition) {
+		super(id, sys);
+		this.type = type;
+		this.descr = descr;
+		this.strDate = strDate;
+		this.endDate = endDate;
+		this.prior = prior;
+		this.repetition = repetition;
+	}
 	public Reminder(Long id, Sys sys, String type, String descr, Date strDate,
 			Date endDate, ArrayList<Bell> bells, long prior, String repetition) {
 		super(id, sys);

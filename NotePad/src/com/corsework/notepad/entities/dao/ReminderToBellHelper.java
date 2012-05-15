@@ -9,7 +9,7 @@ public class ReminderToBellHelper extends SQLiteOpenHelper {
 	/**
 	 * Names of columns in table.
 	 */
-	public static final String TABLE_NAME = "notes";
+	public static final String TABLE_NAME = "remindertobell";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_ID_FROM = "from";
 	public static final String COLUMN_ID_TO = "from";
@@ -17,7 +17,7 @@ public class ReminderToBellHelper extends SQLiteOpenHelper {
 	/**
 	 * Database info.
 	 */
-	private static final String DATABASE_NAME = "calendar.db";
+	private static final String DATABASE_NAME = "calrembell.db";
 	private static final int DATABASE_VERSION = 1;
 	
 	/**

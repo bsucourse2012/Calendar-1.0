@@ -30,11 +30,12 @@ public class NoteListItemDel extends NoteListItem{
 			titleText.setChecked(isCh);
 		} else
 			if (note instanceof Reminder){
-				bodyText.setText(((Reminder) note).getDescr());
+				String  st = ((Reminder) note).getDescr();
+				titleText.setText(st.subSequence(0, min(20,st.length()))+"...");
 				tegsText.setText(((Reminder) note).getType());
-				titleText.setVisibility(INVISIBLE);
-
 				imView.setImageResource(R.drawable.redhat);
+				isCh = ch;
+				titleText.setChecked(isCh);
 			}
 	}
 	public void setRecord(Record note) {
@@ -46,12 +47,14 @@ public class NoteListItemDel extends NoteListItem{
 			titleText.setChecked(isCh);
 		} else
 			if (note instanceof Reminder){
-				bodyText.setText(((Reminder) note).getDescr());
+				titleText.setText(((Reminder) note).getDescr());
 				tegsText.setText(((Reminder) note).getType());
-				titleText.setVisibility(INVISIBLE);
-
 				imView.setImageResource(R.drawable.redhat);
 			}
+	}
+
+	private int min(int i, int j) {
+		return (i<j)?i:j;
 	}
 
 	@Override
