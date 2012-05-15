@@ -228,7 +228,7 @@ public class AddReminderActivity extends Activity {
         }else n.setPrior(-1);
         n=((NotePadApplication)getApplication()).getReminderD().update(n);
         Log.d("log", n.toString());
-        if (alarmItem!=-1){
+        if (alarmItem!=0){
         	startNotify(alarmD,n.getId(),n.getType(),n.getDescr());
         }
         finish();

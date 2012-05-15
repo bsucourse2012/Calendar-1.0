@@ -41,7 +41,7 @@ public class DayListViewClass extends ListActivity {
         setContentView(R.layout.listview_);
         Calendar cal = Calendar.getInstance();
         status = 0;
-        lN = true;
+        lN = ((NotePadApplication)getApplication()).isLookNote();
         Bundle exstra =  getIntent().getExtras();
         if (exstra!=null){
         	if (exstra.containsKey(NotePadApplication.KEY_SRTD)){

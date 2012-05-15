@@ -73,7 +73,7 @@ public class WeekAdapter extends BaseAdapter{
 	   
     	   if ("+".equalsIgnoreCase(days[position])){
            	dayView.setF(true);
-           	dayView.invalidate();
+      //     	dayView.invalidate();
            	dayView.setText("");
            }else{
            	dayView.setText(days[position]);
@@ -133,23 +133,27 @@ public class WeekAdapter extends BaseAdapter{
          
         int rowst,rowf,clmst=1,clmf=1;
         for (Reminder r: itemRem){
+        	clmst=1;clmf=1;
         	Date d1= r.getStrDate();
         	if (d1.before(strt))
         		clmst =1;
-        	else
-        		for (int i=1; i<n.length; i++)
-        			if (n[i]==d1.getDate()){
-        				clmst = i+1; break;
-        			}
+        	else{
+        		
+        		clmst = d1.getDay()+1;
+//        		for (int i=1; i<n.length; i++)
+//        			if (n[i]==d1.getDate()){
+//        				clmst = i+1; break;
+//        			}
+        	}
         	rowst = d1.getHours()+1;
         	d1= r.getEndDate();
         	if (d1.after(fin))
         		clmf =7;
-        	else
-        		for (int i=clmst-1; i<n.length; i++)
-        			if (n[i]==d1.getDate()){
-        				clmf = i+1; break;
-        			}
+        	else   	clmf = d1.getDay()+1;
+//        		for (int i=clmst-1; i<n.length; i++)
+//        			if (n[i]==d1.getDate()){
+//        				clmf = i+1; break;
+//        			}
         	rowf = d1.getHours()+1;//*8+8;
         	if (clmf == clmst){
         		for (int j=rowst; j<=rowf; j++)
@@ -161,7 +165,7 @@ public class WeekAdapter extends BaseAdapter{
 	        	for (int i= clmst+1; i<=clmf-1; i++)
 	        		for (int j=1; j<=24; j++)
 	        			days[i+j*8]="+";
-	        	for (int j=0; j<=rowf; j++)
+	        	for (int j=1; j<=rowf; j++)
         			days[clmf+j*8]="+";
         	}
         }

@@ -93,13 +93,14 @@ public class weekViewClass extends Activity {
 		    		if (((WeekTextView)v).isF()){
 		    			Intent i = new Intent(weekViewClass.this, DayListViewClass.class);
 			    		Calendar c2 = (Calendar) cal.clone();
-			    		c2.set(Calendar.DAY_OF_WEEK, position%8-1);
+			    		c2.set(Calendar.DAY_OF_WEEK, position%8);
+			    		Log.d("click", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",c2).toString());
 		    			i.putExtra(NotePadApplication.KEY_SRTD,c2.getTimeInMillis());
 		    			startActivity(i);
 		    		}
 		    		else{
 			    		Calendar c2 = (Calendar) cal.clone();
-			    		c2.set(Calendar.DAY_OF_WEEK, position%8-1);
+			    		c2.set(Calendar.DAY_OF_WEEK, position%8);
 			    		Intent i = new Intent(weekViewClass.this, AddReminderActivity.class);
 			    		int pos= position-position%8-8,time=0;
 			    		while (pos>0){
@@ -114,6 +115,7 @@ public class weekViewClass extends Activity {
 		    	else
 		    		if (position>=1 && position<=7){
 		    			cal.set(Calendar.DAY_OF_WEEK, position%8-1);
+		    			Log.d("log click", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal).toString());   			
 		    			((NotePadApplication)getApplication()).calcr = cal;	
 		    	        ((NotePadApplication)getApplication()).tabH.setCurrentTabByTag("dayView");
 		    		}
@@ -140,13 +142,13 @@ public class weekViewClass extends Activity {
 private void calUpd() {
 		// TODO Auto-generated method stub
 	Calendar cal2 = (Calendar) cal.clone();
-    Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
+ //   Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
     cal2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-    Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
+ //   Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
     
 	Date dat =  cal2.getTime();
     cal2.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-    Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
+ //   Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
     
 	Date dat2 = cal2.getTime();
 	dat.setHours(0);
@@ -155,13 +157,13 @@ private void calUpd() {
 	dat2.setHours(23);
 	dat2.setMinutes(59);
 	dat2.setSeconds(59);
-	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat).toString());
-	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat2).toString());
-    
+//	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat).toString());
+//	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat2).toString());
+//    
 	items.clear();
 	ArrayList<Reminder> rec;
 	rec = remiD.getByStEndDate(dat, dat2);//remiD.getByCrDate(dat, dat2);
-	Log.d("log cal", rec.toString());
+
     
 	
 	adapter.setItems(rec);
