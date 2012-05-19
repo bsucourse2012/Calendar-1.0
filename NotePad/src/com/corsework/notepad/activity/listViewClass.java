@@ -17,16 +17,26 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class listViewClass extends ListActivity {
 	
@@ -36,11 +46,14 @@ public class listViewClass extends ListActivity {
 	private static final int MENU_ITEM_SHARE = Menu.FIRST + 3;
 	private static final int MENU_SEARCH = Menu.FIRST + 4;
 	private static final int MENU_SETTINGS = Menu.FIRST + 6;
+	private static final int MENU_PASSWORD = Menu.FIRST + 7;
+	private static final int MENU_LOAD_SAVE = Menu.FIRST + 8;
 	private static final int MENU_DISTRIBUTION_START = Menu.FIRST + 100; // MUST BE LAST
 	
 
 	private static final int ADD_TEG_ACT = 2346;
 
+	static final int PASSWORD_DIALOG_ID=1;
 	final int DIALOG_TEGS = 10;
 
 	private NotePadApplication app;
@@ -50,11 +63,13 @@ public class listViewClass extends ListActivity {
 	boolean lookNote;
 	Cursor cursor;
 	DB tegD;
+	SharedPreferences mNoteSettings;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview_);
-        
+
+        mNoteSettings=getSharedPreferences(NotePadApplication.NOTE_PREFERENCES, Context.MODE_PRIVATE);
         app=(NotePadApplication)getApplication();
         noteD= app.getNoteD();
         remD = app.getReminderD();
@@ -87,15 +102,19 @@ public class listViewClass extends ListActivity {
 		menu.add(0, MENU_ITEM_INSERT_NOTE, 0, R.string.add_note_button).setShortcut('1', 'i')
 			.setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, MENU_ITEM_INSERT_REMI, 0, R.string.add_reminder).setShortcut('2', 'u')
-		.setIcon(android.R.drawable.ic_menu_call);
+		.setIcon(R.drawable.alarm);
 		menu.add(0, MENU_ITEM_DELETE, 0, R.string.menu_delete).setShortcut('5', 'd')
 		.setIcon(android.R.drawable.ic_menu_delete);
 		menu.add(0, MENU_SEARCH, 0, R.string.menu_search_by_teg).setShortcut('3','s')
 		.setIcon(android.R.drawable.ic_menu_search);
 
-		menu.add(0, MENU_SETTINGS, 0, R.string.settings).setIcon(
-				android.R.drawable.ic_menu_preferences).setShortcut('9', 's');
+//		menu.add(0, MENU_SETTINGS, 0, R.string.settings).setIcon(
+//				android.R.drawable.ic_menu_preferences).setShortcut('9', 's');
 
+
+		menu.add(0, MENU_PASSWORD, 0, R.string.add_delete_passwod).setIcon(android.R.drawable.ic_secure);
+
+		menu.add(0, MENU_LOAD_SAVE, 0, R.string.upload_save).setIcon(android.R.drawable.ic_popup_sync);
 		return true;
 	}
 	 @Override
@@ -135,6 +154,9 @@ public class listViewClass extends ListActivity {
 	        		refreshCursor();
 	        		showDialog(DIALOG_TEGS);
 	                return true;
+	            case MENU_PASSWORD:
+	            	showDialog(PASSWORD_DIALOG_ID);
+	            	return true;
 	        }
 
 	        return super.onMenuItemSelected(featureId, item);
@@ -159,7 +181,58 @@ public class listViewClass extends ListActivity {
 			    adb.setPositiveButton(android.R.string.ok, myClickListener);
 			    adb.setNegativeButton(android.R.string.cancel,myClickListener);
 			    return adb.create();
-
+		    case PASSWORD_DIALOG_ID:
+			    LayoutInflater inflater=(LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				final View layout = inflater.inflate(R.layout.password_dialog, (ViewGroup)findViewById(R.id.root));
+				final EditText p1=(EditText)layout.findViewById(R.id.EditText_Pwd1);
+				final EditText p2=(EditText)layout.findViewById(R.id.EditText_Pwd2);
+				final TextView error=(TextView)layout.findViewById(R.id.TextView_PwdProblem);
+				p2.addTextChangedListener(new TextWatcher() {
+					@Override
+					public void onTextChanged(CharSequence s, int start, int before, int count) {
+					}
+					@Override
+					public void beforeTextChanged(CharSequence s, int start, int count,
+							int after) {}
+					@Override
+					public void afterTextChanged(Editable s) {
+						String strP1 =p1.getText().toString();
+						String strP2 =p2.getText().toString();
+						if (strP1.equals(strP2)){
+							error.setText(R.string.settings_pwd_equal);
+						} else error.setText(R.string.settings_pwd_not_equal);
+					}
+				});
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setView(layout);
+				builder.setTitle(R.string.settings_button_pwd);
+				builder.setPositiveButton(android.R.string.ok, 
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								String spasw1 = p1.getText().toString();
+								String spasw2 = p2.getText().toString();
+								if (spasw1.equals(spasw2)){
+									Editor editor =mNoteSettings.edit();
+									editor.putString(NotePadApplication.NOTE_PREFERENCES_PASSWORD, spasw1);
+									editor.commit();
+									Toast.makeText(listViewClass.this,getResources().getString(R.string.settings_pwd_set), Toast.LENGTH_LONG).show();
+								} else {
+									Toast.makeText(listViewClass.this,"password not set", Toast.LENGTH_LONG).show();
+								}
+								listViewClass.this.removeDialog(PASSWORD_DIALOG_ID);
+							}
+						});
+				builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						listViewClass.this.removeDialog(PASSWORD_DIALOG_ID);
+					}
+				});
+				AlertDialog passD = builder.create();
+				return passD;
 		    }
 			  return super.onCreateDialog(id);
 			  }
@@ -172,7 +245,9 @@ public class listViewClass extends ListActivity {
 		           cAdapter.changeCursor(cursor);
 		      
 		      break;
-		    	
+
+			case PASSWORD_DIALOG_ID:
+					return;
 		    }
 		super.onPrepareDialog(id, dialog);
 	}

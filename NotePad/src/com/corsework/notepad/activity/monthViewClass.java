@@ -114,7 +114,7 @@ public class monthViewClass extends Activity {
 		menu.add(0, MENU_ITEM_INSERT_NOTE, 0, R.string.add_note_button).setShortcut('1', 'i')
 			.setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, MENU_ITEM_INSERT_REMI, 0, R.string.add_reminder).setShortcut('2', 'u')
-		.setIcon(android.R.drawable.ic_menu_call);
+		.setIcon(R.drawable.alarm);
 		
 		return true;
 	}

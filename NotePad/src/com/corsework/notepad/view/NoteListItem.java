@@ -36,10 +36,13 @@ public class NoteListItem extends RelativeLayout {
 			imView.setImageResource(R.drawable.app_notes);
 		} else
 			if (note instanceof Reminder){
-				bodyText.setText(((Reminder) note).getDescr());
+				//bodyText.setText(((Reminder) note).getDescr());
 				tegsText.setText(((Reminder) note).getType());
-				titleText.setVisibility(INVISIBLE);
-
+				//titleText.setVisibility(INVISIBLE);
+				bodyText.setVisibility(INVISIBLE);
+				String  st = ((Reminder) note).getDescr();
+				titleText.setText(st.subSequence(0, min(20,st.length(),st.indexOf("\n")))+"...");
+				
 				imView.setImageResource(R.drawable.redhat);
 			}
 		dateText.setText(android.text.format.DateFormat.format("dd-MM-yyyy", note.getSys().getCr()));

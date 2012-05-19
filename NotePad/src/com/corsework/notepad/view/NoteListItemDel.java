@@ -31,7 +31,7 @@ public class NoteListItemDel extends NoteListItem{
 		} else
 			if (note instanceof Reminder){
 				String  st = ((Reminder) note).getDescr();
-				titleText.setText(st.subSequence(0, min(20,st.length()))+"...");
+				titleText.setText(st.subSequence(0, min(20,st.length(),st.indexOf("\n")))+"...");
 				tegsText.setText(((Reminder) note).getType());
 				imView.setImageResource(R.drawable.redhat);
 				isCh = ch;
@@ -53,10 +53,12 @@ public class NoteListItemDel extends NoteListItem{
 			}
 	}
 
-	private int min(int i, int j) {
-		return (i<j)?i:j;
+	private int min(int i, int j,int k) {
+		int temp=(i<j)?i:j;
+		if (k==-1)
+			return temp;
+		return (temp<k)?temp:k;
 	}
-
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();

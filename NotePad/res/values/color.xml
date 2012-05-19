@@ -5,4 +5,5 @@
 	<color name="white">#ffffff</color>    
 	<color name="menu_color">#ffff0f</color>
 	<color name="equp">#AAFFFF99</color>
+	<color name="title_color">#f0f0f0</color>
 </resources>

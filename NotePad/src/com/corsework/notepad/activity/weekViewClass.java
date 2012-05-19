@@ -114,7 +114,7 @@ public class weekViewClass extends Activity {
 		    	}
 		    	else
 		    		if (position>=1 && position<=7){
-		    			cal.set(Calendar.DAY_OF_WEEK, position%8-1);
+		    			cal.set(Calendar.DAY_OF_WEEK, position%8);
 		    			Log.d("log click", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal).toString());   			
 		    			((NotePadApplication)getApplication()).calcr = cal;	
 		    	        ((NotePadApplication)getApplication()).tabH.setCurrentTabByTag("dayView");

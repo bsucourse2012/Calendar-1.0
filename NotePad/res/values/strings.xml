@@ -39,10 +39,7 @@
     <string name="unsaved_changes_message">Would you like to save this Note?</string>
     <string name="name_of_new_teg">Enter a name of new teg:</string>
     <string name="discard">Discard</string>
-    <string name="green">Green</string>
-    <string name="red">  Red  </string>
-    <string name="blue">  Blue </string>
-    <string name="start_data">Start data</string>
+      <string name="start_data">Start data</string>
     <string name="end_data">  End data</string>
     <string name="start_time">Start time</string>
     <string name="end_time">  End time</string>
@@ -58,4 +55,16 @@
    <string name="custom">Customize</string>
    <string name="alarm_">Alarm :</string>
    <string name="tegs_">"Teg: "</string>
+   <string name="add_delete_passwod">"Add/Delete password "</string>
+   <string name="upload_save">"synch"</string>
+   <string name="enter_password_">  Enter password  :</string>
+   
+   <string name="settings_password2">Password (again):</string>
+    <string name="settings_password">Password:</string>
+    <string name="settings_pwd_set">Password Set</string>
+    <string name="settings_pwd_not_set">No Password Set</string>
+    <string name="settings_pwd_not_equal">Passwords do not math, please try again.</string>
+    <string name="settings_pwd_equal">Password match</string>
+    
+    <string name="settings_button_pwd">Set Password</string>
 </resources>

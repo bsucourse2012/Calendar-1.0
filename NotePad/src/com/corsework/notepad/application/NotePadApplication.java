@@ -1,6 +1,7 @@
 package com.corsework.notepad.application;
 
 import java.util.Calendar;
+import java.util.SortedMap;
 
 import com.corsework.notepad.entities.dao.DB;
 import com.corsework.notepad.entities.dao.NoteDao;
@@ -11,7 +12,9 @@ import android.util.Log;
 import android.widget.TabHost;
 
 public class NotePadApplication extends Application {
-
+	public static final String NOTE_PREFERENCES="NotePrefs"; 
+	public static final String NOTE_PREFERENCES_PASSWORD = "Password";
+	   
 	public static final String KEY_TITLE = "title";
     public static final String KEY_BODY = "body";
     public static final String KEY_ROWID = "_id";
