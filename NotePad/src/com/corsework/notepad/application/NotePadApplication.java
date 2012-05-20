@@ -43,9 +43,10 @@ public class NotePadApplication extends Application {
 	
 	public void onCreate() {
 		super.onCreate();
+		
 		calcr = Calendar.getInstance();
-
-		Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",calcr).toString());
+		calcr.setFirstDayOfWeek(Calendar.SUNDAY);
+		Log.d("create", android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",calcr).toString());
 		noteD = new NoteDao(this);
 		reminderD = new ReminderDao(this);
 		bellD = new BellDao(this);

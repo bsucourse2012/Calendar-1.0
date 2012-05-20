@@ -26,7 +26,7 @@ public class WeekAdapter extends BaseAdapter{
 
 	public MonthDisplayHelper mHelper;
     
-    public WeekAdapter(Context c, Calendar monthCalendar,int week) {
+    public WeekAdapter(Context c, Calendar monthCalendar) {
     	month = monthCalendar;
     	mContext = c;
     	itemRem = new ArrayList<Reminder>();
@@ -117,17 +117,18 @@ public class WeekAdapter extends BaseAdapter{
         	}
         }
         Calendar cal2 = (Calendar) month.clone();
-        Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
         cal2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        
          Date strt = cal2.getTime();
         cal2.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        
         Date fin = cal2.getTime();
-        strt.setHours(0);
-        strt.setMinutes(0);
-        strt.setSeconds(0);
-    	fin.setHours(23);
-    	fin.setMinutes(59);
-    	fin.setSeconds(59);
+        strt.setHours(23);
+        strt.setMinutes(59);
+        strt.setSeconds(59);
+    	fin.setHours(0);
+    	fin.setMinutes(0);
+    	fin.setSeconds(0);
     	Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",strt).toString());
     	 Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",fin).toString());
          
@@ -138,8 +139,7 @@ public class WeekAdapter extends BaseAdapter{
         	if (d1.before(strt))
         		clmst =1;
         	else{
-        		
-        		clmst = d1.getDay()+1;
+        		clmst = d1.getDay()+1;                
 //        		for (int i=1; i<n.length; i++)
 //        			if (n[i]==d1.getDate()){
 //        				clmst = i+1; break;

@@ -114,7 +114,7 @@ public class AddReminderActivity extends Activity {
 		         	if (n.getPrior()!=-1)
 		         	{
 		         		alarmD.setTimeInMillis(n.getPrior()); 
-		         		mAlmText.setText(android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",alarmD));
+		         		mAlmText.setText(android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",alarmD));
 		         		alarmItem = 100;
 		         	}
 	        	 }
@@ -125,8 +125,8 @@ public class AddReminderActivity extends Activity {
         		 endD.setTime(time);
         	 }
 
-        stTButton.setText(android.text.format.DateFormat.format("hh:mm",srtD));
-        enTButton.setText(android.text.format.DateFormat.format("hh:mm",endD));
+        stTButton.setText(android.text.format.DateFormat.format("hh:mmaa",srtD));
+        enTButton.setText(android.text.format.DateFormat.format("hh:mmaa",endD));
         stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));
         enDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",endD));
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -312,7 +312,7 @@ public class AddReminderActivity extends Activity {
 					    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 					    	srtD.setHours(hourOfDay);
 					    	srtD.setMinutes(minute);
-					    	stTButton.setText(android.text.format.DateFormat.format("hh:mm",srtD));//.getHours()+":"+srtD.getMinutes());
+					    	stTButton.setText(android.text.format.DateFormat.format("hh:mmaa",srtD));//.getHours()+":"+srtD.getMinutes());
 						    }
 						  } ,srtD.getHours(),srtD.getMinutes(), true);
 			        return tpd;
@@ -322,7 +322,7 @@ public class AddReminderActivity extends Activity {
 					    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 					    	endD.setHours(hourOfDay);
 					    	endD.setMinutes(minute);
-					    	enTButton.setText(android.text.format.DateFormat.format("hh:mm",endD));//.getHours()+":"+endD.getMinutes());
+					    	enTButton.setText(android.text.format.DateFormat.format("hh:mmaa",endD));//.getHours()+":"+endD.getMinutes());
 						    }
 						  } ,endD.getHours(),endD.getMinutes(), true);
 			        return tpd2;
@@ -376,7 +376,7 @@ public class AddReminderActivity extends Activity {
 		                public void onClick(DialogInterface dialog, int which) {
 		                	alarmD.set(datepic.getYear(), datepic.getMonth(), datepic.getDayOfMonth(), timepic.getCurrentHour(), timepic.getCurrentMinute());//= new Date(datepic.getYear(), datepic.getMonth(), datepic.getDayOfMonth(), timepic.getCurrentHour(), timepic.getCurrentMinute());
 
-		                	mAlmText.setText(android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",alarmD));
+		                	mAlmText.setText(android.text.format.DateFormat.format("hh:mmaa  dd-MM-yyyy",alarmD));
 			            	    
 		                }
 		            });
@@ -442,7 +442,7 @@ public class AddReminderActivity extends Activity {
 ////					PendingIntent.FLAG_CANCEL_CURRENT);
 //
 //		//	am.cancel(pi);
-//			Log.d("log",android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",cal).toString());
+//			Log.d("log",android.text.format.DateFormat.format("hh:mmaa  dd-MM-yyyy",cal).toString());
 //			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
 //		}
 		

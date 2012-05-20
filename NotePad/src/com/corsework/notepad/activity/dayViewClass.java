@@ -124,8 +124,8 @@ private void calUpd() {
 	dat2.setHours(23);
 	dat2.setMinutes(59);
 	dat2.setSeconds(59);
-	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat).toString());
-	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat2).toString());
+	Log.d("log cald", android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",dat).toString());
+	Log.d("log cald", android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",dat2).toString());
     
 	ArrayList<Reminder> rec;
 	rec = remiD.getByStEndDate(dat, dat2);

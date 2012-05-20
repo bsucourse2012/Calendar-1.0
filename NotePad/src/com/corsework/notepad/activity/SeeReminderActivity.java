@@ -47,8 +47,8 @@ public class SeeReminderActivity extends Activity {
 		         mTegsText.setText(n.getType());
 		         mCrText.setText(android.text.format.DateFormat.format("dd-MM-yyyy",n.getSys().getCr()));
 		         mMdText.setText(android.text.format.DateFormat.format("dd-MM-yyyy",n.getSys().getMd()));
-		         mStrText.setText(android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",n.getStrDate())+" - "+
-		        		 android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",n.getEndDate()));
+		         mStrText.setText(android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",n.getStrDate())+" - "+
+		        		 android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",n.getEndDate()));
 		         if (n.getPrior()!=-1)
 		        	 mAlmText.setText(android.text.format.DateFormat.format("dd-MM-yyyy",n.getPrior()));
 		         else mAlmText.setText(getResources().getString(R.string.none));
@@ -66,10 +66,10 @@ public class SeeReminderActivity extends Activity {
 			 mTegsText.setText(n.getType());
 			 mCrText.setText(android.text.format.DateFormat.format("dd-MM-yyyy",n.getSys().getCr()));
 			 mMdText.setText(android.text.format.DateFormat.format("dd-MM-yyyy",n.getSys().getMd()));
-			 mStrText.setText(android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",n.getStrDate())+" - "+
-	        		 android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",n.getEndDate()));
+			 mStrText.setText(android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",n.getStrDate())+" - "+
+	        		 android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",n.getEndDate()));
 	         if (n.getPrior()!=-1)
-	        	 mAlmText.setText(android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",n.getPrior()));
+	        	 mAlmText.setText(android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",n.getPrior()));
 	         else mAlmText.setText(getResources().getString(R.string.none));
 			 setTitle(n.getType());
 		 }else finish();

@@ -80,12 +80,17 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
 	        else {
 	        	// mark current day as focused
 	        	
-	        	if(month.get(Calendar.YEAR)== selectedDate.get(Calendar.YEAR) && month.get(Calendar.MONTH)== selectedDate.get(Calendar.MONTH) && 
-	        			days[position].equals(""+selectedDate.get(Calendar.DAY_OF_MONTH))) {
+	        	if((month.get(Calendar.YEAR)== selectedDate.get(Calendar.YEAR)) && 
+	        			(month.get(Calendar.MONTH)== selectedDate.get(Calendar.MONTH)) && 
+	        			(days[position].equals(""+selectedDate.get(Calendar.DAY_OF_MONTH)))) {
 	        		v.setBackgroundResource(R.drawable.item_background_focused);
+
+	            	dayView.setTextColor(Color.WHITE);
 	        	}
 	        	else {
+
 	        		v.setBackgroundResource(R.drawable.list_item_background);
+	        		
 	        	}
 	        }
         

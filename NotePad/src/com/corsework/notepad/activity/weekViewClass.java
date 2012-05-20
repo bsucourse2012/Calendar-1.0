@@ -7,9 +7,7 @@ import java.util.Date;
 import com.corsework.notepad.adapter.WeekAdapter;
 import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.dao.ReminderDao;
-import com.corsework.notepad.entities.program.Note;
 import com.corsework.notepad.entities.program.Reminder;
-import com.corsework.notepad.view.NoteListItem;
 import com.corsework.notepad.view.WeekTextView;
 
 import android.app.Activity;
@@ -17,19 +15,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.util.MonthDisplayHelper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class weekViewClass extends Activity {
 	
-
-	int week;
 	Calendar cal;
 	WeekAdapter adapter;
 	TextView prevweek,nextweek;
@@ -43,8 +37,8 @@ public class weekViewClass extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weekview_);
         cal = ((NotePadApplication)getApplication()).calcr;//Calendar.getInstance();
-        week = cal.get(Calendar.WEEK_OF_YEAR);
-        adapter = new WeekAdapter(this,cal,week);
+    //    week = cal.get(Calendar.WEEK_OF_YEAR);
+        adapter = new WeekAdapter(this,cal);
         remiD = ((NotePadApplication)getApplication()).getReminderD();
         items = new ArrayList<String>();
 //	    handler = new Handler();
@@ -89,12 +83,12 @@ public class weekViewClass extends Activity {
 		grid.setOnItemClickListener(new OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		    	if (position>8 && position%8!=0){
-		        	
+		    		((NotePadApplication)getApplication()).calcr = cal;	
 		    		if (((WeekTextView)v).isF()){
 		    			Intent i = new Intent(weekViewClass.this, DayListViewClass.class);
 			    		Calendar c2 = (Calendar) cal.clone();
 			    		c2.set(Calendar.DAY_OF_WEEK, position%8);
-			    		Log.d("click", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",c2).toString());
+			    		Log.d("click", android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",c2).toString());
 		    			i.putExtra(NotePadApplication.KEY_SRTD,c2.getTimeInMillis());
 		    			startActivity(i);
 		    		}
@@ -115,8 +109,8 @@ public class weekViewClass extends Activity {
 		    	else
 		    		if (position>=1 && position<=7){
 		    			cal.set(Calendar.DAY_OF_WEEK, position%8);
-		    			Log.d("log click", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal).toString());   			
-		    			((NotePadApplication)getApplication()).calcr = cal;	
+		    			Log.d("log click", android.text.format.DateFormat.format("hh:mmaa dd-MM-yyyy",cal).toString());   			
+		    			//((NotePadApplication)getApplication()).calcr = cal;	
 		    	        ((NotePadApplication)getApplication()).tabH.setCurrentTabByTag("dayView");
 		    		}
 		    }
@@ -125,6 +119,7 @@ public class weekViewClass extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		 cal =((NotePadApplication)getApplication()).calcr;
 		refreshCalendar();
 	}
 	public void refreshCalendar()
@@ -145,11 +140,9 @@ private void calUpd() {
  //   Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
     cal2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
  //   Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
-    
 	Date dat =  cal2.getTime();
     cal2.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
  //   Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
-    
 	Date dat2 = cal2.getTime();
 	dat.setHours(0);
 	dat.setMinutes(0);
@@ -159,7 +152,6 @@ private void calUpd() {
 	dat2.setSeconds(59);
 //	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat).toString());
 //	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat2).toString());
-//    
 	items.clear();
 	ArrayList<Reminder> rec;
 	rec = remiD.getByStEndDate(dat, dat2);//remiD.getByCrDate(dat, dat2);
@@ -170,39 +162,4 @@ private void calUpd() {
 //	adapter.notifyDataSetChanged();
 	}
 //
-//public Runnable calendarUpdater = new Runnable() {
-//		
-//		
-//		public void run() {
-//			 
-//			Calendar cal2 = (Calendar) cal.clone();
-//		    Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
-//		    cal2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-//		    Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
-//		    
-//			Date dat =  cal2.getTime();
-//		    cal2.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-//		    Log.d("log cal", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",cal2).toString());
-//		    
-//			Date dat2 = cal2.getTime();
-//			dat.setHours(0);
-//			dat.setMinutes(0);
-//			dat.setSeconds(0);
-//			dat2.setHours(23);
-//			dat2.setMinutes(59);
-//			dat2.setSeconds(59);
-//			Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat).toString());
-//			Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat2).toString());
-//		    
-//			items.clear();
-//			ArrayList<Reminder> rec;
-//			rec = remiD.getByStEndDate(dat, dat2);
-//			Log.d("log cal", rec.toString());
-//		    
-//			
-//			adapter.setItems(rec);
-//			adapter.notifyDataSetChanged();
-//		}
-//	};
-//	
 }
