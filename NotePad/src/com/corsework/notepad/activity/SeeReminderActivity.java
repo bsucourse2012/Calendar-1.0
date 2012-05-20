@@ -111,6 +111,8 @@ public class SeeReminderActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				Reminder note = ((NotePadApplication)getApplication()).getReminderD().getById(mRowId);
 				((NotePadApplication)getApplication()).getReminderD().delete(note);
+				((NotePadApplication)getApplication()).getBellD().deleteByRemId(note.getId());
+				((NotePadApplication)getApplication()).startNotify(-1);
                finish();
 			}
 		})

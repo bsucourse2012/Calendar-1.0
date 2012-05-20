@@ -1,13 +1,21 @@
 package com.corsework.notepad.application;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.SortedMap;
 
+import com.corsework.notepad.activity.TimeNotification;
+import com.corsework.notepad.entities.dao.BellDao;
 import com.corsework.notepad.entities.dao.DB;
 import com.corsework.notepad.entities.dao.NoteDao;
 import com.corsework.notepad.entities.dao.ReminderDao;
+import com.corsework.notepad.entities.program.Bell;
+import com.corsework.notepad.entities.program.Reminder;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.TabHost;
 
@@ -24,10 +32,13 @@ public class NotePadApplication extends Application {
 
 	private NoteDao noteD;
 	private ReminderDao reminderD;
+	private BellDao bellD;
 	public Calendar calcr;
 	public TabHost tabH;
 	boolean lookNote;
-	
+
+	private AlarmManager am;
+    
 	private DB dbc;
 	
 	public void onCreate() {
@@ -37,6 +48,7 @@ public class NotePadApplication extends Application {
 		Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",calcr).toString());
 		noteD = new NoteDao(this);
 		reminderD = new ReminderDao(this);
+		bellD = new BellDao(this);
 		lookNote = true;
 		
         setDbc(new DB(this));
@@ -60,6 +72,14 @@ public class NotePadApplication extends Application {
 		this.reminderD = reminderD;
 	}
 
+	public BellDao getBellD() {
+		return bellD;
+	}
+
+	public void setBellD(BellDao bellD) {
+		this.bellD = bellD;
+	}
+	
 	public DB getDbc() {
 		return dbc;
 	}
@@ -83,4 +103,41 @@ public class NotePadApplication extends Application {
 	public void setLookNote(boolean lookNote) {
 		this.lookNote = lookNote;
 	}
+	public void startNotify(long ids){//(Calendar cal,long pos){
+		
+		if (ids!=-1){
+			Bell b=bellD.getById(ids);
+       	 	b.setActive(false);
+       	 	bellD.update(b);
+		}
+//		Bell b = bellD.getByRemId(pos);
+//		if (b == null){
+//			b= new Bell(cal.getTimeInMillis(),pos,true);
+//			b = bellD.create(b);
+//		}else{
+//			b.setActive(true);
+//			b.setDate(cal.getTimeInMillis());
+//			b = bellD.update(b);
+//		}
+		Bell b = bellD.getNextBell(); 
+		if (b==null) return;
+		Log.d("bell getById", b.toString());        
+		
+		Reminder rem = reminderD.getById(b.getIdrem());
+		if (rem==null) return;
+		am  = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(this, TimeNotification.class);
+		intent.putExtra(KEY_ROWID, rem.getId());
+		intent.putExtra(KEY_TITLE, rem.getType());
+		intent.putExtra(KEY_BODY, rem.getDescr());
+		intent.putExtra(KEY_SRTD, b.getId());
+		
+		PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 
+				PendingIntent.FLAG_CANCEL_CURRENT);
+		
+		am.cancel(pi);
+		Log.d("add to time",android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",b.getDate()).toString());
+		am.set(AlarmManager.RTC_WAKEUP, b.getDate(), pi);
+	}
+
 }

@@ -29,7 +29,11 @@
         <activity android:name=".DeleteNoteActivity"></activity>
         <activity android:name=".AddReminderActivity"></activity>
         <activity android:name=".AddTegsActivity"></activity>
-        <receiver android:name=".TimeNotification" />
+        <receiver android:name=".TimeNotification"> 
+            <intent-filter>
+			<action android:name="com.corsework.notepad.activity.ACTION_TIME_NOIFICATION"/>
+			</intent-filter>
+		</receiver>
         <activity android:name=".DayListViewClass"></activity>
         
     </application>

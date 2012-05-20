@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.corsework.notepad.adapter.ListAdapterDel;
 import com.corsework.notepad.application.NotePadApplication;
+import com.corsework.notepad.entities.dao.BellDao;
 import com.corsework.notepad.entities.dao.NoteDao;
 import com.corsework.notepad.entities.dao.ReminderDao;
 import com.corsework.notepad.entities.program.Note;
@@ -22,6 +23,7 @@ public class DeleteNoteActivity extends ListActivity {
 	private NotePadApplication app;
 	private NoteDao noteD;
 	private ReminderDao remD;
+	private BellDao bellD;
 	private ListAdapterDel adapter;
 	private CheckedTextView chechedText;
 	private Button delbutton;
@@ -38,6 +40,7 @@ public class DeleteNoteActivity extends ListActivity {
         lookNote = app.isLookNote();
         noteD= app.getNoteD();
         remD = app.getReminderD();
+        bellD = app.getBellD();
         adapter = new ListAdapterDel(noteD.getAll(),remD.getAll(),this);
         adapter.setlNote(lookNote);
         setListAdapter(adapter);
@@ -61,6 +64,7 @@ public class DeleteNoteActivity extends ListActivity {
 			public void onClick(View v) {
 				deleteArD();
 				arDel.clear();
+				chechedText.setChecked(false);
 				adapter.setCheckAll(false);
 				adapter.setBolic(true);
 				delbutton.setEnabled(false);
@@ -134,9 +138,13 @@ public class DeleteNoteActivity extends ListActivity {
 		if (lookNote)
 			for (Long l: arDel)
 				noteD.deleteById(l);
-		else
-			for (Long l: arDel)
+		else{
+			for (Long l: arDel){
 				remD.deleteById(l);
+				bellD.deleteByRemId(l);
+			}
+			app.startNotify(-1);
+		}
 			
 	}
 }

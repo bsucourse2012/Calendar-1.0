@@ -14,6 +14,8 @@ public class BellHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_CREATED = "_created";
 	public static final String COLUMN_MODIFIED = "_modified";
 	public static final String COLUMN_DATE = "date";
+	public static final String COLUMN_ACTIVE = "activ";
+	public static final String COLUMN_IDREM = "idreminder";
 	
 	/**
 	 * Database info.
@@ -27,9 +29,11 @@ public class BellHelper extends SQLiteOpenHelper {
 	private static final String TABLE_CREATE = 
 			"create table " + TABLE_NAME + "( " +
 			COLUMN_ID + " integer primary key autoincrement, " +
-			COLUMN_CREATED + " integer, " +
-			COLUMN_MODIFIED + " integer, " +
-			COLUMN_DATE + " integer);";
+			COLUMN_CREATED + " long, " +
+			COLUMN_MODIFIED + " long, " +
+			COLUMN_DATE + " long," +
+			COLUMN_ACTIVE + " string,"+
+			COLUMN_IDREM + " long );";
 	
 	public BellHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

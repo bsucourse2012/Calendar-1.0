@@ -55,7 +55,8 @@
    <string name="custom">Customize</string>
    <string name="alarm_">Alarm :</string>
    <string name="tegs_">"Teg: "</string>
-   <string name="add_delete_passwod">"Add/Delete password "</string>
+   <string name="add_passwod">"Add password "</string>
+   <string name="delete_passwod">"Delete password "</string>
    <string name="upload_save">"synch"</string>
    <string name="enter_password_">  Enter password  :</string>
    

@@ -81,8 +81,8 @@ public class ViewNotePadActivity extends TabActivity {
          passwordDialogBuilder.setCancelable(false);
     	 final AlertDialog dialog;
          // установка кнопок и слушателей для них
-         passwordDialogBuilder.setPositiveButton("ОК", onClickListener_DialogResetPin);
-         passwordDialogBuilder.setNeutralButton("Отмена", onClickListener_DialogResetPin);
+         passwordDialogBuilder.setPositiveButton(android.R.string.ok, onClickListener_DialogResetPin);
+         passwordDialogBuilder.setNeutralButton(android.R.string.cancel, onClickListener_DialogResetPin);
          // создание и показ диалога
          dialog = passwordDialogBuilder.create();
          dialog.show();
@@ -98,7 +98,7 @@ public class ViewNotePadActivity extends TabActivity {
                  	dialog.dismiss();
                  }
                  else {
-                 	Toast.makeText(ViewNotePadActivity.this,"password not right", Toast.LENGTH_LONG).show();
+                 	Toast.makeText(ViewNotePadActivity.this,R.string.settings_pwd_not_equal, Toast.LENGTH_LONG).show();
                  	//ViewNotePadActivity.this.finish();
                  }
              }

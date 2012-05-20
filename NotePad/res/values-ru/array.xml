@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="listBells">
+   <item>Нету</item>
+   <item>В момент времени</item>
+   <item>за 5 мин</item>
+   <item>за 15 мин</item>
+   <item>за час</item>
+   <item>за день</item>
+   <item>Другой</item>
+</string-array>
+ </resources>

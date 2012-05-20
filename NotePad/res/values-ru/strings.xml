@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NotePad</string>
+    
+    <string name="add_note_button">Новая Заметка</string>
+    <string name="add_reminder">Новое Напоминание</string>
+    <string name="no_notes">Нет записей</string>
+	<string name="add_new_tegs">Новый Тег</string>
+    
+    <string name="next_month">>></string>
+    <string name="previos_month">&lt;&lt;</string>
+    
+    <string name="menu_search_by_teg">Поиск по тегам</string>
+    <string name="settings">Настройки</string>
+    <string name="menu_delete">Удалить</string>
+    <string name="add_tegs">Добавить Тег</string>
+    <string name="edit_note">Редактировать Заметку</string>
+    <string name="edit_reminder">Редактировать Напоминание</string>
+    <string name="show_reminder">Все Напоминания</string>
+    <string name="show_note">Все Заметки</string>
+    
+	<string name="stweek">Неделя</string>
+	
+	<string name="body">Содержание</string>
+	<string name="title">Заголовок</string>	
+	
+    <string name="created_rec">"Зоздано:  "</string>
+    <string name="modifed_rec">"Изменено: "</string>
+    <string name="time_length">"Продолжительность: "</string>
+    <string name="all_note">Все Заметки</string>
+    
+    
+    <string name="delete_note_information">Удаление Записи(ей)</string>
+    <string name="delete_note_message">Вы уверены, что хотите удалить запись?</string>
+    <string name="voice">Голосовой ввод</string>
+    
+    <string name="unsaved_changes_title">Несохраненные изменения</string>
+    <string name="unsaved_changes_message">Вы хотите сохранить запить?</string>
+    <string name="name_of_new_teg">Введите имя нового тега:</string>
+    <string name="discard">нет</string>
+      <string name="start_data">Дата начала</string>
+    <string name="end_data">  Дата конца</string>
+    <string name="start_time">Время начала</string>
+    <string name="end_time">  Время конца</string>
+    <string name="no_signal">Нет будильника</string>
+    <string name="add_signal">Установить будильник</string>
+    
+   <string name="none">Нету</string>
+   <string name="on_time">В момент времени</string>
+   <string name="f_min">за 5 мин</string>
+   <string name="fif_min">за 15 мин</string>
+   <string name="hour_b">за час</string>
+   <string name="day_b">за день</string>
+   <string name="custom">Другой</string>
+   <string name="alarm_">Будильник :</string>
+   <string name="tegs_">"Тег : "</string>
+   <string name="add_passwod">"Добавить пароль"</string>
+   <string name="delete_passwod">"Удалить пароль"</string>
+   <string name="upload_save">"Сохранить/загрузить с сервера"</string>
+   <string name="enter_password_">  Введите пароль    :</string>
+   
+   <string name="settings_password2">Пароль (повторите):</string>
+    <string name="settings_password">Пароль:</string>
+    <string name="settings_pwd_set">пароль установлен</string>
+    <string name="settings_pwd_not_set">Пароль не установлен</string>
+    <string name="settings_pwd_not_equal">Пароли не совпали, попробуйте еще.</string>
+    <string name="settings_pwd_equal">Пароли совпали</string>
+    
+    <string name="settings_button_pwd">Установить пароль</string>
+</resources>

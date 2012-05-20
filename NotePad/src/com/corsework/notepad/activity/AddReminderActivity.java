@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.corsework.notepad.application.NotePadApplication;
+import com.corsework.notepad.entities.dao.BellDao;
 import com.corsework.notepad.entities.dao.DB;
+import com.corsework.notepad.entities.program.Bell;
 import com.corsework.notepad.entities.program.Reminder;
 
 import android.app.Activity;
@@ -29,7 +31,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -62,6 +63,7 @@ public class AddReminderActivity extends Activity {
 	protected TextView mTegText;
 	protected TextView mAlmText;
 	private AlertDialog unsavedChangesDialog;
+	private BellDao bdao;
 
 	private Button voiceButton;
 	private Button stDButton;
@@ -77,6 +79,7 @@ public class AddReminderActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_reminder);
+        bdao =((NotePadApplication)getApplication()).getBellD();
         srtD = new Date();
         endD = new Date((new Date()).getTime() + 10000);
         alarmD = Calendar.getInstance();
@@ -110,7 +113,7 @@ public class AddReminderActivity extends Activity {
 		         	endD = n.getEndDate();
 		         	if (n.getPrior()!=-1)
 		         	{
-		         		alarmD.setTimeInMillis(n.getPrior()); //= new Date(n.getPrior());
+		         		alarmD.setTimeInMillis(n.getPrior()); 
 		         		mAlmText.setText(android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",alarmD));
 		         		alarmItem = 100;
 		         	}
@@ -122,10 +125,10 @@ public class AddReminderActivity extends Activity {
         		 endD.setTime(time);
         	 }
 
-        stTButton.setText(android.text.format.DateFormat.format("hh:mm",srtD));//.getHours()+":"+srtD.getMinutes());
-        enTButton.setText(android.text.format.DateFormat.format("hh:mm",endD));//.getHours()+":"+endD.getMinutes());
-        stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));//.getDate()+"/"+srtD.getMonth()+"/"+(srtD.getYear()+1900));
-        enDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",endD));//.getDate()+"/"+endD.getMonth()+"/"+(endD.getYear()+1900));
+        stTButton.setText(android.text.format.DateFormat.format("hh:mm",srtD));
+        enTButton.setText(android.text.format.DateFormat.format("hh:mm",endD));
+        stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));
+        enDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",endD));
         confirmButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -226,10 +229,21 @@ public class AddReminderActivity extends Activity {
         	n.setPrior(alarmD.getTimeInMillis());
 
         }else n.setPrior(-1);
-        n=((NotePadApplication)getApplication()).getReminderD().update(n);
-        Log.d("log", n.toString());
-        if (alarmItem!=0){
-        	startNotify(alarmD,n.getId(),n.getType(),n.getDescr());
+	    n=((NotePadApplication)getApplication()).getReminderD().update(n);
+	    Log.d("log", n.toString());
+	    
+	    if (alarmItem!=0){
+	      	Bell b = bdao.getByRemId(n.getId());
+	    	if (b == null){
+	    		b= new Bell(alarmD.getTimeInMillis(),n.getId(),true);
+	    		b = bdao.create(b);
+	    	}else{
+	    		b.setActive(true);
+	    		b.setDate(alarmD.getTimeInMillis());
+	    		b = bdao.update(b);
+	    	}
+        	((NotePadApplication)getApplication()).startNotify(-1);//(alarmD,n.getId());
+        	//startNotify(alarmD,n.getId(),n.getType(),n.getDescr());
         }
         finish();
 	}
@@ -416,20 +430,21 @@ public class AddReminderActivity extends Activity {
 
 		};
 
-		private void startNotify(Calendar cal,long pos,String teg,String text){
-			am  = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-			Intent intent = new Intent(this, TimeNotification.class);
-			intent.putExtra(NotePadApplication.KEY_ROWID, pos);
-			intent.putExtra(NotePadApplication.KEY_TITLE, teg);
-			intent.putExtra(NotePadApplication.KEY_BODY, text);
-			
-			PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 
-					PendingIntent.FLAG_CANCEL_CURRENT);
-			
-		//	am.cancel(pi);
-			Log.d("log",android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",cal).toString());
-			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
-		}
+//		private void startNotify(Calendar cal,long pos,String teg,String text){
+//			am  = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//			Intent intent = new Intent(TimeNotification.ACTION_TIME_NOIFICATION);//(this, TimeNotification.class);
+//			intent.putExtra(NotePadApplication.KEY_ROWID, pos);
+//			intent.putExtra(NotePadApplication.KEY_TITLE, teg);
+//			intent.putExtra(NotePadApplication.KEY_BODY, text);
+//			
+//			PendingIntent pi= PendingIntent.getBroadcast(this, 0, intent, 0);
+////			PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 
+////					PendingIntent.FLAG_CANCEL_CURRENT);
+//
+//		//	am.cancel(pi);
+//			Log.d("log",android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",cal).toString());
+//			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
+//		}
 		
 		void setAlarmD(int pos){
 			  switch (pos) {

@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.corsework.notepad.entities.program.Bell;
+import com.corsework.notepad.entities.program.Note;
+import com.corsework.notepad.entities.program.Reminder;
 import com.corsework.notepad.entities.program.Sys;
 import com.corsework.notepad.errors.Err;
 import com.corsework.notepad.errors.LastErrors;
@@ -33,6 +35,7 @@ public class BellDao {
 	 * 				or null if record was not created.
 	 */
 	public Bell create(Bell bell) {
+		Log.d("create bell",""+bell.isActive());
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();		 
         ContentValues values = this.bellToValues(bell); 
         long id = db.insert(dbHelper.TABLE_NAME, null, values);
@@ -74,7 +77,7 @@ public class BellDao {
 	        }	        
 		}
 	}
-	
+
 	/**
 	 * Gets the bell from the table by its id.
 	 * @param id The id of the bell to get.
@@ -98,7 +101,24 @@ public class BellDao {
 			return bell;
 		}
 	}
-	
+	public Bell getByRemId(long id) {
+		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_IDREM + "=?",
+                new String[] { String.valueOf(id) }, null, null, null);
+		
+		if (cursor == null) {
+			Log.d("error!!! Bell.getById:", "No Bell with such id was found.");
+			return null;
+		} else if (cursor.getCount() != 1) {
+			Log.d("error!!! Bell.getById:", "More then one bell was found by id.");
+			return null;
+		} else {
+			cursor.moveToFirst();        
+			Bell bell = this.cursorToBell(cursor);        
+			Log.d("good. Bell getById:", bell.toString());        
+			return bell;
+		}
+	}
 	/**
 	 * Gets bells by its ids. Null bells are ignored.
 	 * @param ids Array of bells ids.
@@ -133,6 +153,20 @@ public class BellDao {
         return res;
 	}
 	
+	public int deleteByRemId(Long id) {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
+        int res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_IDREM + " = ?",
+                new String[] { String.valueOf(id) });
+        db.close();
+        
+        if (res != 1) {
+        	Log.d("error!!! Bell.deleteById:", "Must delete only one row at once");
+        } else {
+        	Log.d("good. Bell deleted:", "id = " + id);
+        }
+        return res;
+	}
+		
 	/**
 	 * Deletes bell from the database.
 	 * Or do nothing, if bell's id == null.
@@ -182,6 +216,23 @@ public class BellDao {
         return bells;
 	}
 	
+	public Bell getNextBell() {
+		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ACTIVE + "=?",
+					new String[] { "true" }, null, null,dbHelper.COLUMN_DATE, null);		
+		if (cursor == null) {
+				Log.e("error!!! Reminder.getById:", "No Bell with such id was found.");
+				return null;
+		} else {
+			if (cursor.moveToFirst()){        
+			Bell b = this.cursorToBell(cursor);        
+			Log.d("bell getById", b.toString());        
+			return b;
+			}
+			else return null;
+		}
+	}
+	
 	/**
 	 * Transforms cursor into Bell.
 	 * @param cursor Cursor to transform.
@@ -189,14 +240,16 @@ public class BellDao {
 	 */
 	private Bell cursorToBell(Cursor cursor) {
 		Long id = cursor.getLong(0);
-		
+	
 		Date cr = new Date(cursor.getLong(1));
 		Date md = new Date(cursor.getLong(2));
 		Sys sys = new Sys(cr, md);
 		
-		Date date = new Date(cursor.getLong(3));
-		
-		Bell bell = new Bell(id, sys, date);
+		long date = cursor.getLong(3);
+		String  s = cursor.getString(4);
+		boolean act = Boolean.parseBoolean(s);
+		long idr = cursor.getLong(5);
+		Bell bell = new Bell(id, sys, date,idr,act);
         return bell;
 	}
 	
@@ -209,7 +262,9 @@ public class BellDao {
 		ContentValues values = new ContentValues();
     	values.put(dbHelper.COLUMN_CREATED, bell.getSys().getCr().getTime());
     	values.put(dbHelper.COLUMN_MODIFIED, bell.getSys().getMd().getTime());
-        values.put(dbHelper.COLUMN_DATE, bell.getDate().getTime());
+        values.put(dbHelper.COLUMN_DATE, bell.getDate());
+        values.put(dbHelper.COLUMN_ACTIVE, ""+bell.isActive());
+        values.put(dbHelper.COLUMN_IDREM, bell.getIdrem());
         return values;
 	}
 

@@ -32,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -54,6 +55,7 @@ public class listViewClass extends ListActivity {
 	private static final int ADD_TEG_ACT = 2346;
 
 	static final int PASSWORD_DIALOG_ID=1;
+	static final int PASSWORD_DELETE_DIALOG_ID=2;
 	final int DIALOG_TEGS = 10;
 
 	private NotePadApplication app;
@@ -110,10 +112,10 @@ public class listViewClass extends ListActivity {
 
 //		menu.add(0, MENU_SETTINGS, 0, R.string.settings).setIcon(
 //				android.R.drawable.ic_menu_preferences).setShortcut('9', 's');
-
-
-		menu.add(0, MENU_PASSWORD, 0, R.string.add_delete_passwod).setIcon(android.R.drawable.ic_secure);
-
+		if (mNoteSettings.contains(NotePadApplication.NOTE_PREFERENCES_PASSWORD)){
+        	menu.add(0, MENU_PASSWORD, 0, R.string.delete_passwod).setIcon(android.R.drawable.ic_secure);
+		}else
+			menu.add(0, MENU_PASSWORD, 0, R.string.add_passwod).setIcon(android.R.drawable.ic_secure);
 		menu.add(0, MENU_LOAD_SAVE, 0, R.string.upload_save).setIcon(android.R.drawable.ic_popup_sync);
 		return true;
 	}
@@ -125,7 +127,12 @@ public class listViewClass extends ListActivity {
 			 mi.setTitle(R.string.show_reminder);
 		 else 
 			 mi.setTitle(R.string.show_note);
-				
+		 mi = menu.findItem(MENU_PASSWORD);
+		 if (mNoteSettings.contains(NotePadApplication.NOTE_PREFERENCES_PASSWORD)){
+	        	mi.setTitle(R.string.delete_passwod);
+			}else
+				mi.setTitle(R.string.add_passwod);
+		
 	      return super.onPrepareOptionsMenu(menu);
 	    }
 	 @Override
@@ -155,13 +162,57 @@ public class listViewClass extends ListActivity {
 	        		showDialog(DIALOG_TEGS);
 	                return true;
 	            case MENU_PASSWORD:
-	            	showDialog(PASSWORD_DIALOG_ID);
+	            	if (mNoteSettings.contains(NotePadApplication.NOTE_PREFERENCES_PASSWORD)){
+	            	  	passwD();
+	            	}else  	showDialog(PASSWORD_DIALOG_ID);
 	            	return true;
 	        }
 
 	        return super.onMenuItemSelected(featureId, item);
 	    }
+	  private void passwD() {
+			// TODO Auto-generated method stub
+	    	 LayoutInflater infl = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	         final View passwordDialogLayout = infl.inflate(R.layout.enter_password, (ViewGroup) findViewById(R.id.root1));
 
+	         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(this);
+	         passwordDialogBuilder.setView(passwordDialogLayout);
+	         final TextView passwText = (TextView) passwordDialogLayout.findViewById(R.id.EditText_Password);
+	         
+	    	 final AlertDialog dialog;
+	         // установка кнопок и слушателей для них
+	    	 passwordDialogBuilder.setTitle(R.string.delete_passwod);
+	         passwordDialogBuilder.setPositiveButton(android.R.string.ok, onClickListener_DialogResetPin);
+	         passwordDialogBuilder.setNeutralButton(android.R.string.cancel, onClickListener_DialogResetPin);
+	         // создание и показ диалога
+	         dialog = passwordDialogBuilder.create();
+	         dialog.show();
+	         // КОГДА ДИАЛОГ ПОКАЗАН изменяем слушателя для кнопки ОК
+	         // теперь диалог не будет закрывать при нажатии на кнопку ОК
+	         Button btnOK = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+	         btnOK.setOnClickListener( new View.OnClickListener() {
+	        	 
+	             public void onClick(View arg0) {
+	            	 String passw = mNoteSettings.getString(NotePadApplication.NOTE_PREFERENCES_PASSWORD, "");
+	                 String userPassword = passwText.getText().toString();
+	                 if (userPassword != null && userPassword.equals(passw)) {
+	                	Editor editor =mNoteSettings.edit();
+						editor.remove(NotePadApplication.NOTE_PREFERENCES_PASSWORD);
+						editor.commit();
+	                 	dialog.dismiss();
+	                 }
+	                 else {
+	                	 //ViewNotePadActivity.this.finish();
+	                 }
+	             }
+	         });
+		}
+	    DialogInterface.OnClickListener onClickListener_DialogResetPin =
+	            new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	dialog.dismiss();
+	        }
+	    };
 
 	private void createReminder() {
 		Intent i = new Intent(this, AddReminderActivity.class);
@@ -181,6 +232,7 @@ public class listViewClass extends ListActivity {
 			    adb.setPositiveButton(android.R.string.ok, myClickListener);
 			    adb.setNegativeButton(android.R.string.cancel,myClickListener);
 			    return adb.create();
+		  
 		    case PASSWORD_DIALOG_ID:
 			    LayoutInflater inflater=(LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				final View layout = inflater.inflate(R.layout.password_dialog, (ViewGroup)findViewById(R.id.root));
@@ -219,7 +271,7 @@ public class listViewClass extends ListActivity {
 									editor.commit();
 									Toast.makeText(listViewClass.this,getResources().getString(R.string.settings_pwd_set), Toast.LENGTH_LONG).show();
 								} else {
-									Toast.makeText(listViewClass.this,"password not set", Toast.LENGTH_LONG).show();
+									Toast.makeText(listViewClass.this,R.string.settings_pwd_not_set, Toast.LENGTH_LONG).show();
 								}
 								listViewClass.this.removeDialog(PASSWORD_DIALOG_ID);
 							}
