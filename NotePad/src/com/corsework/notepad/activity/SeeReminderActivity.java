@@ -80,7 +80,7 @@ public class SeeReminderActivity extends Activity {
 		super.onCreateOptionsMenu(menu);
 		
 		menu.add(0, MENU_ITEM_EDIT_NOTE, 0, R.string.edit_reminder).setShortcut('1', 'i')
-			.setIcon(android.R.drawable.ic_menu_add);
+			.setIcon(R.drawable.edit_note_menu);
 		
 		menu.add(0, MENU_ITEM_DELETE, 0, R.string.menu_delete).setShortcut('4','d')
 		.setIcon(android.R.drawable.ic_menu_delete);

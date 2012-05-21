@@ -97,14 +97,14 @@ public class listViewClass extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 		if (lookNote)
 			menu.add(0, MENU_ITEM_SHARE, 0, R.string.show_reminder).setShortcut('5', 'r')
-		.setIcon(android.R.drawable.ic_menu_my_calendar);
+		.setIcon(R.drawable.clocks_menu);//(android.R.drawable.ic_menu_my_calendar);
 		else 
 			menu.add(0, MENU_ITEM_SHARE, 0, R.string.show_note).setShortcut('5', 'r')
-			.setIcon(android.R.drawable.ic_menu_my_calendar);
+			.setIcon(R.drawable.apply_tags_menu);//(android.R.drawable.ic_menu_my_calendar);
 		menu.add(0, MENU_ITEM_INSERT_NOTE, 0, R.string.add_note_button).setShortcut('1', 'i')
-			.setIcon(android.R.drawable.ic_menu_add);
+			.setIcon(R.drawable.add_rem_tags_menu);//(android.R.drawable.ic_menu_add);
 		menu.add(0, MENU_ITEM_INSERT_REMI, 0, R.string.add_reminder).setShortcut('2', 'u')
-		.setIcon(R.drawable.alarm);
+		.setIcon(R.drawable.clock_menu);//alarm);
 		menu.add(0, MENU_ITEM_DELETE, 0, R.string.menu_delete).setShortcut('5', 'd')
 		.setIcon(android.R.drawable.ic_menu_delete);
 		menu.add(0, MENU_SEARCH, 0, R.string.menu_search_by_teg).setShortcut('3','s')
@@ -116,7 +116,7 @@ public class listViewClass extends ListActivity {
         	menu.add(0, MENU_PASSWORD, 0, R.string.delete_passwod).setIcon(android.R.drawable.ic_secure);
 		}else
 			menu.add(0, MENU_PASSWORD, 0, R.string.add_passwod).setIcon(android.R.drawable.ic_secure);
-		menu.add(0, MENU_LOAD_SAVE, 0, R.string.upload_save).setIcon(android.R.drawable.ic_popup_sync);
+	//	menu.add(0, MENU_LOAD_SAVE, 0, R.string.upload_save).setIcon(android.R.drawable.ic_popup_sync);
 		return true;
 	}
 	 @Override
@@ -124,9 +124,9 @@ public class listViewClass extends ListActivity {
 	      // TODO Auto-generated method stub
 		 MenuItem mi =  menu.findItem(MENU_ITEM_SHARE);
 		 if (lookNote)
-			 mi.setTitle(R.string.show_reminder);
+			 mi.setTitle(R.string.show_reminder).setIcon(R.drawable.clocks_menu);
 		 else 
-			 mi.setTitle(R.string.show_note);
+			 mi.setTitle(R.string.show_note).setIcon(R.drawable.apply_tags_menu);
 		 mi = menu.findItem(MENU_PASSWORD);
 		 if (mNoteSettings.contains(NotePadApplication.NOTE_PREFERENCES_PASSWORD)){
 	        	mi.setTitle(R.string.delete_passwod);
@@ -227,7 +227,7 @@ public class listViewClass extends ListActivity {
 		    switch (id) {
 		    case DIALOG_TEGS:
 			    AlertDialog.Builder adb = new AlertDialog.Builder(this);
-			    adb.setTitle(R.string.add_new_tegs);
+			    adb.setTitle(R.string.menu_search_by_teg);
 			    adb.setMultiChoiceItems(cursor, DB.TegSQLiteOpenHelper.TEG_CHK, DB.TegSQLiteOpenHelper.TEG_TEXT, myCursorMultiClickListener);
 			    adb.setPositiveButton(android.R.string.ok, myClickListener);
 			    adb.setNegativeButton(android.R.string.cancel,myClickListener);

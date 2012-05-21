@@ -103,7 +103,10 @@ public class AddReminderActivity extends Activity {
         mRowId = null;
         Bundle extras = getIntent().getExtras();
         if (extras != null) 
+
         	 if (extras.containsKey(NotePadApplication.KEY_ROWID)){
+
+                 setTitle(R.string.edit_reminder);
 	        	 mRowId = extras.getLong(NotePadApplication.KEY_ROWID);
 	        	 Reminder n=((NotePadApplication)getApplication()).getReminderD().getById(mRowId);
 	        	 if (n!=null){
@@ -124,7 +127,7 @@ public class AddReminderActivity extends Activity {
         		 srtD.setTime(time);
         		 endD.setTime(time);
         	 }
-
+        	 Log.d("add rem", "good");
         stTButton.setText(android.text.format.DateFormat.format("hh:mmaa",srtD));
         enTButton.setText(android.text.format.DateFormat.format("hh:mmaa",endD));
         stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));

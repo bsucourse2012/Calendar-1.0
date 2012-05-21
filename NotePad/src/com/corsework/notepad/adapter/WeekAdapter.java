@@ -175,8 +175,9 @@ public class WeekAdapter extends BaseAdapter{
     // references to our items
     public String[] days;
     ArrayList<Reminder> itemRem;
-	public void setItems(ArrayList<Reminder> items) {
+	public void setItems(ArrayList<Reminder> items,Calendar cal) {
 		// TODO Auto-generated method stub
+		month  = cal;
 		this.itemRem = items;
 	}
 

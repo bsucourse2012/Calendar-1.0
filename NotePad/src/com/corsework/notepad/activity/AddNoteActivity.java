@@ -48,7 +48,7 @@ public class AddNoteActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_note);
         
-        setTitle(R.string.edit_note);
+        setTitle(R.string.add_note_button);
         changesPending = false;
         mTitleText = (EditText) findViewById(R.id.title);
         mBodyText = (EditText) findViewById(R.id.body);
@@ -63,6 +63,8 @@ public class AddNoteActivity extends Activity {
         mRowId = null;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+
+            setTitle(R.string.edit_note);
         	 mRowId = extras.getLong(NotePadApplication.KEY_ROWID);
         	 Note n=((NotePadApplication)getApplication()).getNoteD().getById(mRowId);
         	 if (n!=null){

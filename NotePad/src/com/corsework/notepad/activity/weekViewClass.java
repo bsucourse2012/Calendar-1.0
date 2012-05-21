@@ -30,7 +30,6 @@ public class weekViewClass extends Activity {
 
 	private ReminderDao remiD;
 	public Handler handler;
-	public ArrayList<String> items;
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,6 @@ public class weekViewClass extends Activity {
     //    week = cal.get(Calendar.WEEK_OF_YEAR);
         adapter = new WeekAdapter(this,cal);
         remiD = ((NotePadApplication)getApplication()).getReminderD();
-        items = new ArrayList<String>();
 //	    handler = new Handler();
 //	    handler.post(calendarUpdater);
 	    calUpd();
@@ -55,6 +53,7 @@ public class weekViewClass extends Activity {
 	    previous.setOnClickListener(new OnClickListener() {
 						
 			public void onClick(View v) {
+				Log.d("week", ""+cal.get(Calendar.WEEK_OF_YEAR));
 				if(cal.get(Calendar.WEEK_OF_YEAR)== cal.getActualMinimum(Calendar.WEEK_OF_YEAR)) {
 					cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-1);
 					cal.set(Calendar.WEEK_OF_YEAR, cal.getActualMaximum(Calendar.WEEK_OF_YEAR));
@@ -62,6 +61,8 @@ public class weekViewClass extends Activity {
 				} else {
 					cal.set(Calendar.WEEK_OF_YEAR,cal.get(Calendar.WEEK_OF_YEAR)-1);
 				}
+
+				Log.d("week", ""+cal.get(Calendar.WEEK_OF_YEAR));
 				refreshCalendar();
 			}
 		});
@@ -70,11 +71,15 @@ public class weekViewClass extends Activity {
 	    next.setOnClickListener(new OnClickListener() {
 						
 			public void onClick(View v) {
+
+				Log.d("week", ""+cal.get(Calendar.WEEK_OF_YEAR));
 				if(cal.get(Calendar.WEEK_OF_YEAR)== cal.getActualMaximum(Calendar.WEEK_OF_YEAR)) {
 					cal.set((cal.get(Calendar.YEAR)+1),cal.getActualMinimum(Calendar.MONTH),1);
 				} else {
 					cal.set(Calendar.WEEK_OF_YEAR,cal.get(Calendar.WEEK_OF_YEAR)+1);
 				}
+
+				Log.d("week", ""+cal.get(Calendar.WEEK_OF_YEAR));
 				refreshCalendar();
 				
 			}
@@ -150,15 +155,12 @@ private void calUpd() {
 	dat2.setHours(23);
 	dat2.setMinutes(59);
 	dat2.setSeconds(59);
-//	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat).toString());
-//	Log.d("log cald", android.text.format.DateFormat.format("hh:mm dd-MM-yyyy",dat2).toString());
-	items.clear();
 	ArrayList<Reminder> rec;
 	rec = remiD.getByStEndDate(dat, dat2);//remiD.getByCrDate(dat, dat2);
 
     
 	
-	adapter.setItems(rec);
+	adapter.setItems(rec,cal);
 //	adapter.notifyDataSetChanged();
 	}
 //
