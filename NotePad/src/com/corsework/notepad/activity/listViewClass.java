@@ -240,13 +240,10 @@ public class listViewClass extends ListActivity {
 				final EditText p2=(EditText)layout.findViewById(R.id.EditText_Pwd2);
 				final TextView error=(TextView)layout.findViewById(R.id.TextView_PwdProblem);
 				p2.addTextChangedListener(new TextWatcher() {
-					@Override
 					public void onTextChanged(CharSequence s, int start, int before, int count) {
 					}
-					@Override
 					public void beforeTextChanged(CharSequence s, int start, int count,
 							int after) {}
-					@Override
 					public void afterTextChanged(Editable s) {
 						String strP1 =p1.getText().toString();
 						String strP2 =p2.getText().toString();
@@ -261,7 +258,6 @@ public class listViewClass extends ListActivity {
 				builder.setTitle(R.string.settings_button_pwd);
 				builder.setPositiveButton(android.R.string.ok, 
 						new DialogInterface.OnClickListener() {
-							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								String spasw1 = p1.getText().toString();
 								String spasw2 = p2.getText().toString();
@@ -278,7 +274,6 @@ public class listViewClass extends ListActivity {
 						});
 				builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 					
-					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						listViewClass.this.removeDialog(PASSWORD_DIALOG_ID);
 					}
@@ -317,7 +312,6 @@ public class listViewClass extends ListActivity {
 
 	};
 	android.content.DialogInterface.OnMultiChoiceClickListener myCursorMultiClickListener = new android.content.DialogInterface.OnMultiChoiceClickListener() {
-		    @Override
 		    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 		      ListView lv = ((AlertDialog) dialog).getListView();
 		      Log.d("log tag", "which = " + which + ", isChecked = " + isChecked);
