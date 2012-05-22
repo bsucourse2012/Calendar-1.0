@@ -107,7 +107,8 @@ public class ViewNotePadActivity extends TabActivity {
     DialogInterface.OnClickListener onClickListener_DialogResetPin =
             new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int which) {
-        	dialog.dismiss();
+        //	dialog.dismiss();
+        	ViewNotePadActivity.this.finish();
         }
     };
 
