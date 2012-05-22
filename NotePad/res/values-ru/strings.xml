@@ -25,7 +25,7 @@
 	<string name="body">Содержание</string>
 	<string name="title">Заголовок</string>	
 	
-    <string name="created_rec">"Зоздано:  "</string>
+    <string name="created_rec">"Создано:  "</string>
     <string name="modifed_rec">"Изменено: "</string>
     <string name="time_length">"Продолжительность: "</string>
     <string name="all_note">Все Заметки</string>

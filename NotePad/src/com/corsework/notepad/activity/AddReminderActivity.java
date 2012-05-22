@@ -84,7 +84,7 @@ public class AddReminderActivity extends Activity {
         endD = new Date((new Date()).getTime() + 10000);
         alarmD = Calendar.getInstance();
         alarmItem =0;
-        setTitle(R.string.edit_note);
+        setTitle(R.string.add_reminder);
         changesPending = false;
         mBodyText = (EditText) findViewById(R.id.body);
         mTegText  = (TextView) findViewById(R.id.tegs);
@@ -159,8 +159,9 @@ public class AddReminderActivity extends Activity {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(AddReminderActivity.this,AddTegsActivity.class);
-				startActivityForResult(intent, ADD_TEG_ACT);
-				//showDialog(DIALOG_TEGS);
+				if (!(mTegText.getText().toString().equals("")))
+				intent.putExtra(NotePadApplication.KEY_ROWID, mTegText.getText().toString());
+        		startActivityForResult(intent, ADD_TEG_ACT);
 			}
 		});
 		signalButton.setOnClickListener(new View.OnClickListener() {
@@ -250,6 +251,9 @@ public class AddReminderActivity extends Activity {
         }
         finish();
 	}
+	public void onBackPressed() {
+	      cancel();
+	    }
 	 protected void cancel() {
 			String noteBody = mBodyText.getText().toString();
 			Boolean f=false;
@@ -258,7 +262,7 @@ public class AddReminderActivity extends Activity {
 				unsavedChangesDialog = new AlertDialog.Builder(this)
 				.setTitle(R.string.unsaved_changes_title)
 				.setMessage(R.string.unsaved_changes_message)
-				.setPositiveButton(R.string.add_note_button, new AlertDialog.OnClickListener() {
+				.setPositiveButton(android.R.string.yes, new AlertDialog.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						addReminder();
 					}
@@ -293,6 +297,7 @@ public class AddReminderActivity extends Activity {
 		       	for (String s : matches)
 		       	{
 		       		resString += s + "\t";
+		       		break;
 		       	}
 		 
 		         mBodyText.setText(resString);

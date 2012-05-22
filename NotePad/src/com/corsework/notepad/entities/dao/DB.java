@@ -27,7 +27,7 @@ public class DB {
 	  curTeg = new ArrayList<String>();
 		Cursor tegCursor = database.query(TegSQLiteOpenHelper.TEGS_TABLE,
 				new String[]{TegSQLiteOpenHelper.TEG_ID,TegSQLiteOpenHelper.TEG_TEXT},
-				null,null,null,null,String.format("%s",TegSQLiteOpenHelper.TEG_TEXT));
+				null,null,null,null,null);
 		tegCursor.moveToFirst();
 		if (!tegCursor.isAfterLast()){
 			do{
@@ -86,13 +86,13 @@ public class DB {
   public void changeRec(int pos, boolean isChecked) {
       ContentValues cv = new ContentValues();
       cv.put(TegSQLiteOpenHelper.TEG_CHK, (isChecked) ? 1 : 0);
-      database.update(TegSQLiteOpenHelper.TEGS_TABLE, cv,TegSQLiteOpenHelper.TEG_ID + " = " + (pos + 1), null);
+      database.update(TegSQLiteOpenHelper.TEGS_TABLE, cv,TegSQLiteOpenHelper.TEG_TEXT + " =?" , new String[]{curTeg.get(pos)});
   }
   public void addTeg(String n){
 		assert(null!=n);
 		ContentValues values = new ContentValues();
 		values.put(TegSQLiteOpenHelper.TEG_TEXT, n);
-		values.put(TegSQLiteOpenHelper.TEG_CHK, 1);
+		values.put(TegSQLiteOpenHelper.TEG_CHK, 0);
 		long id =database.insert(TegSQLiteOpenHelper.TEGS_TABLE, null, values);
 		if (id!=-1)
 			curTeg.add(n);
@@ -107,6 +107,8 @@ public class DB {
       } else {
       	Log.d("good.Teg deleted:", "teg = " + n);
       }
+      curTeg.clear();
+      loadTeg();
       return res;
 	}
   public class TegSQLiteOpenHelper extends SQLiteOpenHelper {

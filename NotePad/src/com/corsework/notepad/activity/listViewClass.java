@@ -180,15 +180,11 @@ public class listViewClass extends ListActivity {
 	         final TextView passwText = (TextView) passwordDialogLayout.findViewById(R.id.EditText_Password);
 	         
 	    	 final AlertDialog dialog;
-	         // установка кнопок и слушателей для них
 	    	 passwordDialogBuilder.setTitle(R.string.delete_passwod);
 	         passwordDialogBuilder.setPositiveButton(android.R.string.ok, onClickListener_DialogResetPin);
 	         passwordDialogBuilder.setNeutralButton(android.R.string.cancel, onClickListener_DialogResetPin);
-	         // создание и показ диалога
 	         dialog = passwordDialogBuilder.create();
 	         dialog.show();
-	         // КОГДА ДИАЛОГ ПОКАЗАН изменяем слушателя для кнопки ОК
-	         // теперь диалог не будет закрывать при нажатии на кнопку ОК
 	         Button btnOK = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
 	         btnOK.setOnClickListener( new View.OnClickListener() {
 	        	 
@@ -199,9 +195,11 @@ public class listViewClass extends ListActivity {
 	                	Editor editor =mNoteSettings.edit();
 						editor.remove(NotePadApplication.NOTE_PREFERENCES_PASSWORD);
 						editor.commit();
+						Toast.makeText(listViewClass.this,R.string.delete_passwod, Toast.LENGTH_LONG).show();
 	                 	dialog.dismiss();
 	                 }
 	                 else {
+	                	 Toast.makeText(listViewClass.this,R.string.settings_pwd_not_equal, Toast.LENGTH_LONG).show();
 	                	 //ViewNotePadActivity.this.finish();
 	                 }
 	             }
