@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.corsework.notepad.application.NotePadApplication;
-import com.corsework.notepad.entities.dao.DB;
+import com.corsework.notepad.entities.dao.TagInfo;
+import com.corsework.notepad.entities.dao.TegDao;
 import com.corsework.notepad.entities.program.Note;
 
 import android.view.View.OnClickListener;
@@ -197,7 +198,7 @@ public class AddNoteActivity extends Activity {
 		    else
 		    	if (requestCode == ADD_TEG_ACT && resultCode == RESULT_OK) {
 		    		 Bundle extras = data.getExtras();
-		    		 String title = extras.getString(DB.TegSQLiteOpenHelper.TEG_TEXT);
+		    		 String title = extras.getString(TagInfo.COLUMN_TEXT);
 		             mTegText.setText(title);
 		    	}
 

@@ -7,7 +7,8 @@ import java.util.List;
 
 import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.dao.BellDao;
-import com.corsework.notepad.entities.dao.DB;
+import com.corsework.notepad.entities.dao.TagInfo;
+import com.corsework.notepad.entities.dao.TegDao;
 import com.corsework.notepad.entities.program.Bell;
 import com.corsework.notepad.entities.program.Reminder;
 
@@ -301,7 +302,7 @@ public class AddReminderActivity extends Activity {
 		    else //добавляем teg
 		    	if (requestCode == ADD_TEG_ACT && resultCode == RESULT_OK) {
 		    		 Bundle extras = data.getExtras();
-		    		 String title = extras.getString(DB.TegSQLiteOpenHelper.TEG_TEXT);
+		    		 String title = extras.getString(TagInfo.COLUMN_TEXT);
 		    		 mTegText.setText(title);
 		    	}
 		 

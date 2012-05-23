@@ -13,7 +13,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 	
 	// Array of table classes.
-	private Object[] tables = {new NoteInfo(), new BellInfo(), new ReminderInfo()};
+	private Object[] tables = {new NoteInfo(), new BellInfo(),
+			new ReminderInfo(), new TagInfo()};
 	
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import com.corsework.notepad.activity.TimeNotification;
 import com.corsework.notepad.entities.dao.BellDao;
-import com.corsework.notepad.entities.dao.DB;
+import com.corsework.notepad.entities.dao.TegDao;
 import com.corsework.notepad.entities.dao.NoteDao;
 import com.corsework.notepad.entities.dao.ReminderDao;
 import com.corsework.notepad.entities.program.Bell;
@@ -39,7 +39,7 @@ public class NotePadApplication extends Application {
 
 	private AlarmManager am;
     
-	private DB dbc;
+	private TegDao dbc;
 	
 	public void onCreate() {
 		super.onCreate();
@@ -52,7 +52,7 @@ public class NotePadApplication extends Application {
 		bellD = new BellDao(this);
 		lookNote = true;
 		
-        setDbc(new DB(this));
+        setDbc(new TegDao(this));
 		
 		//считать из базы заметки
 	}
@@ -81,11 +81,11 @@ public class NotePadApplication extends Application {
 		this.bellD = bellD;
 	}
 	
-	public DB getDbc() {
+	public TegDao getDbc() {
 		return dbc;
 	}
 
-	public void setDbc(DB dbc) {
+	public void setDbc(TegDao dbc) {
 		this.dbc = dbc;
 	}
 

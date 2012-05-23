@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 import com.corsework.notepad.adapter.ListAdapter;
 import com.corsework.notepad.application.NotePadApplication;
-import com.corsework.notepad.entities.dao.DB;
+import com.corsework.notepad.entities.dao.TagInfo;
+import com.corsework.notepad.entities.dao.TegDao;
 import com.corsework.notepad.entities.dao.NoteDao;
 import com.corsework.notepad.entities.dao.ReminderDao;
 import com.corsework.notepad.entities.program.Note;
@@ -64,7 +65,7 @@ public class listViewClass extends ListActivity {
 	private ListAdapter adapter;
 	boolean lookNote;
 	Cursor cursor;
-	DB tegD;
+	TegDao tegD;
 	SharedPreferences mNoteSettings;
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -228,7 +229,7 @@ public class listViewClass extends ListActivity {
 		    case DIALOG_TEGS:
 			    AlertDialog.Builder adb = new AlertDialog.Builder(this);
 			    adb.setTitle(R.string.menu_search_by_teg);
-			    adb.setMultiChoiceItems(cursor, DB.TegSQLiteOpenHelper.TEG_CHK, DB.TegSQLiteOpenHelper.TEG_TEXT, myCursorMultiClickListener);
+			    adb.setMultiChoiceItems(cursor, TagInfo.COLUMN_CHK, TagInfo.COLUMN_TEXT, myCursorMultiClickListener);
 			    adb.setPositiveButton(android.R.string.ok, myClickListener);
 			    adb.setNegativeButton(android.R.string.cancel,myClickListener);
 			    return adb.create();

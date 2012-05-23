@@ -1,7 +1,8 @@
 package com.corsework.notepad.activity;
 import com.corsework.notepad.adapter.TegAdapter;
 import com.corsework.notepad.application.NotePadApplication;
-import com.corsework.notepad.entities.dao.DB;
+import com.corsework.notepad.entities.dao.TagInfo;
+import com.corsework.notepad.entities.dao.TegDao;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -25,7 +26,7 @@ public class AddTegsActivity extends ListActivity {
 
 	final int DIALOG_ADD_TEGS = 2;
 
-	DB tegD;
+	TegDao tegD;
 	private TegAdapter adapter;
 	
 	
@@ -44,7 +45,7 @@ public class AddTegsActivity extends ListActivity {
 			public void onClick(View v) {
 				if (adapter.getTogglePosition()!=-1){
 					Bundle bundle = new Bundle();
-					bundle.putString(DB.TegSQLiteOpenHelper.TEG_TEXT, adapter.getPos());
+					bundle.putString(TagInfo.COLUMN_TEXT, adapter.getPos());
 	                Intent mIntent = new Intent();
 	                mIntent.putExtras(bundle);
 	                setResult(RESULT_OK, mIntent);
