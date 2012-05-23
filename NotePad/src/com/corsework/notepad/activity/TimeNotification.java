@@ -30,7 +30,11 @@ public static final String ACTION_TIME_NOIFICATION = "com.corsework.notepad.acti
 			pos = intent.getExtras().getLong(NotePadApplication.KEY_ROWID);
 			pos2 = intent.getExtras().getLong(NotePadApplication.KEY_SRTD);
 		}
-
+		if (((NotePadApplication)context.getApplicationContext()).getReminderD().getById(pos) == null )
+		{
+			((NotePadApplication)context.getApplicationContext()).startNotify(-1);
+			return;
+		}
 		((NotePadApplication)context.getApplicationContext()).startNotify(pos2);
 		
 		Notification notification = new Notification(R.drawable.redhat,s,System.currentTimeMillis());

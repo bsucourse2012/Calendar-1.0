@@ -85,6 +85,7 @@ public class listViewClass extends ListActivity {
         adapter = new ListAdapter(noteD.getAll(),remD.getAll(),this);
         setListAdapter(adapter);
 
+    	app.startNotify(-1);
         refreshCursor();
 	}
 
