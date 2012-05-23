@@ -519,7 +519,7 @@ public class AddReminderActivity extends Activity {
 					break;
 				case 5: 
 					alarmD.setTimeInMillis(srtD.getTime()-24*60*60*1000); //= new Date(srtD.getTime()-24*60*60*1000);
-					mAlmText.setText(R.string.hour_b);
+					mAlmText.setText(R.string.day_b);
 					break;
 				case 6: 
 					showDialog(DIALOG_ALARM);
