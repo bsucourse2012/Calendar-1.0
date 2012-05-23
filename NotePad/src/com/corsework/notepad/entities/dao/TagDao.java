@@ -14,7 +14,7 @@ public class TagDao {
 	/**
 	 * Reference to the database.
 	 */
-	private SQLiteDatabase database;
+	private DBHelper dbHelper;
 	
 	/**
 	 * Information about the table.
@@ -28,8 +28,7 @@ public class TagDao {
   
 	public TagDao(Context ctx) {
 		tableInfo = new TagInfo();
-		DBHelper dbHelper = new DBHelper(ctx);
-		database = dbHelper.getWritableDatabase();
+		dbHelper = new DBHelper(ctx);
 		if (null == curTag){
 			loadTeg();
 		}	
@@ -39,8 +38,9 @@ public class TagDao {
 	 * Loads all tags from the table to curTag.
 	 */
 	private void loadTeg() {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 		curTag = new ArrayList<String>();
-		Cursor tegCursor = database.query(tableInfo.TABLE_NAME,
+		Cursor tegCursor = db.query(tableInfo.TABLE_NAME,
 				new String[]{tableInfo.COLUMN_ID, tableInfo.COLUMN_TEXT},
 				null,null,null,null,null);
 		tegCursor.moveToFirst();
@@ -50,7 +50,8 @@ public class TagDao {
 				curTag.add(name);
 			}while (tegCursor.moveToNext());
 		}
-		tegCursor.close();
+		tegCursor.close();	
+		db.close();
 	}
   
 	/**
@@ -58,9 +59,10 @@ public class TagDao {
 	 * @return Array of tags.
 	 */
 	public ArrayList<String> getAll() {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 		ArrayList<String> tegs = new ArrayList<String>();
 		
-		Cursor cursor = database.query(tableInfo.TABLE_NAME, null, null,
+		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, null,
 				null, null, null, null, null);		
 		if (cursor.moveToFirst()) {
 			do {
@@ -69,6 +71,7 @@ public class TagDao {
 			} while (cursor.moveToNext());
 		}
               
+		db.close();
 		return tegs;
 	}
 	
@@ -77,9 +80,10 @@ public class TagDao {
 	 * @return Array of marked tags.
 	 */
 	public ArrayList<String> getAllCh() {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 		ArrayList<String> tegs = new ArrayList<String>();
 		
-		Cursor cursor = database.query(tableInfo.TABLE_NAME, null, null,
+		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, null,
             null, null, null, null, null);		
 		if (cursor.moveToFirst()) {
 			do {
@@ -89,6 +93,7 @@ public class TagDao {
         	} while (cursor.moveToNext());
 		}
             
+		db.close();
 		return tegs;
 	}
 	
@@ -97,9 +102,12 @@ public class TagDao {
 	 * @return Cursor to the first record.
 	 */
 	public Cursor getAllData() {
-		return database.query(tableInfo.TABLE_NAME,
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
+		Cursor c = db.query(tableInfo.TABLE_NAME,
 				new String[]{tableInfo.COLUMN_ID, tableInfo.COLUMN_TEXT, tableInfo.COLUMN_CHK},
 				null,null,null,null,null);
+		//db.close();
+		return c;
 		
 	}
   
@@ -111,12 +119,14 @@ public class TagDao {
 	 * @param iid Index in the array curTag.
 	 */
 	public void changeRec(long id, String txt,int col,int iid) {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(tableInfo.COLUMN_TEXT, txt);
 		values.put(tableInfo.COLUMN_CHK, 0);
 		String where = String.format("%s = %d", tableInfo.COLUMN_ID, id);
-		database.update(tableInfo.TABLE_NAME, values, where, null);
+		db.update(tableInfo.TABLE_NAME, values, where, null);
 		curTag.set(iid, txt);
+		db.close();
 	}
 	
 	/**
@@ -125,9 +135,11 @@ public class TagDao {
 	 * @param isChecked
 	 */
 	public void changeRec(int pos, boolean isChecked) {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put(tableInfo.COLUMN_CHK, (isChecked) ? 1 : 0);
-		database.update(tableInfo.TABLE_NAME, cv, tableInfo.COLUMN_ID + " = " + (pos + 1), null);
+		db.update(tableInfo.TABLE_NAME, cv, tableInfo.COLUMN_ID + " = " + (pos + 1), null);
+		db.close();
 	}
 	
 	/**
@@ -135,13 +147,15 @@ public class TagDao {
 	 * @param n
 	 */
 	public void addTeg(String n){
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 		assert(null!=n);
 		ContentValues values = new ContentValues();
 		values.put(tableInfo.COLUMN_TEXT, n);
 		values.put(tableInfo.COLUMN_CHK, 0);
-		long id =database.insert(tableInfo.TABLE_NAME, null, values);
+		long id =db.insert(tableInfo.TABLE_NAME, null, values);
 		if (id!=-1)
 			curTag.add(n);
+		db.close();
 	}
   
 	/**
@@ -150,7 +164,8 @@ public class TagDao {
 	 * @return Result of the operation.
 	 */
 	public int delete(String n) {
-		int res = database.delete(tableInfo.TABLE_NAME, tableInfo.COLUMN_TEXT + " = ?",
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
+		int res = db.delete(tableInfo.TABLE_NAME, tableInfo.COLUMN_TEXT + " = ?",
               new String[] {n});
       
 		if (res != 1) {
@@ -160,6 +175,7 @@ public class TagDao {
 		}
 		curTag.clear();
 		loadTeg();
+		db.close();
 		return res;
 	}
 	
@@ -167,9 +183,11 @@ public class TagDao {
 	 * Sets all tags unchecked.
 	 */
 	public void unChAll() {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put(tableInfo.COLUMN_CHK, 0);
-		database.update(tableInfo.TABLE_NAME, cv,null, null);
+		db.update(tableInfo.TABLE_NAME, cv,null, null);
+		db.close();
 	}
 	
 }

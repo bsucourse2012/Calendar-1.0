@@ -96,14 +96,17 @@ public class BellDao {
 		
 		if (cursor == null) {
 			Log.d("error!!! Bell.getById:", "No Bell with such id was found.");
+			db.close();
 			return null;
 		} else if (cursor.getCount() != 1) {
 			Log.d("error!!! Bell.getById:", "More then one bell was found by id.");
+			db.close();
 			return null;
 		} else {
 			cursor.moveToFirst();        
 			Bell bell = this.cursorToBell(cursor);        
-			Log.d("good. Bell getById:", bell.toString());        
+			Log.d("good. Bell getById:", bell.toString());
+			db.close();
 			return bell;
 		}
 	}
@@ -114,14 +117,17 @@ public class BellDao {
 		
 		if (cursor == null) {
 			Log.d("error!!! Bell.getById:", "No Bell with such id was found.");
+			db.close();
 			return null;
 		} else if (cursor.getCount() != 1) {
 			Log.d("error!!! Bell.getById:", "More then one bell was found by id.");
+			db.close();
 			return null;
 		} else {
 			cursor.moveToFirst();        
 			Bell bell = this.cursorToBell(cursor);        
-			Log.d("good. Bell getById:", bell.toString());        
+			Log.d("good. Bell getById:", bell.toString());
+			db.close();
 			return bell;
 		}
 	}
@@ -218,7 +224,8 @@ public class BellDao {
                 bells.add(bell);
             } while (cursor.moveToNext());
         }
-                
+              
+		db.close();
         return bells;
 	}
 	
@@ -228,14 +235,19 @@ public class BellDao {
 					new String[] { "true" }, null, null,tableInfo.COLUMN_DATE, null);		
 		if (cursor == null) {
 				Log.e("error!!! Reminder.getById:", "No Bell with such id was found.");
+				db.close();
 				return null;
 		} else {
 			if (cursor.moveToFirst()){        
-			Bell b = this.cursorToBell(cursor);        
-			Log.d("bell getById", b.toString());        
-			return b;
+				Bell b = this.cursorToBell(cursor);        
+				Log.d("bell getById", b.toString());
+				db.close();
+				return b;
 			}
-			else return null;
+			else {
+				db.close();
+				return null;
+			}
 		}
 	}
 	

@@ -124,14 +124,17 @@ public class ReminderDao {
 		
 		if (cursor == null) {
 			Log.e("error!!! Reminder.getById:", "No Bell with such id was found.");
+			db.close();
 			return null;
 		} else if (cursor.getCount() != 1) {
 			Log.e("error!!! Reminder.getById:", "More then one reminder was found by id.");
+			db.close();
 			return null;
 		} else {
 	        cursor.moveToFirst();        
 	        Reminder reminder = this.cursorToReminder(cursor);        
-	        Log.d("Reminder getById", reminder.toString());        
+	        Log.d("Reminder getById", reminder.toString()); 
+	        db.close();
 	        return reminder;
 		}
 	}
@@ -208,6 +211,7 @@ public class ReminderDao {
             } while (cursor.moveToNext());
         }
                 
+		db.close();
         return reminders;
 	}
 	
@@ -231,6 +235,7 @@ public class ReminderDao {
 	        }
 		}
 		
+		db.close();
 		return reminders;
 	}
 	
@@ -256,6 +261,7 @@ public class ReminderDao {
             } while (cursor.moveToNext());
         }
 		
+		db.close();
 		return reminders;
 	}
 	
@@ -275,6 +281,7 @@ public class ReminderDao {
             } while (cursor.moveToNext());
         }
 		
+		db.close();
 		return reminders;
 	}
 
@@ -294,6 +301,7 @@ public class ReminderDao {
             } while (cursor.moveToNext());
         }
 		
+		db.close();
 		return reminders;
 	}
 	/**
@@ -319,6 +327,7 @@ public class ReminderDao {
             } while (cursor.moveToNext());
         }
 		
+		db.close();
 		return reminders;
 	}
 	

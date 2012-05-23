@@ -116,4 +116,5 @@ public class ViewNotePadActivity extends TabActivity {
     public void onConfigurationChanged(Configuration newConfig) {  
         super.onConfigurationChanged(newConfig);  
     }
+    
 }

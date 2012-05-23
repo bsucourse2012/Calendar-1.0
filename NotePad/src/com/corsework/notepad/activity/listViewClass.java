@@ -173,9 +173,21 @@ public class listViewClass extends ListActivity {
 	            	return true;
 	            case MENU_BACKUP:
 	            	Backuper.getInstance().backup();
+	            	//lookNote = app.isLookNote();
+	            	//app.updateDao();
+	        		//fillData();
+	            	//app.restart();
+	            	//finish();
 	            	return true;
 	            case MENU_RESTORE:
 	            	Backuper.getInstance().restore();
+	            	lookNote = app.isLookNote();
+	            	app.updateDao();
+	        		//fillData();
+	            	Intent mainIntent = new Intent(this, ViewNotePadActivity.class);  
+	        		mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  );  
+	        		startActivity(mainIntent); 
+	            	finish();
 	            	return true;
 	        }
 

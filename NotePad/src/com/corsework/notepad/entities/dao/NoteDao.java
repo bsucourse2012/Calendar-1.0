@@ -95,16 +95,19 @@ public class NoteDao {
 		
 		if (cursor == null) {
 			Log.e("error!!! Note.getById:", "No Bell with such id was found");
+			db.close();
 			return null;
 		} else if (cursor.getCount() != 1) {
 			Log.e("error!!! Note.getById:", "More then one note was found by id.");
+			db.close();
 			return null;
 		} else {
 			cursor.moveToFirst();        
 			Note note = this.cursorToNote(cursor);        
-			Log.d("good. Bell getById:", note.toString());        
+			Log.d("good. Bell getById:", note.toString());
+			db.close();
 			return note;
-		}
+		}		
 	}
 	
 	/**
@@ -158,6 +161,7 @@ public class NoteDao {
             } while (cursor.moveToNext());
         }
                 
+		db.close();
         return notes;
 	}
 	
@@ -181,6 +185,7 @@ public class NoteDao {
 	        }
 		}
 		
+		db.close();
 		return notes;
 	}
 	
@@ -207,6 +212,7 @@ public class NoteDao {
             } while (cursor.moveToNext());
         }
 		
+		db.close();
 		return notes;
 	}
 	
@@ -233,6 +239,7 @@ public class NoteDao {
             } while (cursor.moveToNext());
         }
 		
+		db.close();
 		return notes;
 	}
 		

@@ -57,6 +57,12 @@ public class NotePadApplication extends Application {
 		//считать из базы заметки
 	}
 
+	public void updateDao(){
+		noteD = new NoteDao(this);
+		reminderD = new ReminderDao(this);
+		bellD = new BellDao(this);
+		setDbc(new TagDao(this));
+	}
 	public NoteDao getNoteD() {
 		return noteD;
 	}
@@ -143,5 +149,4 @@ public class NotePadApplication extends Application {
 		Log.d("add to time",android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",b.getDate()).toString());
 		am.set(AlarmManager.RTC_WAKEUP, b.getDate(), pi);
 	}
-
 }
