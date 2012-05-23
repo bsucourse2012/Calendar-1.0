@@ -2,7 +2,7 @@ package com.corsework.notepad.activity;
 import com.corsework.notepad.adapter.TegAdapter;
 import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.dao.TagInfo;
-import com.corsework.notepad.entities.dao.TegDao;
+import com.corsework.notepad.entities.dao.TagDao;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,7 +26,7 @@ public class AddTegsActivity extends ListActivity {
 
 	final int DIALOG_ADD_TEGS = 2;
 
-	TegDao tegD;
+	TagDao tegD;
 	private TegAdapter adapter;
 	
 	

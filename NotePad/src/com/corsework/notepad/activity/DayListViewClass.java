@@ -7,7 +7,7 @@ import java.util.Date;
 
 import com.corsework.notepad.adapter.ListAdapter;
 import com.corsework.notepad.application.NotePadApplication;
-import com.corsework.notepad.entities.dao.TegDao;
+import com.corsework.notepad.entities.dao.TagDao;
 import com.corsework.notepad.entities.dao.NoteDao;
 import com.corsework.notepad.entities.dao.ReminderDao;
 import com.corsework.notepad.entities.program.Note;
@@ -30,7 +30,7 @@ public class DayListViewClass extends ListActivity {
 	private NotePadApplication app;
 	private ReminderDao remD;
 	private NoteDao noteD;
-	TegDao tegD;
+	TagDao tegD;
 	private ListAdapter adapter;
 	int status;
 	boolean lN;

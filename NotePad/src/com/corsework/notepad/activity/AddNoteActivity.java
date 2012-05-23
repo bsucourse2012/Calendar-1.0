@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.dao.TagInfo;
-import com.corsework.notepad.entities.dao.TegDao;
+import com.corsework.notepad.entities.dao.TagDao;
 import com.corsework.notepad.entities.program.Note;
 
 import android.view.View.OnClickListener;

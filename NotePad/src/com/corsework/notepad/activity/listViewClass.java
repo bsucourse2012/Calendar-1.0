@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.corsework.notepad.adapter.ListAdapter;
 import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.dao.TagInfo;
-import com.corsework.notepad.entities.dao.TegDao;
+import com.corsework.notepad.entities.dao.TagDao;
 import com.corsework.notepad.entities.dao.NoteDao;
 import com.corsework.notepad.entities.dao.ReminderDao;
 import com.corsework.notepad.entities.program.Note;
@@ -65,7 +65,7 @@ public class listViewClass extends ListActivity {
 	private ListAdapter adapter;
 	boolean lookNote;
 	Cursor cursor;
-	TegDao tegD;
+	TagDao tegD;
 	SharedPreferences mNoteSettings;
 	
 	public void onCreate(Bundle savedInstanceState) {
