@@ -172,25 +172,25 @@ public class AddReminderActivity extends Activity {
 
         });
 		stDButton.setOnClickListener(new OnClickListener() {
-			
+			@Override
 			public void onClick(View v) {
 				  showDialog(DIALOG_DATEB);
 			}
 		});
 		stTButton.setOnClickListener(new OnClickListener() {
-			
+			@Override
 			public void onClick(View v) {
 				  showDialog(DIALOG_TIMEB);
 			}
 		});
 		enDButton.setOnClickListener(new OnClickListener() {
-			
+			@Override
 			public void onClick(View v) {
 				  showDialog(DIALOG_DATEE);
 			}
 		});
 		enTButton.setOnClickListener(new OnClickListener() {
-			
+			@Override
 			public void onClick(View v) {
 				  showDialog(DIALOG_TIMEE);
 			}
