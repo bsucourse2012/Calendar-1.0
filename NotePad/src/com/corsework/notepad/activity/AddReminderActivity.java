@@ -72,9 +72,8 @@ public class AddReminderActivity extends Activity {
 	private Button enTButton;
 	
 	private boolean changesPending;
-//	Cursor cursor;
 
-	private AlarmManager am;
+//	private AlarmManager am;
     
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -336,30 +335,75 @@ public class AddReminderActivity extends Activity {
 			        return tpd2;
 			        
 			    case DIALOG_DATEB: 
-			    	 DatePickerDialog dpd = new DatePickerDialog(this,new OnDateSetListener() {
+			    	LayoutInflater infl1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		            final View addAlarmDialogLayout1 = infl1.inflate(R.layout.date_dialog, (ViewGroup) findViewById(R.id.root));
 
-			    		    public void onDateSet(DatePicker view, int year, int monthOfYear,
-			    		        int dayOfMonth) {
-			    		    	srtD.setYear(year);
-			    		    	srtD.setMonth(monthOfYear);
-			    		    	srtD.setDate(dayOfMonth);
-			    		    	stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));//.getDate()+"/"+srtD.getMonth()+"/"+(srtD.getYear()+1900));
-			    		    }
-			    		    } , srtD.getYear()+1900, srtD.getMonth(),srtD.getDate());
-			    	 return dpd;
-					
+		            AlertDialog.Builder alarmDialogBuilder1 = new AlertDialog.Builder(this);
+		            alarmDialogBuilder1.setView(addAlarmDialogLayout1);
+		            final DatePicker datepic1 = (DatePicker) addAlarmDialogLayout1.findViewById(R.id.datePicker1);
+		    
+		            alarmDialogBuilder1.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int which) {
+		                	srtD.setYear(datepic1.getYear()-1900);
+		    		    	srtD.setMonth(datepic1.getMonth());
+		    		    	srtD.setDate( datepic1.getDayOfMonth());
+		    		    	stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));	    		  			            	    
+		                }
+		            });
+		           
+		            alarmDialogBuilder1.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int which) {
+		                    finish();
+		                }
+		            });
+		            return alarmDialogBuilder1.create();
+//			    	 DatePickerDialog dpd = new DatePickerDialog(this,new OnDateSetListener() {
+//
+//			    		    public void onDateSet(DatePicker view, int year, int monthOfYear,
+//			    		        int dayOfMonth) {
+//			    		    	srtD.setYear(year-1900);
+//			    		    	srtD.setMonth(monthOfYear);
+//			    		    	srtD.setDate(dayOfMonth);
+//			    		    	stDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",srtD));//.getDate()+"/"+srtD.getMonth()+"/"+(srtD.getYear()+1900));
+//			    		    }
+//			    		    } , srtD.getYear()+1900, srtD.getMonth(),srtD.getDate());
+//			    	 return dpd;
+//					
 			    case DIALOG_DATEE: 
-			    	 DatePickerDialog dpd2 = new DatePickerDialog(this,new OnDateSetListener() {
+			    	LayoutInflater infl2 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		            final View addAlarmDialogLayout2 = infl2.inflate(R.layout.date_dialog, (ViewGroup) findViewById(R.id.root));
 
-			    		    public void onDateSet(DatePicker view, int year, int monthOfYear,
-			    		        int dayOfMonth) {
-			    		    	endD.setYear(year);
-			    		    	endD.setMonth(monthOfYear);
-			    		    	endD.setDate(dayOfMonth);
-			    		    	enDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",endD));//.getDate()+"/"+endD.getMonth()+"/"+(endD.getYear()+1900));
-			    		    }
-			    		    } , endD.getYear()+1900, endD.getMonth(),endD.getDate());
-			    	 return dpd2;
+		            AlertDialog.Builder alarmDialogBuilder2 = new AlertDialog.Builder(this);
+		            alarmDialogBuilder2.setView(addAlarmDialogLayout2);
+		            final DatePicker datepic2 = (DatePicker) addAlarmDialogLayout2.findViewById(R.id.datePicker1);
+		    
+		            alarmDialogBuilder2.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int which) {
+		                	endD.setYear(datepic2.getYear()-1900);
+		    		    	endD.setMonth(datepic2.getMonth());
+		    		    	endD.setDate( datepic2.getDayOfMonth());
+		    		    	enDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",endD));	    		  			            	    
+		                }
+		            });
+
+		            alarmDialogBuilder2.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int which) {
+		                    finish();
+		                }
+		            });
+		            return alarmDialogBuilder2.create();
+//			    	 DatePickerDialog dpd2 = new DatePickerDialog(this,new OnDateSetListener() {
+//
+//			    		    public void onDateSet(DatePicker view, int year, int monthOfYear,
+//			    		        int dayOfMonth) {
+//			    		    	
+//			    		    	endD.setYear(year-1900);
+//			    		    	endD.setMonth(monthOfYear);
+//			    		    	endD.setDate(dayOfMonth);
+//			    		    	enDButton.setText(android.text.format.DateFormat.format("dd-MM-yyyy",endD));//.getDate()+"/"+endD.getMonth()+"/"+(endD.getYear()+1900));
+//			    		    }
+//			    		    } , endD.getYear()+1900, endD.getMonth(),endD.getDate());
+//			    	 return dpd2;
 			    	 
 			    case DIALOG_SGNL:
 			    	ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this,
@@ -402,10 +446,10 @@ public class AddReminderActivity extends Activity {
 			   
 			    switch (id) {
 			    case DIALOG_DATEB:
-					((DatePickerDialog)dialog).updateDate(srtD.getYear(),srtD.getMonth(),srtD.getDate());
+				//	((DatePickerDialog)dialog).updateDate(srtD.getYear(),srtD.getMonth(),srtD.getDate());
 					return;
 			    case DIALOG_DATEE:
-					((DatePickerDialog)dialog).updateDate(endD.getYear(),endD.getMonth(),endD.getDate());
+			//		((DatePickerDialog)dialog).updateDate(endD.getYear(),endD.getMonth(),endD.getDate());
 					return;
 			    case DIALOG_TIMEB:
 					((TimePickerDialog)dialog).updateTime(srtD.getHours(),srtD.getMinutes());
