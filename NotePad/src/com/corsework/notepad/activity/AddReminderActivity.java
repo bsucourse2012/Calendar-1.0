@@ -124,8 +124,9 @@ public class AddReminderActivity extends Activity {
 	         }
         	 else {
         		 long time = extras.getLong(NotePadApplication.KEY_CAL);
-        		 srtD.setTime(time);
-        		 endD.setTime(time);
+        		 alarmD.setTimeInMillis(time);
+        		 srtD = alarmD.getTime();
+        		 endD = alarmD.getTime();
         	 }
         	 Log.d("add rem", "good");
         stTButton.setText(android.text.format.DateFormat.format("hh:mmaa",srtD));

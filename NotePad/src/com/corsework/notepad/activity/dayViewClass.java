@@ -8,7 +8,6 @@ import com.corsework.notepad.adapter.DayAdapter;
 import com.corsework.notepad.application.NotePadApplication;
 import com.corsework.notepad.entities.dao.ReminderDao;
 import com.corsework.notepad.entities.program.Reminder;
-import com.corsework.notepad.view.WeekTextView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,11 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class dayViewClass extends Activity {
@@ -79,7 +75,7 @@ public class dayViewClass extends Activity {
 		    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		    	
 		    		Calendar c2 = (Calendar) cal.clone();
-		    		c2.set(Calendar.HOUR, position-1);
+		    		c2.set(Calendar.HOUR_OF_DAY, position-1);
 		    		if (!adapter.days[position].equalsIgnoreCase("")){
 		    			Intent i = new Intent(dayViewClass.this, DayListViewClass.class);
 		    			i.putExtra(NotePadApplication.KEY_SRTD,c2.getTimeInMillis());
@@ -132,7 +128,7 @@ private void calUpd() {
 	Log.d("log cal", rec.toString());
     
 	
-	adapter.setItems(rec);
+	adapter.setItems(rec,cal);
 //	adapter.notifyDataSetChanged();
 	}
 }

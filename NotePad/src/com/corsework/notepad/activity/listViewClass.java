@@ -121,7 +121,7 @@ public class listViewClass extends ListActivity {
 			menu.add(0, MENU_PASSWORD, 0, R.string.add_passwod).setIcon(android.R.drawable.ic_secure);
 		menu.add(0, MENU_RESTORE, 0, R.string.restore).setIcon(android.R.drawable.ic_popup_sync);
 		menu.add(0, MENU_BACKUP, 0, R.string.backup).setIcon(
-				android.R.drawable.ic_menu_preferences).setShortcut('9', 's');
+				android.R.drawable.ic_menu_preferences);
 			
 		return true;
 	}

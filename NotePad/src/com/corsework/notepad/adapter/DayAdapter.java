@@ -116,8 +116,9 @@ public class DayAdapter extends BaseAdapter{
     public String[] days;
     public ArrayList<Reminder> rem;
 
-	public void setItems(ArrayList<Reminder> rec) {
+	public void setItems(ArrayList<Reminder> rec,Calendar cal) {
 		// TODO Auto-generated method stub
+		month = cal;
 		rem = rec;
 	}
 
