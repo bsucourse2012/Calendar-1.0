@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.corsework.notepad.adapter.ListAdapter;
 import com.corsework.notepad.application.NotePadApplication;
+import com.corsework.notepad.entities.dao.Backuper;
 import com.corsework.notepad.entities.dao.TagInfo;
 import com.corsework.notepad.entities.dao.TagDao;
 import com.corsework.notepad.entities.dao.NoteDao;
@@ -50,6 +51,8 @@ public class listViewClass extends ListActivity {
 	private static final int MENU_SETTINGS = Menu.FIRST + 6;
 	private static final int MENU_PASSWORD = Menu.FIRST + 7;
 	private static final int MENU_LOAD_SAVE = Menu.FIRST + 8;
+	private static final int MENU_BACKUP = Menu.FIRST + 9;
+	private static final int MENU_RESTORE = Menu.FIRST + 10;
 	private static final int MENU_DISTRIBUTION_START = Menu.FIRST + 100; // MUST BE LAST
 	
 
@@ -111,13 +114,14 @@ public class listViewClass extends ListActivity {
 		menu.add(0, MENU_SEARCH, 0, R.string.menu_search_by_teg).setShortcut('3','s')
 		.setIcon(android.R.drawable.ic_menu_search);
 
-//		menu.add(0, MENU_SETTINGS, 0, R.string.settings).setIcon(
-//				android.R.drawable.ic_menu_preferences).setShortcut('9', 's');
 		if (mNoteSettings.contains(NotePadApplication.NOTE_PREFERENCES_PASSWORD)){
         	menu.add(0, MENU_PASSWORD, 0, R.string.delete_passwod).setIcon(android.R.drawable.ic_secure);
 		}else
 			menu.add(0, MENU_PASSWORD, 0, R.string.add_passwod).setIcon(android.R.drawable.ic_secure);
-	//	menu.add(0, MENU_LOAD_SAVE, 0, R.string.upload_save).setIcon(android.R.drawable.ic_popup_sync);
+		menu.add(0, MENU_RESTORE, 0, R.string.restore).setIcon(android.R.drawable.ic_popup_sync);
+		menu.add(0, MENU_BACKUP, 0, R.string.backup).setIcon(
+				android.R.drawable.ic_menu_preferences).setShortcut('9', 's');
+			
 		return true;
 	}
 	 @Override
@@ -166,6 +170,12 @@ public class listViewClass extends ListActivity {
 	            	if (mNoteSettings.contains(NotePadApplication.NOTE_PREFERENCES_PASSWORD)){
 	            	  	passwD();
 	            	}else  	showDialog(PASSWORD_DIALOG_ID);
+	            	return true;
+	            case MENU_BACKUP:
+	            	Backuper.getInstance().backup();
+	            	return true;
+	            case MENU_RESTORE:
+	            	Backuper.getInstance().restore();
 	            	return true;
 	        }
 

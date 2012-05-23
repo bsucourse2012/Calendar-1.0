@@ -9,8 +9,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	/**
 	 * Database info.
 	 */
-	private static final String DATABASE_NAME = "npd8";
-	private static final int DATABASE_VERSION = 1;
+	public static final String DATABASE_NAME = "npd8";
+	public static final int DATABASE_VERSION = 1;
 	
 	// Array of table classes.
 	private Object[] tables = {new NoteInfo(), new BellInfo(),
