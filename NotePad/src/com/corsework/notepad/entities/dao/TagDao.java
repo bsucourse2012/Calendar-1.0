@@ -42,7 +42,7 @@ public class TagDao {
 		curTag = new ArrayList<String>();
 		Cursor tegCursor = database.query(tableInfo.TABLE_NAME,
 				new String[]{tableInfo.COLUMN_ID, tableInfo.COLUMN_TEXT},
-				null,null,null,null,String.format("%s", tableInfo.COLUMN_TEXT));
+				null,null,null,null,null);
 		tegCursor.moveToFirst();
 		if (!tegCursor.isAfterLast()){
 			do{
@@ -138,7 +138,7 @@ public class TagDao {
 		assert(null!=n);
 		ContentValues values = new ContentValues();
 		values.put(tableInfo.COLUMN_TEXT, n);
-		values.put(tableInfo.COLUMN_CHK, 1);
+		values.put(tableInfo.COLUMN_CHK, 0);
 		long id =database.insert(tableInfo.TABLE_NAME, null, values);
 		if (id!=-1)
 			curTag.add(n);
@@ -158,6 +158,8 @@ public class TagDao {
 		} else {
 			Log.d("good.Teg deleted:", "teg = " + n);
 		}
+		curTag.clear();
+		loadTeg();
 		return res;
 	}
 	
