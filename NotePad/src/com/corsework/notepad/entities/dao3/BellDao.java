@@ -1,4 +1,4 @@
-package com.corsework.notepad.entities.dao;
+package com.corsework.notepad.entities.dao3;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,18 +20,12 @@ import com.corsework.notepad.errors.LastErrors;
 public class BellDao {
 	
 	/**
-	 * Helper for the database.
+	 * Helper for current class.
 	 */
-	private DBHelper dbHelper;
-	
-	/**
-	 * Information about the table.
-	 */
-	private BellInfo tableInfo;
+	private BellHelper dbHelper;
 	
 	public BellDao(Context context) {
-		this.dbHelper = new DBHelper(context);
-		this.tableInfo = new BellInfo();
+		this.dbHelper = new BellHelper(context);
 	}
 	
 	/**
@@ -44,7 +38,7 @@ public class BellDao {
 		Log.d("create bell",""+bell.isActive());
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();		 
         ContentValues values = this.bellToValues(bell); 
-        long id = db.insert(tableInfo.TABLE_NAME, null, values);
+        long id = db.insert(dbHelper.TABLE_NAME, null, values);
         db.close();
         
         if (id == -1) {
@@ -69,7 +63,7 @@ public class BellDao {
 		} else {
 			SQLiteDatabase db = this.dbHelper.getWritableDatabase();			 
 			ContentValues values = this.bellToValues(bell);	 
-	        int res = db.update(tableInfo.TABLE_NAME, values, tableInfo.COLUMN_ID + " = ?",
+	        int res = db.update(dbHelper.TABLE_NAME, values, dbHelper.COLUMN_ID + " = ?",
 	                new String[] { String.valueOf(bell.getId()) });	        
 	        db.close();
 	        
@@ -91,7 +85,7 @@ public class BellDao {
 	 */
 	public Bell getById(long id) {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, tableInfo.COLUMN_ID + "=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null);
 		
 		if (cursor == null) {
@@ -109,7 +103,7 @@ public class BellDao {
 	}
 	public Bell getByRemId(long id) {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, tableInfo.COLUMN_IDREM + "=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_IDREM + "=?",
                 new String[] { String.valueOf(id) }, null, null, null);
 		
 		if (cursor == null) {
@@ -147,7 +141,7 @@ public class BellDao {
 	 */
 	public int deleteById(Long id) {
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        int res = db.delete(tableInfo.TABLE_NAME, tableInfo.COLUMN_ID + " = ?",
+        int res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
                 new String[] { String.valueOf(id) });
         db.close();
         
@@ -161,7 +155,7 @@ public class BellDao {
 	
 	public int deleteByRemId(Long id) {
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        int res = db.delete(tableInfo.TABLE_NAME, tableInfo.COLUMN_IDREM + " = ?",
+        int res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_IDREM + " = ?",
                 new String[] { String.valueOf(id) });
         db.close();
         
@@ -210,7 +204,7 @@ public class BellDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Bell> bells = new ArrayList<Bell>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, null,
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, null,
                 null, null, null, null, null);		
 		if (cursor.moveToFirst()) {
             do {
@@ -224,8 +218,8 @@ public class BellDao {
 	
 	public Bell getNextBell() {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, tableInfo.COLUMN_ACTIVE + "=?",
-					new String[] { "true" }, null, null,tableInfo.COLUMN_DATE, null);		
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ACTIVE + "=?",
+					new String[] { "true" }, null, null,dbHelper.COLUMN_DATE, null);		
 		if (cursor == null) {
 				Log.e("error!!! Reminder.getById:", "No Bell with such id was found.");
 				return null;
@@ -266,11 +260,11 @@ public class BellDao {
 	 */
 	private ContentValues bellToValues(Bell bell) {
 		ContentValues values = new ContentValues();
-    	values.put(tableInfo.COLUMN_CREATED, bell.getSys().getCr().getTime());
-    	values.put(tableInfo.COLUMN_MODIFIED, bell.getSys().getMd().getTime());
-        values.put(tableInfo.COLUMN_DATE, bell.getDate());
-        values.put(tableInfo.COLUMN_ACTIVE, ""+bell.isActive());
-        values.put(tableInfo.COLUMN_IDREM, bell.getIdrem());
+    	values.put(dbHelper.COLUMN_CREATED, bell.getSys().getCr().getTime());
+    	values.put(dbHelper.COLUMN_MODIFIED, bell.getSys().getMd().getTime());
+        values.put(dbHelper.COLUMN_DATE, bell.getDate());
+        values.put(dbHelper.COLUMN_ACTIVE, ""+bell.isActive());
+        values.put(dbHelper.COLUMN_IDREM, bell.getIdrem());
         return values;
 	}
 

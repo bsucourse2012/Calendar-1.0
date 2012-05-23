@@ -1,27 +1,28 @@
-package com.corsework.notepad.entities.dao;
+package com.corsework.notepad.entities.dao3;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-public class BellHelper extends SQLiteOpenHelper {
+public class NoteHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Names of columns in table.
 	 */
-	public static final String TABLE_NAME = "bells";
+	public static final String TABLE_NAME = "notes";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_CREATED = "_created";
 	public static final String COLUMN_MODIFIED = "_modified";
-	public static final String COLUMN_DATE = "date";
-	public static final String COLUMN_ACTIVE = "activ";
-	public static final String COLUMN_IDREM = "idreminder";
+	public static final String COLUMN_TITLE = "title";
+	public static final String COLUMN_TYPE = "type";
+	public static final String COLUMN_CONTENT = "content";
 	
 	/**
 	 * Database info.
 	 */
-	private static final String DATABASE_NAME = "calbel.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final String DATABASE_NAME = DbOptions.DATABASE_NAME;
+	private static final int DATABASE_VERSION = DbOptions.DATABASE_VERSION;
 	
 	/**
 	 * Database creation sql statement.
@@ -29,13 +30,13 @@ public class BellHelper extends SQLiteOpenHelper {
 	private static final String TABLE_CREATE = 
 			"create table " + TABLE_NAME + "( " +
 			COLUMN_ID + " integer primary key autoincrement, " +
-			COLUMN_CREATED + " long, " +
-			COLUMN_MODIFIED + " long, " +
-			COLUMN_DATE + " long," +
-			COLUMN_ACTIVE + " string,"+
-			COLUMN_IDREM + " long );";
+			COLUMN_CREATED + " integer, " +
+			COLUMN_MODIFIED + " integer, " +
+			COLUMN_TITLE + " text, " +
+			COLUMN_TYPE + " text, " +
+			COLUMN_CONTENT + " text);";
 	
-	public BellHelper(Context context) {
+	public NoteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	

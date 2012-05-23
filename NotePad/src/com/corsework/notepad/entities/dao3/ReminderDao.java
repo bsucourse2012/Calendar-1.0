@@ -1,4 +1,4 @@
-package com.corsework.notepad.entities.dao;
+package com.corsework.notepad.entities.dao3;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,18 +19,17 @@ import android.util.Log;
 public class ReminderDao {
 	
 	/**
-	 * Helper for the database.
+	 * Helper for current class.
 	 */
-	private DBHelper dbHelper;
+	private ReminderHelper dbHelper;
 	
-	/**
-	 * Information about the table.
-	 */
-	private ReminderInfo tableInfo;
+//	private ReminderToBellDao reminderToBellDao;
+//	private BellDao bellDao;
 	
 	public ReminderDao(Context context) {
-		this.dbHelper = new DBHelper(context);
-		this.tableInfo = new ReminderInfo();
+		this.dbHelper = new ReminderHelper(context);
+//		this.reminderToBellDao = new ReminderToBellDao(context);
+//		this.bellDao = new BellDao(context);
 	}
 	
 	/**
@@ -42,7 +41,7 @@ public class ReminderDao {
 	public Reminder create(Reminder reminder) {
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();		 
         ContentValues values = this.reminderToValues(reminder);
-        long id = db.insert(tableInfo.TABLE_NAME, null, values);
+        long id = db.insert(dbHelper.TABLE_NAME, null, values);
         db.close();
         
 //        if (this.createBells(reminder) == false) {
@@ -92,7 +91,7 @@ public class ReminderDao {
 			
 			SQLiteDatabase db = this.dbHelper.getWritableDatabase();			 
 			ContentValues values = this.reminderToValues(reminder);	 
-	        int res = db.update(tableInfo.TABLE_NAME, values, tableInfo.COLUMN_ID + " = ?",
+	        int res = db.update(dbHelper.TABLE_NAME, values, dbHelper.COLUMN_ID + " = ?",
 	                new String[] { String.valueOf(reminder.getId()) });
 	        db.close();
 	        
@@ -119,7 +118,7 @@ public class ReminderDao {
 	 */
 	public Reminder getById(Long id) {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, tableInfo.COLUMN_ID + "=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
 		
 		if (cursor == null) {
@@ -145,7 +144,7 @@ public class ReminderDao {
 	//	this.deleteBells(id);
 		
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        long res = db.delete(tableInfo.TABLE_NAME, tableInfo.COLUMN_ID + " = ?",
+        long res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
                 new String[] { String.valueOf(id) });
         db.close();
         
@@ -199,7 +198,7 @@ public class ReminderDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, null,
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, null,
                 null, null, null, null, null);		
 		if (cursor.moveToFirst()) {
             do {
@@ -221,7 +220,7 @@ public class ReminderDao {
 		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 		
 		for (int i = 0; i < types.size(); ++i) {
-			Cursor cursor = db.query(tableInfo.TABLE_NAME, null, tableInfo.COLUMN_TYPE + "=?",
+			Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_TYPE + "=?",
 					new String[] { types.get(i) }, null, null, null, null);		
 			if (cursor.moveToFirst()) {
 	            do {
@@ -244,11 +243,11 @@ public class ReminderDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null,
-				tableInfo.COLUMN_CREATED + ">=?" + " and "
-				+ tableInfo.COLUMN_CREATED + "<=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null,
+				dbHelper.COLUMN_CREATED + ">=?" + " and "
+				+ dbHelper.COLUMN_CREATED + "<=?",
 				new String[] { String.valueOf(from.getTime()),
-				String.valueOf(to.getTime()) }, null, null, tableInfo.COLUMN_CREATED + " DESC", null);		
+				String.valueOf(to.getTime()) }, null, null, dbHelper.COLUMN_CREATED + " DESC", null);		
 		if (cursor.moveToFirst()) {
             do {
                 Reminder reminder = this.cursorToReminder(cursor);
@@ -263,11 +262,11 @@ public class ReminderDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null,
-				tableInfo.COLUMN_START_DATE + ">=?" + " and "
-				+ tableInfo.COLUMN_START_DATE + "<=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null,
+				dbHelper.COLUMN_START_DATE + ">=?" + " and "
+				+ dbHelper.COLUMN_START_DATE + "<=?",
 				new String[] { String.valueOf(from.getTime()),
-				String.valueOf(to.getTime()) }, null, null, tableInfo.COLUMN_START_DATE + " DESC", null);		
+				String.valueOf(to.getTime()) }, null, null, dbHelper.COLUMN_START_DATE + " DESC", null);		
 		if (cursor.moveToFirst()) {
             do {
                 Reminder reminder = this.cursorToReminder(cursor);
@@ -282,11 +281,11 @@ public class ReminderDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null,
-				tableInfo.COLUMN_START_DATE + "<=?" + " and "
-				+ tableInfo.COLUMN_END_DATE + ">=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null,
+				dbHelper.COLUMN_START_DATE + "<=?" + " and "
+				+ dbHelper.COLUMN_END_DATE + ">=?",
 				new String[] { String.valueOf(to.getTime()),
-				String.valueOf(from.getTime()) }, null, null, tableInfo.COLUMN_CREATED + " DESC", null);		
+				String.valueOf(from.getTime()) }, null, null, dbHelper.COLUMN_CREATED + " DESC", null);		
 		if (cursor.moveToFirst()) {
             do {
                 Reminder reminder = this.cursorToReminder(cursor);
@@ -307,11 +306,11 @@ public class ReminderDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null,
-				tableInfo.COLUMN_MODIFIED + ">=?" + " and "
-				+ tableInfo.COLUMN_MODIFIED + "<=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null,
+				dbHelper.COLUMN_MODIFIED + ">=?" + " and "
+				+ dbHelper.COLUMN_MODIFIED + "<=?",
 				new String[] { String.valueOf(from.getTime()),
-				String.valueOf(to.getTime()) }, null, null, tableInfo.COLUMN_MODIFIED + " DESC", null);		
+				String.valueOf(to.getTime()) }, null, null, dbHelper.COLUMN_MODIFIED + " DESC", null);		
 		if (cursor.moveToFirst()) {
             do {
                 Reminder reminder = this.cursorToReminder(cursor);
@@ -329,14 +328,14 @@ public class ReminderDao {
 	 */
 	private ContentValues reminderToValues(Reminder reminder) {
 		ContentValues values = new ContentValues();
-    	values.put(tableInfo.COLUMN_CREATED, reminder.getSys().getCr().getTime());
-    	values.put(tableInfo.COLUMN_MODIFIED, reminder.getSys().getMd().getTime());
-    	values.put(tableInfo.COLUMN_TYPE, reminder.getType());
-    	values.put(tableInfo.COLUMN_DESCRIPTION, reminder.getDescr());
-    	values.put(tableInfo.COLUMN_START_DATE, reminder.getStrDate().getTime());
-    	values.put(tableInfo.COLUMN_END_DATE, reminder.getEndDate().getTime());
-    	values.put(tableInfo.COLUMN_PRIORITY, reminder.getPrior());
-    	values.put(tableInfo.COLUMN_REPETITION, reminder.getRepetition());
+    	values.put(dbHelper.COLUMN_CREATED, reminder.getSys().getCr().getTime());
+    	values.put(dbHelper.COLUMN_MODIFIED, reminder.getSys().getMd().getTime());
+    	values.put(dbHelper.COLUMN_TYPE, reminder.getType());
+    	values.put(dbHelper.COLUMN_DESCRIPTION, reminder.getDescr());
+    	values.put(dbHelper.COLUMN_START_DATE, reminder.getStrDate().getTime());
+    	values.put(dbHelper.COLUMN_END_DATE, reminder.getEndDate().getTime());
+    	values.put(dbHelper.COLUMN_PRIORITY, reminder.getPrior());
+    	values.put(dbHelper.COLUMN_REPETITION, reminder.getRepetition());
         return values;
 	}
 	

@@ -1,4 +1,4 @@
-package com.corsework.notepad.entities.dao;
+package com.corsework.notepad.entities.dao3;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,18 +20,12 @@ import android.util.Log;
 public class NoteDao {
 	
 	/**
-	 * Helper for the database.
+	 * Helper for current class.
 	 */
-	private DBHelper dbHelper;
-	
-	/**
-	 * Information about the table.
-	 */
-	private NoteInfo tableInfo;
+	private NoteHelper dbHelper;
 	
 	public NoteDao(Context context) {
-		this.dbHelper = new DBHelper(context);
-		this.tableInfo = new NoteInfo();
+		this.dbHelper = new NoteHelper(context);
 	}
 	
 	/**
@@ -43,7 +37,7 @@ public class NoteDao {
 	public Note create(Note note) {
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();		 
         ContentValues values = this.noteToValues(note); 
-        long id = db.insert(tableInfo.TABLE_NAME, null, values);
+        long id = db.insert(dbHelper.TABLE_NAME, null, values);
         db.close();
         
         if (id == -1) {
@@ -68,7 +62,7 @@ public class NoteDao {
 		} else {
 			SQLiteDatabase db = this.dbHelper.getWritableDatabase();			 
 			ContentValues values = this.noteToValues(note);	 
-	        int res = db.update(tableInfo.TABLE_NAME, values, tableInfo.COLUMN_ID + " = ?",
+	        int res = db.update(dbHelper.TABLE_NAME, values, dbHelper.COLUMN_ID + " = ?",
 	                new String[] { String.valueOf(note.getId()) });
 	        db.close();
 	        
@@ -90,7 +84,7 @@ public class NoteDao {
 	 */
 	public Note getById(long id) {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, tableInfo.COLUMN_ID + "=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
 		
 		if (cursor == null) {
@@ -114,7 +108,7 @@ public class NoteDao {
 	 */
 	public int deleteById(Long id) {
 		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        int res = db.delete(tableInfo.TABLE_NAME, tableInfo.COLUMN_ID + " = ?",
+        int res = db.delete(dbHelper.TABLE_NAME, dbHelper.COLUMN_ID + " = ?",
                 new String[] { String.valueOf(id) });
         db.close();
         
@@ -149,7 +143,7 @@ public class NoteDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Note> notes = new ArrayList<Note>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null, null,
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null, null,
                 null, null, null, null, null);		
 		if (cursor.moveToFirst()) {
             do {
@@ -171,7 +165,7 @@ public class NoteDao {
 		ArrayList<Note> notes = new ArrayList<Note>();
 		
 		for (int i = 0; i < types.size(); ++i) {
-			Cursor cursor = db.query(tableInfo.TABLE_NAME, null, tableInfo.COLUMN_TYPE + "=?",
+			Cursor cursor = db.query(dbHelper.TABLE_NAME, null, dbHelper.COLUMN_TYPE + "=?",
 					new String[] { types.get(i) }, null, null, null, null);		
 			if (cursor.moveToFirst()) {
 	            do {
@@ -195,11 +189,11 @@ public class NoteDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Note> notes = new ArrayList<Note>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null,
-				tableInfo.COLUMN_CREATED + ">=?" + " and "
-				+ tableInfo.COLUMN_CREATED + "<=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null,
+				dbHelper.COLUMN_CREATED + ">=?" + " and "
+				+ dbHelper.COLUMN_CREATED + "<=?",
 				new String[] { String.valueOf(from.getTime()),
-				String.valueOf(to.getTime()) }, null, null, tableInfo.COLUMN_CREATED + " DESC", null);		
+				String.valueOf(to.getTime()) }, null, null, dbHelper.COLUMN_CREATED + " DESC", null);		
 		if (cursor.moveToFirst()) {
             do {
                 Note note = this.cursorToNote(cursor);
@@ -221,11 +215,11 @@ public class NoteDao {
 		SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 		ArrayList<Note> notes = new ArrayList<Note>();
 		
-		Cursor cursor = db.query(tableInfo.TABLE_NAME, null,
-				tableInfo.COLUMN_MODIFIED + ">=?" + " and "
-				+ tableInfo.COLUMN_MODIFIED + "<=?",
+		Cursor cursor = db.query(dbHelper.TABLE_NAME, null,
+				dbHelper.COLUMN_MODIFIED + ">=?" + " and "
+				+ dbHelper.COLUMN_MODIFIED + "<=?",
 				new String[] { String.valueOf(from.getTime()),
-				String.valueOf(to.getTime()) }, null, null, tableInfo.COLUMN_MODIFIED + " DESC", null);		
+				String.valueOf(to.getTime()) }, null, null, dbHelper.COLUMN_MODIFIED + " DESC", null);		
 		if (cursor.moveToFirst()) {
             do {
                 Note note = this.cursorToNote(cursor);
@@ -243,11 +237,11 @@ public class NoteDao {
 	 */
 	private ContentValues noteToValues(Note note) {
 		ContentValues values = new ContentValues();
-    	values.put(tableInfo.COLUMN_CREATED, note.getSys().getCr().getTime());
-    	values.put(tableInfo.COLUMN_MODIFIED, note.getSys().getMd().getTime());
-    	values.put(tableInfo.COLUMN_TITLE, note.getTitle());
-    	values.put(tableInfo.COLUMN_TYPE, note.getType());
-    	values.put(tableInfo.COLUMN_CONTENT, note.getCont());
+    	values.put(dbHelper.COLUMN_CREATED, note.getSys().getCr().getTime());
+    	values.put(dbHelper.COLUMN_MODIFIED, note.getSys().getMd().getTime());
+    	values.put(dbHelper.COLUMN_TITLE, note.getTitle());
+    	values.put(dbHelper.COLUMN_TYPE, note.getType());
+    	values.put(dbHelper.COLUMN_CONTENT, note.getCont());
         return values;
 	}
 	
@@ -272,3 +266,17 @@ public class NoteDao {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

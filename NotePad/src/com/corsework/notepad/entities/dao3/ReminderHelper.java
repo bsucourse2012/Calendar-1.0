@@ -1,4 +1,4 @@
-package com.corsework.notepad.entities.dao;
+package com.corsework.notepad.entities.dao3;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,8 +23,8 @@ public class ReminderHelper extends SQLiteOpenHelper {
 	/**
 	 * Database info.
 	 */
-	private static final String DATABASE_NAME = "calrem.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final String DATABASE_NAME = DbOptions.DATABASE_NAME;
+	private static final int DATABASE_VERSION = DbOptions.DATABASE_VERSION;
 	
 	/**
 	 * Database creation sql statement.

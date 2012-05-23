@@ -1,4 +1,4 @@
-package com.corsework.notepad.entities.dao;
+package com.corsework.notepad.entities.dao3;
 
 import java.util.ArrayList;
 
