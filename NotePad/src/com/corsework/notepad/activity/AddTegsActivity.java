@@ -40,16 +40,25 @@ public class AddTegsActivity extends ListActivity {
         Button addButton = (Button)findViewById(R.id.addBut);
 		Button okButton = (Button)findViewById(R.id.okBut);
 		Button cnButton = (Button)findViewById(R.id.cansBut);
+		String s;
+		Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+        	s= extras.getString(NotePadApplication.KEY_ROWID);
+        	int k=-1;
+        	if ((k=tegD.getAll().indexOf(s))!=-1)
+        		adapter.togglePosition(k);
+        }
 		okButton.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
+				Bundle bundle = new Bundle();
 				if (adapter.getTogglePosition()!=-1){
-					Bundle bundle = new Bundle();
-					bundle.putString(TagInfo.COLUMN_TEXT, adapter.getPos());
-	                Intent mIntent = new Intent();
-	                mIntent.putExtras(bundle);
-	                setResult(RESULT_OK, mIntent);
-				}
+					bundle.putString(TagInfo.COLUMN_TEXT, adapter.getPos());  
+				}else
+					bundle.putString(TagInfo.COLUMN_TEXT, "");
+				Intent mIntent = new Intent();
+	            mIntent.putExtras(bundle);
+	            setResult(RESULT_OK, mIntent);
 				finish();
 			}
 		});

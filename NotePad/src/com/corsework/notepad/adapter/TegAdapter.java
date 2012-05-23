@@ -58,7 +58,7 @@ public class TegAdapter extends BaseAdapter {
 
 	public void forceReload(ArrayList<String> arrayList) {
 		types=arrayList;
-		toggle = -1;
+//		toggle = -1;
 		notifyDataSetChanged();
 	}
 	

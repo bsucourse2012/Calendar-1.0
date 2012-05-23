@@ -26,7 +26,9 @@
 	    android:id="@+id/body" 
 	    android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:scrollbars="vertical" android:inputType="textMultiLine"/>
+		android:scrollbars="vertical" 
+		android:inputType="textMultiLine"
+		android:maxLength="1000"/>
 	<TextView 
 	    android:text="@string/start_data"
 	    android:layout_width="fill_parent"

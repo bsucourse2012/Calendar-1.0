@@ -125,17 +125,20 @@ public class NotePadApplication extends Application {
 		Log.d("bell getById", b.toString());        
 		
 		Reminder rem = reminderD.getById(b.getIdrem());
-		if (rem==null) return;
+		
 		am  = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(this, TimeNotification.class);
+		PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 
+				PendingIntent.FLAG_CANCEL_CURRENT);
+		am.cancel(pi);
+		if (rem==null) return;
+	
 		intent.putExtra(KEY_ROWID, rem.getId());
 		intent.putExtra(KEY_TITLE, rem.getType());
 		intent.putExtra(KEY_BODY, rem.getDescr());
 		intent.putExtra(KEY_SRTD, b.getId());
-		
-		PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 
+		pi = PendingIntent.getBroadcast(this, 0, intent, 
 				PendingIntent.FLAG_CANCEL_CURRENT);
-		
 		am.cancel(pi);
 		Log.d("add to time",android.text.format.DateFormat.format("hh:mm  dd-MM-yyyy",b.getDate()).toString());
 		am.set(AlarmManager.RTC_WAKEUP, b.getDate(), pi);

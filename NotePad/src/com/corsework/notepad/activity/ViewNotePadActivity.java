@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,8 +108,12 @@ public class ViewNotePadActivity extends TabActivity {
     DialogInterface.OnClickListener onClickListener_DialogResetPin =
             new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int which) {
-        	dialog.dismiss();
+        //	dialog.dismiss();
+        	ViewNotePadActivity.this.finish();
         }
     };
-
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {  
+        super.onConfigurationChanged(newConfig);  
+    }
 }

@@ -80,7 +80,9 @@ public class AddNoteActivity extends Activity {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(AddNoteActivity.this,AddTegsActivity.class);
-				startActivityForResult(intent, ADD_TEG_ACT);
+				if (!(mTegText.getText().toString().equals("")))
+				intent.putExtra(NotePadApplication.KEY_ROWID, mTegText.getText().toString());
+        		startActivityForResult(intent, ADD_TEG_ACT);
 				//showDialog(DIALOG_TEGS);
 			}
 		});
@@ -145,6 +147,9 @@ public class AddNoteActivity extends Activity {
         n=((NotePadApplication)getApplication()).getNoteD().update(n);
         finish();
 	}
+	public void onBackPressed() {
+	      cancel();
+	    }
 	 protected void cancel() {
 			String noteName = mTitleText.getText().toString();
 			String noteBody = mBodyText.getText().toString();
@@ -153,7 +158,7 @@ public class AddNoteActivity extends Activity {
 				unsavedChangesDialog = new AlertDialog.Builder(this)
 				.setTitle(R.string.unsaved_changes_title)
 				.setMessage(R.string.unsaved_changes_message)
-				.setPositiveButton(R.string.add_note_button, new AlertDialog.OnClickListener() {
+				.setPositiveButton(android.R.string.yes, new AlertDialog.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						addNote();
 					}
@@ -188,6 +193,7 @@ public class AddNoteActivity extends Activity {
 		       	for (String s : matches)
 		       	{
 		       		resString += s + "\t";
+		       		break;
 		       	}
 		 
 		         mBodyText.setText(resString);

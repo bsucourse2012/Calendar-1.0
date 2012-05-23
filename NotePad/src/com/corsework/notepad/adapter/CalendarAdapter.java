@@ -67,7 +67,6 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
         if (position<=6){
         	dayView.setClickable(false);
         	dayView.setFocusable(false);
-        	dayView.setTextColor(Color.WHITE);
         	v.setBackgroundColor(android.R.color.background_light);
       
         }
@@ -85,7 +84,6 @@ static final int FIRST_DAY_OF_WEEK =0; // Sunday = 0, Monday = 1
 	        			(days[position].equals(""+selectedDate.get(Calendar.DAY_OF_MONTH)))) {
 	        		v.setBackgroundResource(R.drawable.item_background_focused);
 
-	            	dayView.setTextColor(Color.WHITE);
 	        	}
 	        	else {
 
